@@ -2,91 +2,1657 @@
   {
     "id": "apple",
     "name": "תפוח",
-    "per100g": { "kcal": 52, "protein": 0.3, "carbs": 14.0, "fat": 0.2, "fiber": 2.4 },
-    "micros": { "vitaminC_mg": 4.6, "vitaminA_ug": 3, "vitaminB12_ug": 0, "folate_ug": 3, "calcium_mg": 6, "iron_mg": 0.1, "magnesium_mg": 5, "potassium_mg": 107 },
     "healthTag": "green",
-    "healthNote": "פרי יומיומי, סיבים ומיקרו-נוטריינטים",
-    "servingGrams": 180
+    "healthNote": "פרי עשיר בסיבים",
+    "servingGrams": 180,
+    "per100g": {
+      "kcal": 52,
+      "protein": 0.3,
+      "carbs": 13.8,
+      "fat": 0.2,
+      "fiber": 2.4
+    },
+    "micros": {
+      "vitaminC_mg": 4.6,
+      "vitaminA_ug": 3,
+      "vitaminB12_ug": 0,
+      "folate_ug": 3,
+      "calcium_mg": 6,
+      "iron_mg": 0.1,
+      "magnesium_mg": 5,
+      "potassium_mg": 107
+    }
   },
   {
     "id": "banana",
     "name": "בננה",
-    "per100g": { "kcal": 89, "protein": 1.1, "carbs": 22.8, "fat": 0.3, "fiber": 2.6 },
-    "micros": { "vitaminC_mg": 8.7, "vitaminA_ug": 3, "vitaminB12_ug": 0, "folate_ug": 20, "calcium_mg": 5, "iron_mg": 0.3, "magnesium_mg": 27, "potassium_mg": 358 },
     "healthTag": "green",
-    "healthNote": "פרי יומיומי, אשלגן וסיבים",
-    "servingGrams": 120
+    "healthNote": "פרי, אשלגן וסיבים",
+    "servingGrams": 120,
+    "per100g": {
+      "kcal": 89,
+      "protein": 1.1,
+      "carbs": 22.8,
+      "fat": 0.3,
+      "fiber": 2.6
+    },
+    "micros": {
+      "vitaminC_mg": 8.7,
+      "vitaminA_ug": 3,
+      "vitaminB12_ug": 0,
+      "folate_ug": 20,
+      "calcium_mg": 5,
+      "iron_mg": 0.3,
+      "magnesium_mg": 27,
+      "potassium_mg": 358
+    }
   },
   {
     "id": "orange",
     "name": "תפוז",
-    "per100g": { "kcal": 47, "protein": 0.9, "carbs": 11.8, "fat": 0.1, "fiber": 2.4 },
-    "micros": { "vitaminC_mg": 53.2, "vitaminA_ug": 11, "vitaminB12_ug": 0, "folate_ug": 30, "calcium_mg": 40, "iron_mg": 0.1, "magnesium_mg": 10, "potassium_mg": 181 },
     "healthTag": "green",
-    "healthNote": "עשיר בויטמין C",
-    "servingGrams": 160
+    "healthNote": "ויטמין C",
+    "servingGrams": 160,
+    "per100g": {
+      "kcal": 47,
+      "protein": 0.9,
+      "carbs": 11.8,
+      "fat": 0.1,
+      "fiber": 2.4
+    },
+    "micros": {
+      "vitaminC_mg": 53.2,
+      "vitaminA_ug": 11,
+      "vitaminB12_ug": 0,
+      "folate_ug": 30,
+      "calcium_mg": 40,
+      "iron_mg": 0.1,
+      "magnesium_mg": 10,
+      "potassium_mg": 181
+    }
+  },
+  {
+    "id": "strawberries",
+    "name": "תותים",
+    "healthTag": "green",
+    "healthNote": "הרבה ויטמין C, מעט קלוריות",
+    "servingGrams": 150,
+    "per100g": {
+      "kcal": 32,
+      "protein": 0.7,
+      "carbs": 7.7,
+      "fat": 0.3,
+      "fiber": 2.0
+    },
+    "micros": {
+      "vitaminC_mg": 58.8,
+      "vitaminA_ug": 1,
+      "vitaminB12_ug": 0,
+      "folate_ug": 24,
+      "calcium_mg": 16,
+      "iron_mg": 0.4,
+      "magnesium_mg": 13,
+      "potassium_mg": 153
+    }
+  },
+  {
+    "id": "grapes",
+    "name": "ענבים",
+    "healthTag": "green",
+    "healthNote": "פרי מתוק",
+    "servingGrams": 150,
+    "per100g": {
+      "kcal": 69,
+      "protein": 0.7,
+      "carbs": 18.1,
+      "fat": 0.2,
+      "fiber": 0.9
+    },
+    "micros": {
+      "vitaminC_mg": 3.2,
+      "vitaminA_ug": 3,
+      "vitaminB12_ug": 0,
+      "folate_ug": 2,
+      "calcium_mg": 10,
+      "iron_mg": 0.4,
+      "magnesium_mg": 7,
+      "potassium_mg": 191
+    }
+  },
+  {
+    "id": "watermelon",
+    "name": "אבטיח",
+    "healthTag": "green",
+    "healthNote": "הרבה נוזלים",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 30,
+      "protein": 0.6,
+      "carbs": 7.6,
+      "fat": 0.2,
+      "fiber": 0.4
+    },
+    "micros": {
+      "vitaminC_mg": 8.1,
+      "vitaminA_ug": 28,
+      "vitaminB12_ug": 0,
+      "folate_ug": 3,
+      "calcium_mg": 7,
+      "iron_mg": 0.2,
+      "magnesium_mg": 10,
+      "potassium_mg": 112
+    }
+  },
+  {
+    "id": "tomato",
+    "name": "עגבנייה",
+    "healthTag": "green",
+    "healthNote": "ירק קל, ויטמין C",
+    "servingGrams": 150,
+    "per100g": {
+      "kcal": 18,
+      "protein": 0.9,
+      "carbs": 3.9,
+      "fat": 0.2,
+      "fiber": 1.2
+    },
+    "micros": {
+      "vitaminC_mg": 13.7,
+      "vitaminA_ug": 42,
+      "vitaminB12_ug": 0,
+      "folate_ug": 15,
+      "calcium_mg": 10,
+      "iron_mg": 0.3,
+      "magnesium_mg": 11,
+      "potassium_mg": 237
+    }
+  },
+  {
+    "id": "cucumber",
+    "name": "מלפפון",
+    "healthTag": "green",
+    "healthNote": "ירק קל",
+    "servingGrams": 150,
+    "per100g": {
+      "kcal": 15,
+      "protein": 0.7,
+      "carbs": 3.6,
+      "fat": 0.1,
+      "fiber": 0.5
+    },
+    "micros": {
+      "vitaminC_mg": 2.8,
+      "vitaminA_ug": 5,
+      "vitaminB12_ug": 0,
+      "folate_ug": 7,
+      "calcium_mg": 16,
+      "iron_mg": 0.3,
+      "magnesium_mg": 13,
+      "potassium_mg": 147
+    }
+  },
+  {
+    "id": "carrot",
+    "name": "גזר",
+    "healthTag": "green",
+    "healthNote": "בטא-קרוטן (ויטמין A)",
+    "servingGrams": 120,
+    "per100g": {
+      "kcal": 41,
+      "protein": 0.9,
+      "carbs": 9.6,
+      "fat": 0.2,
+      "fiber": 2.8
+    },
+    "micros": {
+      "vitaminC_mg": 5.9,
+      "vitaminA_ug": 835,
+      "vitaminB12_ug": 0,
+      "folate_ug": 19,
+      "calcium_mg": 33,
+      "iron_mg": 0.3,
+      "magnesium_mg": 12,
+      "potassium_mg": 320
+    }
   },
   {
     "id": "broccoli",
     "name": "ברוקולי",
-    "per100g": { "kcal": 34, "protein": 2.8, "carbs": 6.6, "fat": 0.4, "fiber": 2.6 },
-    "micros": { "vitaminC_mg": 89.2, "vitaminA_ug": 31, "vitaminB12_ug": 0, "folate_ug": 63, "calcium_mg": 47, "iron_mg": 0.7, "magnesium_mg": 21, "potassium_mg": 316 },
     "healthTag": "green",
-    "healthNote": "ירק עשיר בסיבים וויטמין C",
-    "servingGrams": 150
+    "healthNote": "סיבים וויטמין C",
+    "servingGrams": 160,
+    "per100g": {
+      "kcal": 34,
+      "protein": 2.8,
+      "carbs": 6.6,
+      "fat": 0.4,
+      "fiber": 2.6
+    },
+    "micros": {
+      "vitaminC_mg": 89.2,
+      "vitaminA_ug": 31,
+      "vitaminB12_ug": 0,
+      "folate_ug": 63,
+      "calcium_mg": 47,
+      "iron_mg": 0.7,
+      "magnesium_mg": 21,
+      "potassium_mg": 316
+    }
   },
   {
-    "id": "oats",
-    "name": "שיבולת שועל (יבשה)",
-    "per100g": { "kcal": 389, "protein": 16.9, "carbs": 66.3, "fat": 6.9, "fiber": 10.6 },
-    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 0, "vitaminB12_ug": 0, "folate_ug": 56, "calcium_mg": 54, "iron_mg": 4.7, "magnesium_mg": 177, "potassium_mg": 429 },
+    "id": "spinach",
+    "name": "תרד",
     "healthTag": "green",
-    "healthNote": "דגן עשיר בסיבים ומגנזיום",
-    "servingGrams": 60
+    "healthNote": "עלים ירוקים עשירים במיקרו",
+    "servingGrams": 80,
+    "per100g": {
+      "kcal": 23,
+      "protein": 2.9,
+      "carbs": 3.6,
+      "fat": 0.4,
+      "fiber": 2.2
+    },
+    "micros": {
+      "vitaminC_mg": 28.1,
+      "vitaminA_ug": 469,
+      "vitaminB12_ug": 0,
+      "folate_ug": 194,
+      "calcium_mg": 99,
+      "iron_mg": 2.7,
+      "magnesium_mg": 79,
+      "potassium_mg": 558
+    }
+  },
+  {
+    "id": "sweet_potato",
+    "name": "בטטה",
+    "healthTag": "green",
+    "healthNote": "פחמימה איכותית + ויטמין A",
+    "servingGrams": 200,
+    "per100g": {
+      "kcal": 86,
+      "protein": 1.6,
+      "carbs": 20.1,
+      "fat": 0.1,
+      "fiber": 3.0
+    },
+    "micros": {
+      "vitaminC_mg": 2.4,
+      "vitaminA_ug": 709,
+      "vitaminB12_ug": 0,
+      "folate_ug": 11,
+      "calcium_mg": 30,
+      "iron_mg": 0.6,
+      "magnesium_mg": 25,
+      "potassium_mg": 337
+    }
   },
   {
     "id": "rice_cooked",
     "name": "אורז מבושל",
-    "per100g": { "kcal": 130, "protein": 2.4, "carbs": 28.2, "fat": 0.3, "fiber": 0.4 },
-    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 0, "vitaminB12_ug": 0, "folate_ug": 8, "calcium_mg": 10, "iron_mg": 0.2, "magnesium_mg": 12, "potassium_mg": 35 },
     "healthTag": "green",
-    "healthNote": "פחמימה בסיסית; עדיף לשלב עם חלבון/ירק",
-    "servingGrams": 180
+    "healthNote": "פחמימה בסיסית",
+    "servingGrams": 180,
+    "per100g": {
+      "kcal": 130,
+      "protein": 2.7,
+      "carbs": 28.2,
+      "fat": 0.3,
+      "fiber": 0.4
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 4,
+      "calcium_mg": 10,
+      "iron_mg": 0.2,
+      "magnesium_mg": 12,
+      "potassium_mg": 35
+    }
   },
   {
-    "id": "egg",
-    "name": "ביצה",
-    "per100g": { "kcal": 143, "protein": 12.6, "carbs": 0.7, "fat": 9.5, "fiber": 0.0 },
-    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 160, "vitaminB12_ug": 1.1, "folate_ug": 47, "calcium_mg": 56, "iron_mg": 1.8, "magnesium_mg": 12, "potassium_mg": 138 },
+    "id": "oats_dry",
+    "name": "שיבולת שועל",
     "healthTag": "green",
-    "healthNote": "חלבון איכותי + B12",
-    "servingGrams": 50
+    "healthNote": "סיבים ושובע",
+    "servingGrams": 60,
+    "per100g": {
+      "kcal": 389,
+      "protein": 16.9,
+      "carbs": 66.3,
+      "fat": 6.9,
+      "fiber": 10.6
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 56,
+      "calcium_mg": 54,
+      "iron_mg": 4.7,
+      "magnesium_mg": 177,
+      "potassium_mg": 429
+    }
+  },
+  {
+    "id": "bread_whole",
+    "name": "לחם מלא",
+    "healthTag": "green",
+    "healthNote": "יותר סיבים מלחם לבן",
+    "servingGrams": 60,
+    "per100g": {
+      "kcal": 247,
+      "protein": 12.5,
+      "carbs": 41.0,
+      "fat": 4.2,
+      "fiber": 6.8
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 44,
+      "calcium_mg": 107,
+      "iron_mg": 2.5,
+      "magnesium_mg": 76,
+      "potassium_mg": 230
+    }
+  },
+  {
+    "id": "pasta_cooked",
+    "name": "פסטה מבושלת",
+    "healthTag": "green",
+    "healthNote": "פחמימה לארוחה",
+    "servingGrams": 180,
+    "per100g": {
+      "kcal": 158,
+      "protein": 5.8,
+      "carbs": 30.9,
+      "fat": 0.9,
+      "fiber": 1.8
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 7,
+      "calcium_mg": 7,
+      "iron_mg": 0.6,
+      "magnesium_mg": 18,
+      "potassium_mg": 44
+    }
+  },
+  {
+    "id": "quinoa_cooked",
+    "name": "קינואה מבושלת",
+    "healthTag": "green",
+    "healthNote": "חלבון צמחי + מינרלים",
+    "servingGrams": 185,
+    "per100g": {
+      "kcal": 120,
+      "protein": 4.4,
+      "carbs": 21.3,
+      "fat": 1.9,
+      "fiber": 2.8
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 42,
+      "calcium_mg": 17,
+      "iron_mg": 1.5,
+      "magnesium_mg": 64,
+      "potassium_mg": 172
+    }
   },
   {
     "id": "chicken_breast",
-    "name": "חזה עוף (מבושל/צלוי)",
-    "per100g": { "kcal": 165, "protein": 31.0, "carbs": 0.0, "fat": 3.6, "fiber": 0.0 },
-    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 13, "vitaminB12_ug": 0.3, "folate_ug": 4, "calcium_mg": 15, "iron_mg": 1.0, "magnesium_mg": 29, "potassium_mg": 256 },
+    "name": "חזה עוף צלוי",
     "healthTag": "green",
-    "healthNote": "מקור חלבון רזה",
-    "servingGrams": 200
+    "healthNote": "חלבון רזה",
+    "servingGrams": 180,
+    "per100g": {
+      "kcal": 165,
+      "protein": 31.0,
+      "carbs": 0.0,
+      "fat": 3.6,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 13,
+      "vitaminB12_ug": 0.3,
+      "folate_ug": 4,
+      "calcium_mg": 15,
+      "iron_mg": 1.0,
+      "magnesium_mg": 29,
+      "potassium_mg": 256
+    }
   },
   {
-    "id": "greek_yogurt",
-    "name": "יוגורט יווני (טבעי)",
-    "per100g": { "kcal": 97, "protein": 9.0, "carbs": 3.6, "fat": 5.0, "fiber": 0.0 },
-    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 27, "vitaminB12_ug": 0.6, "folate_ug": 7, "calcium_mg": 110, "iron_mg": 0.1, "magnesium_mg": 11, "potassium_mg": 141 },
+    "id": "turkey",
+    "name": "הודו (חזה)",
+    "healthTag": "green",
+    "healthNote": "חלבון רזה",
+    "servingGrams": 180,
+    "per100g": {
+      "kcal": 135,
+      "protein": 29.0,
+      "carbs": 0.0,
+      "fat": 1.6,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 1.0,
+      "folate_ug": 7,
+      "calcium_mg": 12,
+      "iron_mg": 1.2,
+      "magnesium_mg": 28,
+      "potassium_mg": 239
+    }
+  },
+  {
+    "id": "salmon",
+    "name": "סלמון",
+    "healthTag": "green",
+    "healthNote": "אומגה 3 + חלבון",
+    "servingGrams": 150,
+    "per100g": {
+      "kcal": 208,
+      "protein": 20.4,
+      "carbs": 0.0,
+      "fat": 13.4,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 40,
+      "vitaminB12_ug": 3.2,
+      "folate_ug": 25,
+      "calcium_mg": 9,
+      "iron_mg": 0.3,
+      "magnesium_mg": 29,
+      "potassium_mg": 363
+    }
+  },
+  {
+    "id": "tuna_canned",
+    "name": "טונה (משומר, מסונן)",
+    "healthTag": "green",
+    "healthNote": "חלבון גבוה",
+    "servingGrams": 120,
+    "per100g": {
+      "kcal": 132,
+      "protein": 29.0,
+      "carbs": 0.0,
+      "fat": 1.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 2.5,
+      "folate_ug": 2,
+      "calcium_mg": 10,
+      "iron_mg": 1.0,
+      "magnesium_mg": 35,
+      "potassium_mg": 237
+    }
+  },
+  {
+    "id": "eggs",
+    "name": "ביצה",
+    "healthTag": "green",
+    "healthNote": "חלבון ושומן איכותי",
+    "servingGrams": 60,
+    "per100g": {
+      "kcal": 143,
+      "protein": 12.6,
+      "carbs": 0.7,
+      "fat": 9.5,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 149,
+      "vitaminB12_ug": 1.1,
+      "folate_ug": 47,
+      "calcium_mg": 56,
+      "iron_mg": 1.8,
+      "magnesium_mg": 12,
+      "potassium_mg": 138
+    }
+  },
+  {
+    "id": "tofu",
+    "name": "טופו",
+    "healthTag": "green",
+    "healthNote": "חלבון צמחי",
+    "servingGrams": 150,
+    "per100g": {
+      "kcal": 144,
+      "protein": 15.7,
+      "carbs": 3.9,
+      "fat": 8.7,
+      "fiber": 0.3
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 15,
+      "calcium_mg": 350,
+      "iron_mg": 2.7,
+      "magnesium_mg": 30,
+      "potassium_mg": 121
+    }
+  },
+  {
+    "id": "lentils_cooked",
+    "name": "עדשים מבושלות",
+    "healthTag": "green",
+    "healthNote": "חלבון+סיבים",
+    "servingGrams": 180,
+    "per100g": {
+      "kcal": 116,
+      "protein": 9.0,
+      "carbs": 20.1,
+      "fat": 0.4,
+      "fiber": 7.9
+    },
+    "micros": {
+      "vitaminC_mg": 1.5,
+      "vitaminA_ug": 8,
+      "vitaminB12_ug": 0,
+      "folate_ug": 181,
+      "calcium_mg": 19,
+      "iron_mg": 3.3,
+      "magnesium_mg": 36,
+      "potassium_mg": 369
+    }
+  },
+  {
+    "id": "chickpeas_cooked",
+    "name": "חומוס מבושל",
+    "healthTag": "green",
+    "healthNote": "קטנייה משביעה",
+    "servingGrams": 180,
+    "per100g": {
+      "kcal": 164,
+      "protein": 8.9,
+      "carbs": 27.4,
+      "fat": 2.6,
+      "fiber": 7.6
+    },
+    "micros": {
+      "vitaminC_mg": 1.3,
+      "vitaminA_ug": 1,
+      "vitaminB12_ug": 0,
+      "folate_ug": 172,
+      "calcium_mg": 49,
+      "iron_mg": 2.9,
+      "magnesium_mg": 48,
+      "potassium_mg": 291
+    }
+  },
+  {
+    "id": "milk_3",
+    "name": "חלב 3%",
+    "healthTag": "green",
+    "healthNote": "סידן וחלבון",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 61,
+      "protein": 3.2,
+      "carbs": 4.8,
+      "fat": 3.3,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 28,
+      "vitaminB12_ug": 0.4,
+      "folate_ug": 5,
+      "calcium_mg": 113,
+      "iron_mg": 0.0,
+      "magnesium_mg": 10,
+      "potassium_mg": 132
+    }
+  },
+  {
+    "id": "yogurt_greek",
+    "name": "יוגורט יווני 2%",
+    "healthTag": "green",
+    "healthNote": "חלבון גבוה",
+    "servingGrams": 170,
+    "per100g": {
+      "kcal": 73,
+      "protein": 9.9,
+      "carbs": 3.9,
+      "fat": 2.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 27,
+      "vitaminB12_ug": 0.7,
+      "folate_ug": 7,
+      "calcium_mg": 110,
+      "iron_mg": 0.1,
+      "magnesium_mg": 11,
+      "potassium_mg": 141
+    }
+  },
+  {
+    "id": "cottage",
+    "name": "קוטג' 5%",
     "healthTag": "green",
     "healthNote": "חלבון + סידן",
-    "servingGrams": 200
+    "servingGrams": 150,
+    "per100g": {
+      "kcal": 103,
+      "protein": 11.1,
+      "carbs": 3.4,
+      "fat": 4.3,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 20,
+      "vitaminB12_ug": 0.9,
+      "folate_ug": 12,
+      "calcium_mg": 83,
+      "iron_mg": 0.1,
+      "magnesium_mg": 10,
+      "potassium_mg": 104
+    }
+  },
+  {
+    "id": "cheese_yellow",
+    "name": "גבינה צהובה (צהובה 28%)",
+    "healthTag": "red",
+    "healthNote": "עשיר בשומן ומלח",
+    "servingGrams": 40,
+    "per100g": {
+      "kcal": 356,
+      "protein": 24.9,
+      "carbs": 1.3,
+      "fat": 27.4,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 265,
+      "vitaminB12_ug": 1.5,
+      "folate_ug": 18,
+      "calcium_mg": 721,
+      "iron_mg": 0.7,
+      "magnesium_mg": 28,
+      "potassium_mg": 98
+    }
+  },
+  {
+    "id": "almonds",
+    "name": "שקדים",
+    "healthTag": "green",
+    "healthNote": "שומן טוב ומגנזיום",
+    "servingGrams": 30,
+    "per100g": {
+      "kcal": 579,
+      "protein": 21.2,
+      "carbs": 21.6,
+      "fat": 49.9,
+      "fiber": 12.5
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 1,
+      "vitaminB12_ug": 0,
+      "folate_ug": 44,
+      "calcium_mg": 269,
+      "iron_mg": 3.7,
+      "magnesium_mg": 270,
+      "potassium_mg": 733
+    }
+  },
+  {
+    "id": "peanut_butter",
+    "name": "חמאת בוטנים",
+    "healthTag": "green",
+    "healthNote": "צפוף קלורית אבל מזין",
+    "servingGrams": 30,
+    "per100g": {
+      "kcal": 588,
+      "protein": 25.1,
+      "carbs": 20.0,
+      "fat": 50.4,
+      "fiber": 6.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 92,
+      "calcium_mg": 43,
+      "iron_mg": 1.9,
+      "magnesium_mg": 154,
+      "potassium_mg": 649
+    }
+  },
+  {
+    "id": "olive_oil",
+    "name": "שמן זית",
+    "healthTag": "green",
+    "healthNote": "שומן חד בלתי רווי",
+    "servingGrams": 15,
+    "per100g": {
+      "kcal": 884,
+      "protein": 0.0,
+      "carbs": 0.0,
+      "fat": 100.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 0,
+      "calcium_mg": 1,
+      "iron_mg": 0.6,
+      "magnesium_mg": 0,
+      "potassium_mg": 1
+    }
+  },
+  {
+    "id": "avocado",
+    "name": "אבוקדו",
+    "healthTag": "green",
+    "healthNote": "שומן טוב וסיבים",
+    "servingGrams": 150,
+    "per100g": {
+      "kcal": 160,
+      "protein": 2.0,
+      "carbs": 8.5,
+      "fat": 14.7,
+      "fiber": 6.7
+    },
+    "micros": {
+      "vitaminC_mg": 10,
+      "vitaminA_ug": 7,
+      "vitaminB12_ug": 0,
+      "folate_ug": 81,
+      "calcium_mg": 12,
+      "iron_mg": 0.6,
+      "magnesium_mg": 29,
+      "potassium_mg": 485
+    }
+  },
+  {
+    "id": "dark_chocolate",
+    "name": "שוקולד מריר 70%",
+    "healthTag": "red",
+    "healthNote": "פינוק – צפוף קלורית",
+    "servingGrams": 25,
+    "per100g": {
+      "kcal": 598,
+      "protein": 7.8,
+      "carbs": 45.9,
+      "fat": 42.6,
+      "fiber": 10.9
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 11,
+      "vitaminB12_ug": 0,
+      "folate_ug": 39,
+      "calcium_mg": 73,
+      "iron_mg": 11.9,
+      "magnesium_mg": 228,
+      "potassium_mg": 715
+    }
   },
   {
     "id": "chocolate_cake",
     "name": "עוגת שוקולד",
-    "per100g": { "kcal": 380, "protein": 5.0, "carbs": 50.0, "fat": 18.0, "fiber": 2.0 },
-    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 20, "vitaminB12_ug": 0.2, "folate_ug": 18, "calcium_mg": 60, "iron_mg": 2.0, "magnesium_mg": 25, "potassium_mg": 180 },
     "healthTag": "red",
-    "healthNote": "פינוק; עתיר סוכר/שומן — במידה",
-    "servingGrams": 80
+    "healthNote": "פינוק מתוק",
+    "servingGrams": 100,
+    "per100g": {
+      "kcal": 389,
+      "protein": 5.0,
+      "carbs": 55.0,
+      "fat": 17.0,
+      "fiber": 2.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 15,
+      "vitaminB12_ug": 0.3,
+      "folate_ug": 22,
+      "calcium_mg": 60,
+      "iron_mg": 1.8,
+      "magnesium_mg": 25,
+      "potassium_mg": 210
+    }
+  },
+  {
+    "id": "chips",
+    "name": "צ'יפס תפוחי אדמה",
+    "healthTag": "red",
+    "healthNote": "מלוח ושומני",
+    "servingGrams": 45,
+    "per100g": {
+      "kcal": 536,
+      "protein": 7.0,
+      "carbs": 53.0,
+      "fat": 35.0,
+      "fiber": 4.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 30,
+      "calcium_mg": 24,
+      "iron_mg": 1.2,
+      "magnesium_mg": 51,
+      "potassium_mg": 1200
+    }
+  },
+  {
+    "id": "cola",
+    "name": "קולה",
+    "healthTag": "red",
+    "healthNote": "משקה ממותק",
+    "servingGrams": 330,
+    "per100g": {
+      "kcal": 42,
+      "protein": 0.0,
+      "carbs": 10.6,
+      "fat": 0.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 0,
+      "calcium_mg": 2,
+      "iron_mg": 0.0,
+      "magnesium_mg": 0,
+      "potassium_mg": 1
+    }
+  },
+  {
+    "id": "water",
+    "name": "מים",
+    "healthTag": "green",
+    "healthNote": "הכי טוב לצמא",
+    "servingGrams": 500,
+    "per100g": {
+      "kcal": 0,
+      "protein": 0.0,
+      "carbs": 0.0,
+      "fat": 0.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 0,
+      "calcium_mg": 0,
+      "iron_mg": 0,
+      "magnesium_mg": 0,
+      "potassium_mg": 0
+    }
+  },
+  {
+    "id": "sparkling_water",
+    "name": "סודה",
+    "healthTag": "green",
+    "healthNote": "מים מוגזים ללא קלוריות",
+    "servingGrams": 500,
+    "per100g": {
+      "kcal": 0,
+      "protein": 0.0,
+      "carbs": 0.0,
+      "fat": 0.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 0,
+      "calcium_mg": 0,
+      "iron_mg": 0,
+      "magnesium_mg": 0,
+      "potassium_mg": 0
+    }
+  },
+  {
+    "id": "coffee_black",
+    "name": "קפה שחור",
+    "healthTag": "green",
+    "healthNote": "ללא סוכר/חלב",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 1,
+      "protein": 0.1,
+      "carbs": 0.0,
+      "fat": 0.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 0,
+      "calcium_mg": 2,
+      "iron_mg": 0.0,
+      "magnesium_mg": 2,
+      "potassium_mg": 49
+    }
+  },
+  {
+    "id": "tea_green",
+    "name": "תה ירוק",
+    "healthTag": "green",
+    "healthNote": "חליטה ללא סוכר",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 0,
+      "protein": 0.0,
+      "carbs": 0.0,
+      "fat": 0.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 0,
+      "calcium_mg": 0,
+      "iron_mg": 0,
+      "magnesium_mg": 0,
+      "potassium_mg": 0
+    }
+  },
+  {
+    "id": "orange_juice",
+    "name": "מיץ תפוזים",
+    "healthTag": "red",
+    "healthNote": "עדיף פרי שלם, אבל עדיין ויטמין C",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 45,
+      "protein": 0.7,
+      "carbs": 10.4,
+      "fat": 0.2,
+      "fiber": 0.2
+    },
+    "micros": {
+      "vitaminC_mg": 50.0,
+      "vitaminA_ug": 11,
+      "vitaminB12_ug": 0,
+      "folate_ug": 30,
+      "calcium_mg": 11,
+      "iron_mg": 0.2,
+      "magnesium_mg": 11,
+      "potassium_mg": 200
+    }
+  },
+  {
+    "id": "soda_lemonade",
+    "name": "לימונדה ממותקת",
+    "healthTag": "red",
+    "healthNote": "סוכר גבוה",
+    "servingGrams": 330,
+    "per100g": {
+      "kcal": 40,
+      "protein": 0.0,
+      "carbs": 10.0,
+      "fat": 0.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 5.0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 0,
+      "calcium_mg": 2,
+      "iron_mg": 0,
+      "magnesium_mg": 0,
+      "potassium_mg": 5
+    }
+  },
+  {
+    "id": "milk_chocolate",
+    "name": "שוקו",
+    "healthTag": "red",
+    "healthNote": "משקה מתוק על בסיס חלב",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 83,
+      "protein": 3.4,
+      "carbs": 11.5,
+      "fat": 2.5,
+      "fiber": 0.7
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 20,
+      "vitaminB12_ug": 0.4,
+      "folate_ug": 5,
+      "calcium_mg": 120,
+      "iron_mg": 0.2,
+      "magnesium_mg": 12,
+      "potassium_mg": 160
+    }
+  },
+  {
+    "id": "protein_shake",
+    "name": "שייק חלבון (מוכן)",
+    "healthTag": "green",
+    "healthNote": "נוח להשלמת חלבון",
+    "servingGrams": 330,
+    "per100g": {
+      "kcal": 60,
+      "protein": 10.0,
+      "carbs": 4.0,
+      "fat": 1.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 30,
+      "vitaminB12_ug": 0.8,
+      "folate_ug": 10,
+      "calcium_mg": 150,
+      "iron_mg": 0.2,
+      "magnesium_mg": 15,
+      "potassium_mg": 250
+    }
+  },
+  {
+    "id": "beef_steak",
+    "name": "סטייק בקר",
+    "healthTag": "green",
+    "healthNote": "חלבון וברזל",
+    "servingGrams": 200,
+    "per100g": {
+      "kcal": 271,
+      "protein": 25.0,
+      "carbs": 0.0,
+      "fat": 19.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 2.1,
+      "folate_ug": 9,
+      "calcium_mg": 18,
+      "iron_mg": 2.6,
+      "magnesium_mg": 23,
+      "potassium_mg": 318
+    }
+  },
+  {
+    "id": "ground_beef_15",
+    "name": "בקר טחון 15% שומן",
+    "healthTag": "red",
+    "healthNote": "יותר שומן רווי",
+    "servingGrams": 180,
+    "per100g": {
+      "kcal": 254,
+      "protein": 17.0,
+      "carbs": 0.0,
+      "fat": 20.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 2.4,
+      "folate_ug": 6,
+      "calcium_mg": 18,
+      "iron_mg": 2.3,
+      "magnesium_mg": 20,
+      "potassium_mg": 270
+    }
+  },
+  {
+    "id": "shawarma",
+    "name": "שווארמה (עוף)",
+    "healthTag": "red",
+    "healthNote": "טעים אבל לעיתים שמן/מלוח",
+    "servingGrams": 200,
+    "per100g": {
+      "kcal": 215,
+      "protein": 17.0,
+      "carbs": 3.0,
+      "fat": 15.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 20,
+      "vitaminB12_ug": 0.4,
+      "folate_ug": 8,
+      "calcium_mg": 18,
+      "iron_mg": 1.2,
+      "magnesium_mg": 20,
+      "potassium_mg": 250
+    }
+  },
+  {
+    "id": "falafel",
+    "name": "פלאפל",
+    "healthTag": "red",
+    "healthNote": "מטוגן – אבל גם קטניות",
+    "servingGrams": 150,
+    "per100g": {
+      "kcal": 333,
+      "protein": 13.0,
+      "carbs": 31.0,
+      "fat": 17.0,
+      "fiber": 5.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 60,
+      "calcium_mg": 54,
+      "iron_mg": 3.5,
+      "magnesium_mg": 60,
+      "potassium_mg": 585
+    }
+  },
+  {
+    "id": "pita",
+    "name": "פיתה",
+    "healthTag": "red",
+    "healthNote": "לחם לבן יחסית",
+    "servingGrams": 90,
+    "per100g": {
+      "kcal": 275,
+      "protein": 9.0,
+      "carbs": 55.0,
+      "fat": 1.2,
+      "fiber": 2.2
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 34,
+      "calcium_mg": 86,
+      "iron_mg": 3.0,
+      "magnesium_mg": 22,
+      "potassium_mg": 121
+    }
+  },
+  {
+    "id": "hummus_spread",
+    "name": "חומוס ממרח",
+    "healthTag": "green",
+    "healthNote": "קטניות + טחינה (תלוי כמות)",
+    "servingGrams": 100,
+    "per100g": {
+      "kcal": 166,
+      "protein": 8.0,
+      "carbs": 14.0,
+      "fat": 9.6,
+      "fiber": 6.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 3,
+      "vitaminB12_ug": 0,
+      "folate_ug": 85,
+      "calcium_mg": 38,
+      "iron_mg": 2.4,
+      "magnesium_mg": 40,
+      "potassium_mg": 228
+    }
+  },
+  {
+    "id": "tahini",
+    "name": "טחינה גולמית",
+    "healthTag": "green",
+    "healthNote": "סידן ושומן טוב",
+    "servingGrams": 30,
+    "per100g": {
+      "kcal": 595,
+      "protein": 17.0,
+      "carbs": 21.0,
+      "fat": 53.0,
+      "fiber": 9.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 98,
+      "calcium_mg": 426,
+      "iron_mg": 9.0,
+      "magnesium_mg": 95,
+      "potassium_mg": 414
+    }
+  },
+  {
+    "id": "couscous_cooked",
+    "name": "קוסקוס מבושל",
+    "healthTag": "green",
+    "healthNote": "פחמימה קלה",
+    "servingGrams": 180,
+    "per100g": {
+      "kcal": 112,
+      "protein": 3.8,
+      "carbs": 23.2,
+      "fat": 0.2,
+      "fiber": 1.4
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 8,
+      "calcium_mg": 8,
+      "iron_mg": 0.4,
+      "magnesium_mg": 8,
+      "potassium_mg": 58
+    }
+  },
+  {
+    "id": "potatoes_baked",
+    "name": "תפוח אדמה אפוי",
+    "healthTag": "green",
+    "healthNote": "פחמימה + אשלגן",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 93,
+      "protein": 2.5,
+      "carbs": 21.0,
+      "fat": 0.1,
+      "fiber": 2.2
+    },
+    "micros": {
+      "vitaminC_mg": 9.6,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 15,
+      "calcium_mg": 10,
+      "iron_mg": 0.8,
+      "magnesium_mg": 23,
+      "potassium_mg": 535
+    }
+  },
+  {
+    "id": "fries",
+    "name": "צ'יפס (מטוגן)",
+    "healthTag": "red",
+    "healthNote": "שומן ומלח",
+    "servingGrams": 150,
+    "per100g": {
+      "kcal": 312,
+      "protein": 3.4,
+      "carbs": 41.0,
+      "fat": 15.0,
+      "fiber": 3.8
+    },
+    "micros": {
+      "vitaminC_mg": 4.7,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 34,
+      "calcium_mg": 18,
+      "iron_mg": 0.8,
+      "magnesium_mg": 23,
+      "potassium_mg": 579
+    }
+  },
+  {
+    "id": "pizza",
+    "name": "פיצה",
+    "healthTag": "red",
+    "healthNote": "פחמימה+שומן+מלח",
+    "servingGrams": 200,
+    "per100g": {
+      "kcal": 266,
+      "protein": 11.0,
+      "carbs": 33.0,
+      "fat": 10.0,
+      "fiber": 2.3
+    },
+    "micros": {
+      "vitaminC_mg": 1.5,
+      "vitaminA_ug": 95,
+      "vitaminB12_ug": 0.7,
+      "folate_ug": 30,
+      "calcium_mg": 188,
+      "iron_mg": 2.2,
+      "magnesium_mg": 23,
+      "potassium_mg": 172
+    }
+  },
+  {
+    "id": "burger",
+    "name": "המבורגר",
+    "healthTag": "red",
+    "healthNote": "מעובד יחסית",
+    "servingGrams": 180,
+    "per100g": {
+      "kcal": 295,
+      "protein": 17.0,
+      "carbs": 14.0,
+      "fat": 19.0,
+      "fiber": 1.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 20,
+      "vitaminB12_ug": 2.3,
+      "folate_ug": 14,
+      "calcium_mg": 80,
+      "iron_mg": 2.2,
+      "magnesium_mg": 22,
+      "potassium_mg": 260
+    }
+  },
+  {
+    "id": "sushi_roll",
+    "name": "סושי (רול)",
+    "healthTag": "green",
+    "healthNote": "אורז+דג/ירק (תלוי סוג)",
+    "servingGrams": 200,
+    "per100g": {
+      "kcal": 150,
+      "protein": 6.0,
+      "carbs": 28.0,
+      "fat": 2.0,
+      "fiber": 1.0
+    },
+    "micros": {
+      "vitaminC_mg": 2.0,
+      "vitaminA_ug": 10,
+      "vitaminB12_ug": 1.5,
+      "folate_ug": 25,
+      "calcium_mg": 20,
+      "iron_mg": 1.0,
+      "magnesium_mg": 20,
+      "potassium_mg": 180
+    }
+  },
+  {
+    "id": "salad",
+    "name": "סלט ירקות",
+    "healthTag": "green",
+    "healthNote": "נפח גדול, מעט קלוריות",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 35,
+      "protein": 1.5,
+      "carbs": 7.0,
+      "fat": 0.5,
+      "fiber": 2.5
+    },
+    "micros": {
+      "vitaminC_mg": 25,
+      "vitaminA_ug": 120,
+      "vitaminB12_ug": 0,
+      "folate_ug": 40,
+      "calcium_mg": 40,
+      "iron_mg": 1.0,
+      "magnesium_mg": 25,
+      "potassium_mg": 350
+    }
+  },
+  {
+    "id": "rice_cake",
+    "name": "פריכיות אורז",
+    "healthTag": "red",
+    "healthNote": "פחמימה מהירה",
+    "servingGrams": 30,
+    "per100g": {
+      "kcal": 387,
+      "protein": 8.0,
+      "carbs": 81.0,
+      "fat": 3.0,
+      "fiber": 3.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 20,
+      "calcium_mg": 10,
+      "iron_mg": 1.3,
+      "magnesium_mg": 35,
+      "potassium_mg": 130
+    }
+  },
+  {
+    "id": "granola",
+    "name": "גרנולה",
+    "healthTag": "red",
+    "healthNote": "טעים אבל קלוריות/סוכר",
+    "servingGrams": 60,
+    "per100g": {
+      "kcal": 471,
+      "protein": 10.0,
+      "carbs": 64.0,
+      "fat": 20.0,
+      "fiber": 7.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 45,
+      "calcium_mg": 70,
+      "iron_mg": 3.0,
+      "magnesium_mg": 120,
+      "potassium_mg": 400
+    }
+  },
+  {
+    "id": "dates",
+    "name": "תמרים",
+    "healthTag": "red",
+    "healthNote": "סוכר טבעי גבוה",
+    "servingGrams": 50,
+    "per100g": {
+      "kcal": 282,
+      "protein": 2.5,
+      "carbs": 75.0,
+      "fat": 0.4,
+      "fiber": 8.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 15,
+      "calcium_mg": 39,
+      "iron_mg": 1.0,
+      "magnesium_mg": 43,
+      "potassium_mg": 656
+    }
+  },
+  {
+    "id": "diet_cola",
+    "name": "קולה זירו",
+    "healthTag": "green",
+    "healthNote": "ללא סוכר (עדיין עדיף מים לרוב)",
+    "servingGrams": 330,
+    "per100g": {
+      "kcal": 0,
+      "protein": 0.0,
+      "carbs": 0.0,
+      "fat": 0.0,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 0,
+      "calcium_mg": 0,
+      "iron_mg": 0,
+      "magnesium_mg": 0,
+      "potassium_mg": 0
+    }
+  },
+  {
+    "id": "iced_coffee_milk",
+    "name": "קפה קר עם חלב",
+    "healthTag": "red",
+    "healthNote": "יכול להכיל סוכר",
+    "servingGrams": 330,
+    "per100g": {
+      "kcal": 50,
+      "protein": 2.5,
+      "carbs": 7.0,
+      "fat": 1.5,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 20,
+      "vitaminB12_ug": 0.3,
+      "folate_ug": 4,
+      "calcium_mg": 80,
+      "iron_mg": 0.0,
+      "magnesium_mg": 8,
+      "potassium_mg": 120
+    }
+  },
+  {
+    "id": "soy_milk",
+    "name": "חלב סויה",
+    "healthTag": "green",
+    "healthNote": "חלופה צמחית",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 54,
+      "protein": 3.3,
+      "carbs": 6.0,
+      "fat": 1.8,
+      "fiber": 0.6
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 10,
+      "calcium_mg": 25,
+      "iron_mg": 0.6,
+      "magnesium_mg": 25,
+      "potassium_mg": 118
+    }
+  },
+  {
+    "id": "almond_milk",
+    "name": "חלב שקדים",
+    "healthTag": "green",
+    "healthNote": "דל קלוריות (תלוי מותג)",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 15,
+      "protein": 0.5,
+      "carbs": 0.6,
+      "fat": 1.2,
+      "fiber": 0.2
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 2,
+      "calcium_mg": 120,
+      "iron_mg": 0.1,
+      "magnesium_mg": 10,
+      "potassium_mg": 50
+    }
+  },
+  {
+    "id": "kefir",
+    "name": "קפיר",
+    "healthTag": "green",
+    "healthNote": "חלב מותסס",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 61,
+      "protein": 3.5,
+      "carbs": 4.8,
+      "fat": 3.3,
+      "fiber": 0.0
+    },
+    "micros": {
+      "vitaminC_mg": 0,
+      "vitaminA_ug": 20,
+      "vitaminB12_ug": 0.5,
+      "folate_ug": 7,
+      "calcium_mg": 120,
+      "iron_mg": 0.1,
+      "magnesium_mg": 12,
+      "potassium_mg": 150
+    }
+  },
+  {
+    "id": "smoothie_fruit",
+    "name": "שייק פירות",
+    "healthTag": "red",
+    "healthNote": "יכול להיות סוכר גבוה",
+    "servingGrams": 300,
+    "per100g": {
+      "kcal": 60,
+      "protein": 0.5,
+      "carbs": 14.0,
+      "fat": 0.2,
+      "fiber": 1.0
+    },
+    "micros": {
+      "vitaminC_mg": 20,
+      "vitaminA_ug": 15,
+      "vitaminB12_ug": 0,
+      "folate_ug": 10,
+      "calcium_mg": 8,
+      "iron_mg": 0.2,
+      "magnesium_mg": 8,
+      "potassium_mg": 180
+    }
+  },
+  {
+    "id": "apple_juice",
+    "name": "מיץ תפוחים",
+    "healthTag": "red",
+    "healthNote": "סוכר, מעט סיבים",
+    "servingGrams": 250,
+    "per100g": {
+      "kcal": 46,
+      "protein": 0.1,
+      "carbs": 11.3,
+      "fat": 0.1,
+      "fiber": 0.2
+    },
+    "micros": {
+      "vitaminC_mg": 0.5,
+      "vitaminA_ug": 0,
+      "vitaminB12_ug": 0,
+      "folate_ug": 1,
+      "calcium_mg": 8,
+      "iron_mg": 0.1,
+      "magnesium_mg": 5,
+      "potassium_mg": 101
+    }
   }
 ]
