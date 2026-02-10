@@ -1,0 +1,92 @@
+[
+  {
+    "id": "apple",
+    "name": "תפוח",
+    "per100g": { "kcal": 52, "protein": 0.3, "carbs": 14.0, "fat": 0.2, "fiber": 2.4 },
+    "micros": { "vitaminC_mg": 4.6, "vitaminA_ug": 3, "vitaminB12_ug": 0, "folate_ug": 3, "calcium_mg": 6, "iron_mg": 0.1, "magnesium_mg": 5, "potassium_mg": 107 },
+    "healthTag": "green",
+    "healthNote": "פרי יומיומי, סיבים ומיקרו-נוטריינטים",
+    "servingGrams": 180
+  },
+  {
+    "id": "banana",
+    "name": "בננה",
+    "per100g": { "kcal": 89, "protein": 1.1, "carbs": 22.8, "fat": 0.3, "fiber": 2.6 },
+    "micros": { "vitaminC_mg": 8.7, "vitaminA_ug": 3, "vitaminB12_ug": 0, "folate_ug": 20, "calcium_mg": 5, "iron_mg": 0.3, "magnesium_mg": 27, "potassium_mg": 358 },
+    "healthTag": "green",
+    "healthNote": "פרי יומיומי, אשלגן וסיבים",
+    "servingGrams": 120
+  },
+  {
+    "id": "orange",
+    "name": "תפוז",
+    "per100g": { "kcal": 47, "protein": 0.9, "carbs": 11.8, "fat": 0.1, "fiber": 2.4 },
+    "micros": { "vitaminC_mg": 53.2, "vitaminA_ug": 11, "vitaminB12_ug": 0, "folate_ug": 30, "calcium_mg": 40, "iron_mg": 0.1, "magnesium_mg": 10, "potassium_mg": 181 },
+    "healthTag": "green",
+    "healthNote": "עשיר בויטמין C",
+    "servingGrams": 160
+  },
+  {
+    "id": "broccoli",
+    "name": "ברוקולי",
+    "per100g": { "kcal": 34, "protein": 2.8, "carbs": 6.6, "fat": 0.4, "fiber": 2.6 },
+    "micros": { "vitaminC_mg": 89.2, "vitaminA_ug": 31, "vitaminB12_ug": 0, "folate_ug": 63, "calcium_mg": 47, "iron_mg": 0.7, "magnesium_mg": 21, "potassium_mg": 316 },
+    "healthTag": "green",
+    "healthNote": "ירק עשיר בסיבים וויטמין C",
+    "servingGrams": 150
+  },
+  {
+    "id": "oats",
+    "name": "שיבולת שועל (יבשה)",
+    "per100g": { "kcal": 389, "protein": 16.9, "carbs": 66.3, "fat": 6.9, "fiber": 10.6 },
+    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 0, "vitaminB12_ug": 0, "folate_ug": 56, "calcium_mg": 54, "iron_mg": 4.7, "magnesium_mg": 177, "potassium_mg": 429 },
+    "healthTag": "green",
+    "healthNote": "דגן עשיר בסיבים ומגנזיום",
+    "servingGrams": 60
+  },
+  {
+    "id": "rice_cooked",
+    "name": "אורז מבושל",
+    "per100g": { "kcal": 130, "protein": 2.4, "carbs": 28.2, "fat": 0.3, "fiber": 0.4 },
+    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 0, "vitaminB12_ug": 0, "folate_ug": 8, "calcium_mg": 10, "iron_mg": 0.2, "magnesium_mg": 12, "potassium_mg": 35 },
+    "healthTag": "green",
+    "healthNote": "פחמימה בסיסית; עדיף לשלב עם חלבון/ירק",
+    "servingGrams": 180
+  },
+  {
+    "id": "egg",
+    "name": "ביצה",
+    "per100g": { "kcal": 143, "protein": 12.6, "carbs": 0.7, "fat": 9.5, "fiber": 0.0 },
+    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 160, "vitaminB12_ug": 1.1, "folate_ug": 47, "calcium_mg": 56, "iron_mg": 1.8, "magnesium_mg": 12, "potassium_mg": 138 },
+    "healthTag": "green",
+    "healthNote": "חלבון איכותי + B12",
+    "servingGrams": 50
+  },
+  {
+    "id": "chicken_breast",
+    "name": "חזה עוף (מבושל/צלוי)",
+    "per100g": { "kcal": 165, "protein": 31.0, "carbs": 0.0, "fat": 3.6, "fiber": 0.0 },
+    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 13, "vitaminB12_ug": 0.3, "folate_ug": 4, "calcium_mg": 15, "iron_mg": 1.0, "magnesium_mg": 29, "potassium_mg": 256 },
+    "healthTag": "green",
+    "healthNote": "מקור חלבון רזה",
+    "servingGrams": 200
+  },
+  {
+    "id": "greek_yogurt",
+    "name": "יוגורט יווני (טבעי)",
+    "per100g": { "kcal": 97, "protein": 9.0, "carbs": 3.6, "fat": 5.0, "fiber": 0.0 },
+    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 27, "vitaminB12_ug": 0.6, "folate_ug": 7, "calcium_mg": 110, "iron_mg": 0.1, "magnesium_mg": 11, "potassium_mg": 141 },
+    "healthTag": "green",
+    "healthNote": "חלבון + סידן",
+    "servingGrams": 200
+  },
+  {
+    "id": "chocolate_cake",
+    "name": "עוגת שוקולד",
+    "per100g": { "kcal": 380, "protein": 5.0, "carbs": 50.0, "fat": 18.0, "fiber": 2.0 },
+    "micros": { "vitaminC_mg": 0, "vitaminA_ug": 20, "vitaminB12_ug": 0.2, "folate_ug": 18, "calcium_mg": 60, "iron_mg": 2.0, "magnesium_mg": 25, "potassium_mg": 180 },
+    "healthTag": "red",
+    "healthNote": "פינוק; עתיר סוכר/שומן — במידה",
+    "servingGrams": 80
+  }
+]
