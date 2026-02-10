@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NutriPulse — Daily Nutrition Score</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="container">
+    <div class="header">
+      <h1>NutriPulse</h1>
+      <p class="sub">יומן תזונה חכם: קלוריות, מאקרו/מיקרו, ציון יומי וחסרים — הכל מקומית בדפדפן.</p>
+    </div>
+  </header>
+
+  <main class="container grid">
+    <!-- LEFT: ADD + LOG -->
+    <section class="card">
+      <h2>הוספת מזון</h2>
+
+      <div class="row">
+        <label class="label">תאריך</label>
+        <input id="datePicker" type="date" />
+      </div>
+
+      <div class="row">
+        <label class="label">חיפוש מזון</label>
+        <input id="foodSearch" type="text" placeholder="לדוגמה: תפוח / חזה עוף / אורז..." autocomplete="off" />
+        <ul id="foodResults" class="results"></ul>
+      </div>
+
+      <div id="selectedFood" class="selected hidden"></div>
+
+      <div class="row">
+        <label class="label">כמות (גרם)</label>
+        <div class="inline">
+          <input id="gramsInput" type="number" min="1" step="1" placeholder="100" />
+          <button id="addBtn" class="btn primary" disabled>הוסף ליומן</button>
+        </div>
+        <div class="quick">
+          <button class="chip" data-g="50">50g</button>
+          <button class="chip" data-g="100">100g</button>
+          <button class="chip" data-g="150">150g</button>
+          <button class="chip" data-g="200">200g</button>
+        </div>
+      </div>
+
+      <hr class="sep" />
+
+      <div class="row">
+        <h3 class="h3">היומן של היום</h3>
+        <div id="todayList" class="list"></div>
+      </div>
+    </section>
+
+    <!-- RIGHT: SUMMARY -->
+    <section class="card">
+      <div class="topline">
+        <h2>סיכום יומי</h2>
+        <div class="score">
+          <div class="scoreLabel">ציון יומי</div>
+          <div id="dailyScore" class="scoreValue">—</div>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpiLabel">קלוריות</div>
+          <div id="kcalTotal" class="kpiValue">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpiLabel">חלבון (g)</div>
+          <div id="proteinTotal" class="kpiValue">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpiLabel">סיבים (g)</div>
+          <div id="fiberTotal" class="kpiValue">0</div>
+        </div>
+      </div>
+
+      <h3 class="h3">יעדים והתקדמות</h3>
+      <div id="nutrientTable" class="table"></div>
+
+      <h3 class="h3">מה חסר היום</h3>
+      <div id="gaps" class="gaps">—</div>
+
+      <hr class="sep" />
+
+      <details class="details">
+        <summary>הגדרות (יעדים יומיים + גיבוי)</summary>
+
+        <div class="settingsGrid" id="settingsForm"></div>
+
+        <div class="row">
+          <button id="saveSettings" class="btn">שמור יעדים</button>
+        </div>
+
+        <hr class="sep" />
+
+        <div class="row">
+          <button id="exportBtn" class="btn">Export JSON</button>
+          <label class="btn fileBtn">
+            Import JSON
+            <input id="importFile" type="file" accept="application/json" hidden />
+          </label>
+          <button id="resetBtn" class="btn danger">איפוס נתונים</button>
+        </div>
+
+        <p class="note">
+          הערה: התיוג ירוק/אדום הוא "יומיומי" מול "פינוק" לצורך UX, לא שיפוט. הנתונים הם אומדנים ממוצעים ויכולים להשתנות.
+        </p>
+      </details>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <small>NutriPulse • Local-only • No server • GitHub Pages ready</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
