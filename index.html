@@ -1,124 +1,120 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NutriPulse Pro — מעקב תזונה חכם</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriPulse Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-  <div class="app-container">
+
+<div class="app-layout">
     
-    <header>
-      <div class="logo">NutriPulse ⚡</div>
-      <div class="date-controls">
-        <input id="datePicker" type="date" class="date-input" />
-      </div>
+    <header class="top-header">
+        <div class="logo">NutriPulse <span style="color:var(--primary)">Pro</span></div>
+        <div class="date-wrapper">
+            <input type="date" id="datePicker" class="date-input">
+        </div>
     </header>
 
-    <section class="dashboard">
-      <div class="score-card">
-        <div class="score-title">ציון יומי</div>
-        <div id="dailyScore" class="score-value">—</div>
-      </div>
-
-      <div id="smartCoach" class="smart-coach hidden">
-         <span class="coach-icon">💡</span>
-         <span id="coachText">מנתח נתונים...</span>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi">
-          <span class="label">קלוריות</span>
-          <span id="kcalTotal" class="value">0</span>
-        </div>
-        <div class="kpi">
-          <span class="label">חלבון (g)</span>
-          <span id="proteinTotal" class="value">0</span>
-        </div>
-        <div class="kpi">
-          <span class="label">סיבים (g)</span>
-          <span id="fiberTotal" class="value">0</span>
-        </div>
-      </div>
-    </section>
-
-    <main class="grid-layout">
-      
-      <div class="column">
-        <section class="card">
-          <h3>מאקרו ומיקרו</h3>
-          <div id="nutrientTable" class="nutrient-table"></div>
-          
-          <div id="gaps" class="gaps-box"></div>
-        </section>
-
-        <section class="card settings-section">
-          <details>
-            <summary>הגדרות וגיבוי נתונים</summary>
-            <div id="settingsForm" class="settings-grid"></div>
-            <button id="saveSettings" class="btn secondary full">שמור הגדרות</button>
+    <div class="dashboard-grid">
+        
+        <main class="main-column">
             
-            <div class="data-actions">
-              <button id="exportBtn" class="btn small">ייצוא JSON</button>
-              <label class="btn small fileBtn">
-                ייבוא JSON
-                <input id="importFile" type="file" accept="application/json" hidden />
-              </label>
-              <button id="resetBtn" class="btn small danger">איפוס מלא</button>
+            <section class="card add-food-card">
+                <h2>מה אכלת היום?</h2>
+                <div class="search-row">
+                    <div class="search-wrapper">
+                        <input type="text" id="foodSearch" placeholder="חפש מזון (למשל: בננה, חזה עוף)..." autocomplete="off">
+                        <ul id="foodResults" class="results-dropdown hidden"></ul>
+                    </div>
+                </div>
+
+                <div id="selectedFood" class="selected-food-panel hidden"></div>
+
+                <div class="controls-row">
+                    <div class="input-group">
+                        <select id="amountMode">
+                            <option value="grams">גרם (g)</option>
+                            <option value="servings">מנה/יח׳</option>
+                        </select>
+                        <input type="number" id="amountInput" placeholder="כמות" min="0">
+                    </div>
+                    
+                    <div class="chips-row">
+                        <button class="chip" data-g="100">100g</button>
+                        <button class="chip" data-g="200">200g</button>
+                        <button class="chip" data-g="1">1 יח׳</button>
+                    </div>
+
+                    <div class="actions">
+                        <button id="addBtn" class="btn-primary" disabled>הוסף ליומן</button>
+                        <button id="cancelEdit" class="btn-text hidden">ביטול</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card journal-card">
+                <div class="card-header">
+                    <h3>יומן אכילה</h3>
+                    <span class="badge">היום</span>
+                </div>
+                <div id="todayList" class="journal-list">
+                    </div>
+            </section>
+        </main>
+
+        <aside class="sidebar-column">
+            
+            <div class="card score-card">
+                <div class="score-label">ציון יומי</div>
+                <div id="dailyScore" class="score-number">—</div>
+                
+                <div id="smartCoach" class="smart-coach hidden">
+                    <span class="icon">💡</span>
+                    <span id="coachText" class="text"></span>
+                </div>
             </div>
-          </details>
-        </section>
-      </div>
 
-      <div class="column">
-        <section class="card add-section">
-          <h3>הוספת מזון</h3>
-          
-          <div class="search-box">
-            <input id="foodSearch" type="text" placeholder="חפש מזון (למשל: בננה, חזה עוף)..." autocomplete="off" />
-            <ul id="foodResults" class="results-list"></ul>
-          </div>
-
-          <div id="selectedFood" class="selected-food hidden"></div>
-
-          <div class="controls">
-            <div class="input-group">
-              <select id="amountMode">
-                <option value="grams">גרם (g)</option>
-                <option value="servings">מנה/יח׳</option>
-              </select>
-              <input id="amountInput" type="number" placeholder="כמות" min="0" />
+            <div class="kpi-grid">
+                <div class="kpi-box">
+                    <span class="lbl">קלוריות</span>
+                    <span id="kcalTotal" class="val">0</span>
+                </div>
+                <div class="kpi-box">
+                    <span class="lbl">חלבון</span>
+                    <span id="proteinTotal" class="val">0</span>
+                </div>
+                <div class="kpi-box">
+                    <span class="lbl">פחמימה</span>
+                    <span id="carbsTotal" class="val">0</span> </div>
             </div>
 
-            <div class="chips" id="quickChips">
-              <button class="chip" data-g="100">100g</button>
-              <button class="chip" data-g="200">200g</button>
-              <button class="chip" data-g="1">1 יח׳</button>
+            <div class="card nutrient-card">
+                <h3>פירוט מלא</h3>
+                <div id="nutrientTable" class="compact-table"></div>
+                <div id="gaps" class="gaps-alert"></div>
             </div>
 
-            <div class="actions">
-              <button id="addBtn" class="btn primary" disabled>הוסף ליומן</button>
-              <button id="cancelEdit" class="btn text" style="display:none;">ביטול עריכה</button>
+            <div class="card settings-card">
+                <details>
+                    <summary>הגדרות וניהול</summary>
+                    <div id="settingsForm" class="settings-form"></div>
+                    <button id="saveSettings" class="btn-small">שמור</button>
+                    <div class="data-tools">
+                        <button id="exportBtn">ייצוא</button>
+                        <input type="file" id="importFile" hidden>
+                        <label for="importFile" class="btn-link">ייבוא</label>
+                        <button id="resetBtn" class="text-danger">איפוס</button>
+                    </div>
+                </details>
             </div>
-          </div>
-        </section>
 
-        <section class="card">
-          <h3>יומן אכילה</h3>
-          <div id="todayList" class="journal-list"></div>
-        </section>
-      </div>
+        </aside>
+    </div>
+</div>
 
-    </main>
-
-    <footer class="footer">
-      <small>NutriPulse Pro • רץ מקומית בדפדפן</small>
-    </footer>
-  </div>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
