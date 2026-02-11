@@ -1,5 +1,5 @@
 /* =========================================
-   NutriPulse – Smart Core
+   NutriPulse – Fixed App Logic
    ========================================= */
 
 const CONFIG = {
@@ -7,49 +7,56 @@ const CONFIG = {
     DEFAULTS: { kcal: 2200, protein: 140, carbs: 220, fat: 70 }
 };
 
-const $ = (id) => document.getElementById(id);
+const $ = (id) => {
+    const el = document.getElementById(id);
+    if (!el) console.error(`Element not found: ${id}`);
+    return el;
+};
 
-// --- State Management ---
+// --- State ---
 const State = {
     foods: [],
     entries: JSON.parse(localStorage.getItem(CONFIG.KEYS.entries) || "[]"),
     settings: JSON.parse(localStorage.getItem(CONFIG.KEYS.settings) || JSON.stringify(CONFIG.DEFAULTS)),
     date: new Date().toISOString().split('T')[0],
     selectedFood: null,
-    mode: 'grams' // 'grams' or 'units'
+    mode: 'grams'
 };
 
-// --- App Logic ---
+// --- App ---
 const App = {
     async init() {
+        console.log("App initializing...");
         await this.loadFoods();
         
-        // Setup Date
-        $('datePicker').value = State.date;
-        $('datePicker').addEventListener('change', (e) => {
-            State.date = e.target.value;
-            this.render();
+        // Setup Inputs
+        if($('datePicker')) {
+            $('datePicker').value = State.date;
+            $('datePicker').addEventListener('change', (e) => {
+                State.date = e.target.value;
+                this.render();
+            });
+        }
+
+        // Search Listener
+        if($('foodSearch')) {
+            $('foodSearch').addEventListener('input', (e) => this.search(e.target.value));
+        }
+
+        // Buttons
+        if($('modeGrams')) $('modeGrams').addEventListener('click', () => this.setMode('grams'));
+        if($('modeUnits')) $('modeUnits').addEventListener('click', () => this.setMode('units'));
+        if($('btnPlus')) $('btnPlus').addEventListener('click', () => this.adjustAmount(1));
+        if($('btnMinus')) $('btnMinus').addEventListener('click', () => this.adjustAmount(-1));
+        if($('addBtn')) $('addBtn').addEventListener('click', () => this.addEntry());
+
+        // Settings
+        if($('settingsBtn')) $('settingsBtn').addEventListener('click', () => $('settingsModal').classList.remove('hidden'));
+        if($('closeSettings')) $('closeSettings').addEventListener('click', () => $('settingsModal').classList.add('hidden'));
+        if($('saveSettings')) $('saveSettings').addEventListener('click', () => this.saveSettings());
+        if($('resetApp')) $('resetApp').addEventListener('click', () => { 
+            if(confirm("למחוק הכל?")) { localStorage.clear(); location.reload(); }
         });
-
-        // Search
-        $('foodSearch').addEventListener('input', (e) => this.search(e.target.value));
-
-        // Toggle Mode (Grams vs Units)
-        $('modeGrams').addEventListener('click', () => this.setMode('grams'));
-        $('modeUnits').addEventListener('click', () => this.setMode('units'));
-
-        // Quantity Buttons
-        $('btnPlus').addEventListener('click', () => this.adjustAmount(1));
-        $('btnMinus').addEventListener('click', () => this.adjustAmount(-1));
-        
-        // Add Button
-        $('addBtn').addEventListener('click', () => this.addEntry());
-
-        // Settings Modal
-        $('settingsBtn').addEventListener('click', () => $('settingsModal').classList.remove('hidden'));
-        $('closeSettings').addEventListener('click', () => $('settingsModal').classList.add('hidden'));
-        $('saveSettings').addEventListener('click', () => this.saveSettings());
-        $('resetApp').addEventListener('click', () => { if(confirm("למחוק הכל?")) { localStorage.clear(); location.reload(); }});
 
         this.initSettingsForm();
         this.render();
@@ -59,75 +66,110 @@ const App = {
         try {
             const res = await fetch('data/foods.json');
             State.foods = await res.json();
-        } catch { console.error("Foods not loaded"); }
+            console.log("Foods loaded:", State.foods.length);
+        } catch (e) { 
+            console.error("Foods failed to load", e); 
+        }
     },
 
     search(query) {
         const list = $('foodResults');
+        if(!list) return;
+        
         list.innerHTML = "";
-        $('editPanel').classList.add('hidden');
+        const panel = $('editPanel');
+        if(panel) panel.classList.add('hidden');
 
         if(query.length < 2) { list.classList.add('hidden'); return; }
 
-        const matches = State.foods.filter(f => f.name.includes(query)).slice(0, 5);
-        if(!matches.length) { list.classList.add('hidden'); return; }
+        const matches = State.foods.filter(f => f.name.includes(query)).slice(0, 6);
+        
+        if(!matches.length) { 
+            list.classList.add('hidden'); 
+            return; 
+        }
 
         list.classList.remove('hidden');
         matches.forEach(f => {
             const li = document.createElement('li');
-            li.innerHTML = `<span>${f.name}</span> <span style="font-size:0.8em;color:var(--text-muted)">${f.per100g.kcal} קלוריות</span>`;
-            li.onclick = () => this.selectFood(f);
+            li.innerHTML = `<span>${f.name}</span> <span style="font-size:0.8em;color:#888">${f.per100g.kcal} קל'</span>`;
+            
+            // התיקון הקריטי: האזנה ללחיצה
+            li.addEventListener('click', () => {
+                console.log("Clicked food:", f.name);
+                this.selectFood(f);
+            });
+            
             list.appendChild(li);
         });
     },
 
     selectFood(food) {
         State.selectedFood = food;
-        $('foodResults').classList.add('hidden');
-        $('foodSearch').value = ""; // Clear search for clean look
-        $('editPanel').classList.remove('hidden');
-        $('foodNameDisplay').textContent = food.name;
+        
+        const list = $('foodResults');
+        if(list) list.classList.add('hidden');
+        
+        const searchInput = $('foodSearch');
+        if(searchInput) searchInput.value = ""; 
 
-        // --- התיקון החכם (Smart Switch) ---
-        // אם למזון יש הגדרת מנה (servingGrams), נעבור ליחידות
+        const panel = $('editPanel');
+        if(!panel) {
+            console.error("CRITICAL: editPanel ID missing in HTML");
+            alert("שגיאה: חסר אלמנט ב-HTML. וודא שהעתקת את ה-HTML החדש.");
+            return;
+        }
+        
+        panel.classList.remove('hidden');
+        
+        if($('foodNameDisplay')) $('foodNameDisplay').textContent = food.name;
+
+        // Smart Switch Logic
         if(food.servingGrams) {
             this.setMode('units');
-            $('amountInput').value = 1; 
+            if($('amountInput')) $('amountInput').value = 1; 
         } else {
             this.setMode('grams');
-            $('amountInput').value = 100;
+            if($('amountInput')) $('amountInput').value = 100;
         }
     },
 
     setMode(mode) {
         State.mode = mode;
+        const btnG = $('modeGrams');
+        const btnU = $('modeUnits');
         
-        // UI Updates
-        if(mode === 'grams') {
-            $('modeGrams').classList.add('active');
-            $('modeUnits').classList.remove('active');
-            this.renderChips([100, 200, 300], 'g');
-        } else {
-            $('modeGrams').classList.remove('active');
-            $('modeUnits').classList.add('active');
-            this.renderChips([1, 2, 3], ' יח׳');
+        if(btnG && btnU) {
+            if(mode === 'grams') {
+                btnG.classList.add('active');
+                btnU.classList.remove('active');
+                this.renderChips([100, 200, 300], 'g');
+            } else {
+                btnG.classList.remove('active');
+                btnU.classList.add('active');
+                this.renderChips([1, 2, 3], ' יח׳');
+            }
         }
     },
 
     renderChips(values, suffix) {
         const container = $('quickChips');
+        if(!container) return;
         container.innerHTML = "";
         values.forEach(val => {
             const btn = document.createElement('button');
             btn.className = 'chip';
             btn.textContent = val + suffix;
-            btn.onclick = () => $('amountInput').value = val;
+            btn.onclick = () => {
+                if($('amountInput')) $('amountInput').value = val;
+            };
             container.appendChild(btn);
         });
     },
 
     adjustAmount(dir) {
         const input = $('amountInput');
+        if(!input) return;
         let val = Number(input.value);
         const step = State.mode === 'grams' ? 50 : 0.5;
         val += dir * step;
@@ -137,16 +179,15 @@ const App = {
 
     addEntry() {
         if(!State.selectedFood) return;
-        const amount = Number($('amountInput').value);
+        const input = $('amountInput');
+        const amount = Number(input ? input.value : 0);
         if(amount <= 0) return;
 
-        // חישוב קלוריות
         const food = State.selectedFood;
         let grams = amount;
         
-        // אם אנחנו במצב יחידות, נכפיל במשקל היחידה
         if(State.mode === 'units') {
-            grams = amount * (food.servingGrams || 100); // ברירת מחדל 100 אם אין הגדרה
+            grams = amount * (food.servingGrams || 100);
         }
 
         const factor = grams / 100;
@@ -166,8 +207,8 @@ const App = {
         State.entries.push(entry);
         this.save();
         
-        // Reset UI
-        $('editPanel').classList.add('hidden');
+        const panel = $('editPanel');
+        if(panel) panel.classList.add('hidden');
         this.render();
     },
 
@@ -184,10 +225,8 @@ const App = {
     },
 
     render() {
-        // 1. Filter entries for today
         const todays = State.entries.filter(e => e.date === State.date);
         
-        // 2. Sum totals
         const totals = todays.reduce((acc, cur) => ({
             kcal: acc.kcal + cur.kcal,
             protein: acc.protein + cur.protein,
@@ -195,74 +234,65 @@ const App = {
             fat: acc.fat + cur.fat
         }), { kcal:0, protein:0, carbs:0, fat:0 });
 
-        // 3. Render Ring & Macros
+        // Render Ring
         const t = State.settings;
-        const p = Math.min((totals.kcal / t.kcal) * 100, 100);
-        $('kcalRing').style.setProperty('--p', p);
-        $('kcalVal').textContent = Math.round(totals.kcal);
+        const p = t.kcal > 0 ? Math.min((totals.kcal / t.kcal) * 100, 100) : 0;
         
-        $('proteinVal').textContent = Math.round(totals.protein) + "g";
-        $('carbsVal').textContent = Math.round(totals.carbs) + "g";
-        $('fatVal').textContent = Math.round(totals.fat) + "g";
+        if($('kcalRing')) $('kcalRing').style.setProperty('--p', p);
+        if($('kcalVal')) $('kcalVal').textContent = Math.round(totals.kcal);
+        if($('proteinVal')) $('proteinVal').textContent = Math.round(totals.protein) + "g";
+        if($('carbsVal')) $('carbsVal').textContent = Math.round(totals.carbs) + "g";
+        if($('fatVal')) $('fatVal').textContent = Math.round(totals.fat) + "g";
 
-        // 4. Render Journal List
+        // Render List
         const list = $('journalList');
-        list.innerHTML = "";
-        
-        // מסדרים לפי שעה
-        todays.sort((a,b) => a.time.localeCompare(b.time)).reverse();
+        if(list) {
+            list.innerHTML = "";
+            todays.sort((a,b) => a.time.localeCompare(b.time)).reverse();
 
-        if(!todays.length) {
-            list.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted)">היומן ריק היום</div>`;
-        } else {
-            todays.forEach(e => {
-                const el = document.createElement('div');
-                el.className = 'meal-item';
-                el.innerHTML = `
-                    <div class="meal-info">
-                        <span class="meal-name">${e.foodName}</span>
-                        <span class="meal-meta">${e.time} • ${e.displayAmount}${e.displayUnit}</span>
-                    </div>
-                    <div style="display:flex; align-items:center">
-                        <span class="meal-kcal">${Math.round(e.kcal)}</span>
-                        <button class="btn-del">×</button>
-                    </div>
-                `;
-                el.querySelector('.btn-del').onclick = () => this.deleteEntry(e.id);
-                list.appendChild(el);
-            });
+            if(!todays.length) {
+                list.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted)">היומן ריק היום</div>`;
+            } else {
+                todays.forEach(e => {
+                    const el = document.createElement('div');
+                    el.className = 'meal-item';
+                    el.innerHTML = `
+                        <div class="meal-info">
+                            <span class="meal-name">${e.foodName}</span>
+                            <span class="meal-meta">${e.time} • ${e.displayAmount}${e.displayUnit}</span>
+                        </div>
+                        <div style="display:flex; align-items:center">
+                            <span class="meal-kcal">${Math.round(e.kcal)}</span>
+                            <button class="btn-del">×</button>
+                        </div>
+                    `;
+                    el.querySelector('.btn-del').onclick = () => this.deleteEntry(e.id);
+                    list.appendChild(el);
+                });
+            }
         }
 
-        // 5. Smart Coach
-        this.renderCoach(totals, t);
-    },
-
-    renderCoach(totals, targets) {
+        // Coach
         const coach = $('smartCoach');
         const txt = $('coachText');
-        
-        if(totals.kcal === 0) {
-            coach.classList.add('hidden');
-            return;
-        }
-        coach.classList.remove('hidden');
-
-        const kPct = totals.kcal / targets.kcal;
-        
-        if (kPct > 1.05) {
-            txt.textContent = "שים לב, הגעת ליעד הקלוריות היומי.";
-        } else if (totals.protein < targets.protein * 0.5 && kPct > 0.5) {
-            txt.textContent = "חסר לך חלבון היום ביחס לקלוריות שאכלת.";
-        } else {
-            txt.textContent = "אתה באיזון מצוין. המשך כך!";
+        if(coach && txt) {
+            if(totals.kcal === 0) {
+                coach.classList.add('hidden');
+            } else {
+                coach.classList.remove('hidden');
+                const kPct = totals.kcal / t.kcal;
+                if (kPct > 1.05) txt.textContent = "שים לב, הגעת ליעד הקלוריות היומי.";
+                else if (totals.protein < t.protein * 0.5 && kPct > 0.5) txt.textContent = "חסר לך חלבון היום.";
+                else txt.textContent = "אתה באיזון מצוין.";
+            }
         }
     },
 
-    // --- Settings Logic ---
     initSettingsForm() {
         const form = $('settingsForm');
+        if(!form) return;
+        form.innerHTML = "";
         const keys = { kcal: "קלוריות", protein: "חלבון", carbs: "פחמימה", fat: "שומן" };
-        
         for(const [k, label] of Object.entries(keys)) {
             const div = document.createElement('div');
             div.className = 'settings-input-group';
@@ -275,15 +305,14 @@ const App = {
     },
 
     saveSettings() {
-        State.settings.kcal = Number($('set_kcal').value);
-        State.settings.protein = Number($('set_protein').value);
-        State.settings.carbs = Number($('set_carbs').value);
-        State.settings.fat = Number($('set_fat').value);
+        if($('set_kcal')) State.settings.kcal = Number($('set_kcal').value);
+        if($('set_protein')) State.settings.protein = Number($('set_protein').value);
+        if($('set_carbs')) State.settings.carbs = Number($('set_carbs').value);
+        if($('set_fat')) State.settings.fat = Number($('set_fat').value);
         this.save();
         this.render();
-        $('settingsModal').classList.add('hidden');
+        if($('settingsModal')) $('settingsModal').classList.add('hidden');
     }
 };
 
-// Start
 document.addEventListener('DOMContentLoaded', () => App.init());
