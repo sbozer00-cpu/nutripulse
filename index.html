@@ -2,8 +2,8 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriPulse Professional</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NutriPulse Pro Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -15,13 +15,16 @@
         
         <header class="top-header">
             <div class="brand">NutriPulse <span class="pro-badge">PRO</span></div>
-            <input type="date" id="datePicker">
+            <div class="date-wrapper">
+                <input type="date" id="datePicker">
+            </div>
         </header>
 
         <div class="card add-card">
-            <h2>הוספת מזון</h2>
+            <h2>מה אכלת היום?</h2>
+            
             <div class="search-box">
-                <input type="text" id="foodSearch" placeholder="מה אכלת? (למשל: חזה עוף, טחינה...)" autocomplete="off">
+                <input type="text" id="foodSearch" placeholder="חפש מזון (למשל: בננה, חזה עוף, קוטג')..." autocomplete="off">
                 <ul id="foodResults" class="results-list hidden"></ul>
             </div>
 
@@ -52,10 +55,11 @@
 
         <div class="card journal-card">
             <div class="card-head">
-                <h3>יומן אכילה יומי</h3>
+                <h3>יומן יומי</h3>
                 <span id="totalKcalJournal" class="tag">0 קלוריות</span>
             </div>
-            <div id="journalList" class="journal-list"></div>
+            <div id="journalList" class="journal-list">
+                </div>
         </div>
     </main>
 
@@ -68,7 +72,7 @@
                 <small>ציון</small>
             </div>
             <div class="score-info">
-                <h4>ניתוח יומי</h4>
+                <h4>ניתוח תזונתי</h4>
                 <div id="statusMessage">טרם הוזנו נתונים</div>
             </div>
         </div>
@@ -113,7 +117,7 @@
         
         <div class="sidebar-footer">
             <button id="settingsBtn">⚙️ הגדרות</button>
-            <button id="resetApp" class="danger-text">איפוס</button>
+            <button id="resetApp" class="danger-text">איפוס נתונים</button>
         </div>
 
     </aside>
@@ -123,8 +127,7 @@
 <div id="settingsModal" class="modal hidden">
     <div class="modal-content">
         <h3>הגדרת יעדים אישיים</h3>
-        <div id="settingsForm"></div>
-        <div class="modal-actions">
+        <div id="settingsForm"></div> <div class="modal-actions">
             <button id="saveSettings" class="action-btn">שמור שינויים</button>
             <button id="closeSettings" class="close-btn">סגור</button>
         </div>
