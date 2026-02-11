@@ -1,397 +1,382 @@
 /* =========================================
-   NutriPulse Ultra - Premium Design v7.0
-   High-End Medical/Tech Aesthetic
+   NutriPulse Pro - Final Master Styles v9.0
+   Medical/Tech Dashboard with Visual Scales
    ========================================= */
 
 :root {
-    /* --- פלטת צבעים מתקדמת --- */
-    --bg-body: #F0F2F5;       /* אפור כחלחל בהיר מאוד */
-    --bg-card: #FFFFFF;
+    /* --- פלטת צבעים מקצועית --- */
+    --bg-app: #F3F4F6;        /* רקע אפור רך */
+    --bg-card: #FFFFFF;       /* לבן נקי */
     
-    --text-dark: #1F2937;     /* כמעט שחור */
-    --text-medium: #6B7280;   /* אפור מאוזן */
-    --text-light: #9CA3AF;
+    --text-primary: #111827;  /* כותרות */
+    --text-secondary: #6B7280;/* טקסט משני */
     
-    --border-subtle: #E5E7EB;
+    --border-color: #E5E7EB;  /* גבולות */
     
     /* מותג */
-    --primary: #3B82F6;       /* כחול מבריק */
-    --primary-gradient: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-    --primary-glow: rgba(59, 130, 246, 0.4);
-
+    --primary: #2563EB;       /* כחול רויאל */
+    --primary-hover: #1D4ED8;
+    --primary-light: #EFF6FF;
+    
     /* סטטוסים */
-    --success: #10B981;
-    --warning: #F59E0B;
-    --danger: #EF4444;
-    
-    /* מידות ואפקטים */
-    --sidebar-w: 380px;
-    --radius: 16px;           /* פינות עגולות יותר */
-    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-    
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --success: #10B981;       /* ירוק (תקין/חלבון) */
+    --warning: #F59E0B;       /* כתום (בינוני/פחמימה) */
+    --danger: #EF4444;        /* אדום (חריגה/שומן) */
+    --danger-bg: #FEF2F2;
+
+    /* מידות */
+    --sidebar-width: 380px;
+    --radius: 12px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
-/* === איפוס ועיצוב גלובלי === */
+/* === איפוס בסיסי === */
 * { box-sizing: border-box; outline: none; }
 
 body {
     margin: 0;
-    font-family: 'Rubik', system-ui, -apple-system, sans-serif;
-    background-color: var(--bg-body);
-    color: var(--text-dark);
+    font-family: 'Rubik', sans-serif;
+    background-color: var(--bg-app);
+    color: var(--text-primary);
     direction: rtl;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased; /* טקסט חד יותר */
 }
 
-/* עיצוב פס גלילה (Scrollbar) מותאם אישית */
+button { font-family: inherit; user-select: none; }
+
+/* גלילה מותאמת אישית (יותר אסתטי) */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
-button { font-family: inherit; user-select: none; }
 
-/* === Layout Wrapper === */
+/* === מבנה העמוד (Layout) === */
 .app-wrapper {
     display: flex;
-    max-width: 1440px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 24px;
-    gap: 32px;
-    align-items: flex-start;
+    gap: 24px;
+    align-items: flex-start; /* קריטי ל-Sticky Sidebar */
 }
 
-@media (max-width: 1024px) {
-    .app-wrapper { flex-direction: column; padding: 16px; gap: 20px; }
-    .sidebar { width: 100% !important; position: static !important; order: -1; }
+/* התאמה למובייל */
+@media (max-width: 1000px) {
+    .app-wrapper {
+        flex-direction: column;
+        padding: 16px;
+    }
+    .sidebar {
+        width: 100% !important;
+        position: static !important;
+        order: -1; /* הנתונים יופיעו למעלה במובייל */
+    }
 }
 
-/* === Columns === */
-.main-column { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 24px; }
+/* === עמודות === */
+.main-column {
+    flex: 1;
+    width: 100%;
+    display: flex; flex-direction: column; gap: 20px;
+}
 
 .sidebar {
-    width: var(--sidebar-w);
-    display: flex; flex-direction: column; gap: 20px;
-    position: sticky; top: 24px;
+    width: var(--sidebar-width);
+    display: flex; flex-direction: column; gap: 16px;
+    position: sticky;
+    top: 24px;
     height: fit-content;
 }
 
-/* === Cards === */
+
+/* === כרטיסים === */
 .card, .stat-card {
     background: var(--bg-card);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    border: 1px solid white; /* טריק לעומק */
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
     padding: 24px;
-    transition: var(--transition);
+    transition: transform 0.2s ease;
 }
 
-.card:hover, .stat-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
-}
-
-/* === Typography === */
-h2 { font-size: 1.4rem; font-weight: 700; margin: 0 0 16px 0; color: #111827; }
-h3 { font-size: 1.2rem; font-weight: 600; margin: 0; }
+h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 16px 0; }
+h3 { font-size: 1.1rem; font-weight: 600; margin: 0; }
 h4 { 
-    font-size: 0.8rem; color: var(--text-medium); 
-    text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 12px 0; 
+    font-size: 0.85rem; color: var(--text-secondary); 
+    text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 12px 0; 
     font-weight: 700;
 }
 
-/* === Header === */
+
+/* === כותרת עליונה === */
 .top-header {
     display: flex; justify-content: space-between; align-items: center;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px); /* אפקט זכוכית */
-    padding: 16px 24px;
-    border-radius: var(--radius);
-    border: 1px solid white;
-    box-shadow: var(--shadow-sm);
+    background: var(--bg-card); padding: 16px 24px;
+    border-radius: var(--radius); border: 1px solid var(--border-color);
     margin-bottom: 8px;
 }
-
-.brand { 
-    font-size: 1.6rem; font-weight: 900; 
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -0.5px;
-}
+.brand { font-size: 1.5rem; font-weight: 900; color: #1e3a8a; letter-spacing: -0.5px; }
 .pro-badge { 
-    background: var(--text-dark); color: white; 
+    background: var(--primary); color: white; 
     font-size: 0.7rem; padding: 3px 8px; 
-    border-radius: 6px; vertical-align: middle; 
-    margin-right: 6px; font-weight: normal;
-    -webkit-text-fill-color: white; /* ביטול הגרדיאנט של הלוגו */
+    border-radius: 6px; vertical-align: middle; margin-right: 5px;
 }
 
 #datePicker {
-    background: white; border: 1px solid var(--border-subtle);
-    padding: 8px 16px; border-radius: 10px;
-    font-weight: 500; color: var(--text-dark);
-    cursor: pointer; transition: 0.2s;
+    border: 1px solid var(--border-color);
+    background: #F9FAFB;
+    padding: 8px 12px; border-radius: 8px;
+    font-weight: 500; color: var(--text-primary);
+    cursor: pointer;
 }
-#datePicker:hover { border-color: var(--primary); }
 
-/* === Search & Inputs === */
+
+/* === חיפוש והוספה === */
 .search-box { position: relative; margin-bottom: 15px; }
 
 #foodSearch {
-    width: 100%; padding: 16px 20px;
-    border: 2px solid transparent;
-    background: #F3F4F6;
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: 0.2s;
+    width: 100%; padding: 14px 16px;
+    border: 1px solid var(--border-color); border-radius: 10px;
+    font-size: 1rem; background: #F9FAFB;
+    transition: all 0.2s;
 }
 #foodSearch:focus { 
     background: white; 
     border-color: var(--primary); 
-    box-shadow: 0 0 0 4px var(--primary-glow); 
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); 
 }
 
-/* Results Dropdown */
+/* תוצאות חיפוש צפות */
 .results-list {
-    position: absolute; top: 110%; left: 0; right: 0;
-    background: white; border-radius: 12px;
-    padding: 0; margin: 0; list-style: none; 
-    max-height: 320px; overflow-y: auto;
-    z-index: 100; box-shadow: var(--shadow-lg);
-    border: 1px solid var(--border-subtle);
-    animation: fadeIn 0.2s ease-out;
+    position: absolute; top: 105%; left: 0; right: 0;
+    background: white; border: 1px solid var(--border-color);
+    border-radius: 10px; margin: 0; padding: 0;
+    list-style: none; max-height: 300px; overflow-y: auto;
+    z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 }
-
 .results-list li {
-    padding: 14px 20px; border-bottom: 1px solid #F3F4F6;
+    padding: 12px 16px; border-bottom: 1px solid #F3F4F6;
     cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-    transition: 0.1s;
 }
-.results-list li:hover { background: #EFF6FF; padding-right: 25px; color: var(--primary); }
+.results-list li:hover { background: #EFF6FF; color: var(--primary); }
 
-/* === Edit Panel === */
+
+/* === פאנל עריכה (Edit Panel) === */
 .edit-panel {
-    background: #F8FAFC; border: 1px solid #E2E8F0;
-    border-radius: 12px; padding: 24px;
-    margin-top: 20px; animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    background: #EFF6FF; border: 1px solid #BFDBFE;
+    border-radius: 10px; padding: 20px;
+    margin-top: 15px; animation: slideDown 0.3s ease;
 }
 
 .food-header {
-    display: flex; justify-content: space-between; align-items: center;
-    color: #1E40AF; margin-bottom: 20px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    color: #1E40AF; margin-bottom: 15px;
 }
-.fname { font-weight: 800; font-size: 1.2rem; }
-.fkcal { background: white; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; box-shadow: var(--shadow-sm); }
+.fname { font-weight: 700; font-size: 1.1rem; }
+.fkcal { font-size: 0.9rem; opacity: 0.8; }
 
-.controls { display: flex; gap: 15px; margin-bottom: 20px; }
+.controls { display: flex; gap: 12px; margin-bottom: 15px; }
 
 .toggle-group {
     display: flex; background: white; 
-    border: 1px solid var(--border-subtle); border-radius: 10px; overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;
 }
 .t-btn {
-    border: none; background: transparent; padding: 10px 20px; 
-    cursor: pointer; font-size: 0.95rem; font-weight: 500; transition: 0.2s;
+    border: none; background: none; padding: 10px 16px; 
+    cursor: pointer; font-size: 0.9rem; transition: 0.2s;
 }
-.t-btn:hover { background: #F1F5F9; }
-.t-btn.active { background: var(--primary); color: white; }
+.t-btn:hover { background: #F3F4F6; }
+.t-btn.active { background: var(--primary); color: white; font-weight: 600; }
 
 .qty-control { 
     display: flex; align-items: center; background: white; 
-    border-radius: 10px; border: 1px solid var(--border-subtle);
-    box-shadow: var(--shadow-sm);
+    border-radius: 8px; border: 1px solid var(--border-color); 
 }
 .q-btn {
-    width: 44px; height: 100%; border: none; background: none;
-    font-size: 1.2rem; cursor: pointer; color: var(--primary); font-weight: bold;
+    width: 40px; height: 100%; border: none; background: none;
+    font-size: 1.2rem; cursor: pointer; color: var(--primary);
 }
 .q-btn:hover { background: #EFF6FF; }
 #amountInput {
-    width: 70px; text-align: center; border: none; 
-    font-weight: 800; font-size: 1.2rem; color: var(--text-dark);
+    width: 60px; text-align: center; border: none; 
+    font-weight: 700; font-size: 1.1rem; color: var(--text-primary);
 }
 
-.chips { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.chips { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
 .chip {
-    background: white; border: 1px solid var(--border-subtle);
-    padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 500;
-    cursor: pointer; color: var(--text-medium); transition: 0.2s; box-shadow: var(--shadow-sm);
+    background: white; border: 1px solid var(--border-color);
+    padding: 6px 12px; border-radius: 20px; font-size: 0.85rem;
+    cursor: pointer; color: var(--text-secondary); transition: 0.2s;
 }
-.chip:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+.chip:hover { border-color: var(--primary); color: var(--primary); }
 
 .action-btn {
-    width: 100%; 
-    background: var(--primary-gradient); 
-    color: white;
-    border: none; padding: 16px; border-radius: 12px;
-    font-weight: 700; font-size: 1.05rem; cursor: pointer;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    width: 100%; background: var(--primary); color: white;
+    border: none; padding: 14px; border-radius: 10px;
+    font-weight: 600; font-size: 1rem; cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
     transition: 0.2s;
 }
-.action-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4); }
-.action-btn:active { transform: scale(0.98); }
+.action-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
 
-/* === Journal === */
+
+/* === יומן === */
 .journal-card { min-height: 400px; display: flex; flex-direction: column; }
 .card-head { 
     display: flex; justify-content: space-between; align-items: center; 
-    border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px; margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 10px;
 }
 .tag { 
-    background: #F3F4F6; padding: 6px 12px; 
-    border-radius: 8px; font-size: 0.9rem; font-weight: 700; color: #374151; 
+    background: #F3F4F6; padding: 6px 10px; 
+    border-radius: 6px; font-size: 0.85rem; font-weight: 700; color: #4B5563; 
 }
 
 .meal-row {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 16px 0; border-bottom: 1px solid #F3F4F6;
+    padding: 14px 0; border-bottom: 1px solid #F3F4F6;
     animation: fadeIn 0.3s;
 }
 .meal-row:last-child { border: none; }
-.m-info b { display: block; font-size: 1.05rem; margin-bottom: 4px; }
-.m-info span { font-size: 0.9rem; color: var(--text-medium); }
+
+.m-info b { display: block; font-size: 1rem; margin-bottom: 3px; }
+.m-info span { font-size: 0.85rem; color: var(--text-secondary); }
 
 .m-actions { display: flex; align-items: center; gap: 15px; }
 .del-btn {
-    background: #FEF2F2; border: none; color: #EF4444;
-    width: 32px; height: 32px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem; cursor: pointer; transition: 0.2s; opacity: 0;
+    background: none; border: none; color: #D1D5DB;
+    font-size: 1.4rem; cursor: pointer; transition: 0.2s;
+    line-height: 1; padding: 4px;
 }
-.meal-row:hover .del-btn { opacity: 1; }
-.del-btn:hover { background: #DC2626; color: white; }
+.del-btn:hover { color: var(--danger); transform: scale(1.1); }
 
-/* === Sidebar (The Brain) === */
 
-/* Score Circle */
+/* === סרגל צד (המוח) === */
+
+/* עיגול ציון */
 .score-section {
-    background: var(--primary-gradient);
+    background: linear-gradient(135deg, #1E3A8A, #3B82F6);
     color: white; border: none;
     display: flex; align-items: center; gap: 20px;
-    padding: 30px 24px;
     position: relative; overflow: hidden;
 }
-/* Shine Effect */
-.score-section::after {
-    content: ""; position: absolute; top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-    pointer-events: none;
-}
-
 .score-circle {
-    width: 80px; height: 80px; border-radius: 50%;
-    border: 4px solid rgba(255,255,255,0.3);
+    width: 76px; height: 76px; border-radius: 50%;
+    border: 4px solid rgba(255,255,255,0.25);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    font-weight: 900; font-size: 2.2rem; line-height: 1;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-weight: 800; font-size: 2rem; line-height: 1;
 }
-.score-circle small { font-size: 0.7rem; font-weight: 500; opacity: 0.9; }
-.score-info h4 { color: rgba(255,255,255,0.8); margin-bottom: 6px; }
-#statusMessage { font-size: 1rem; font-weight: 600; }
+.score-circle small { font-size: 0.75rem; font-weight: normal; opacity: 0.9; }
+.score-info h4 { color: rgba(255,255,255,0.9); margin-bottom: 6px; }
+#statusMessage { font-size: 0.95rem; font-weight: 500; }
 
-/* Alerts */
+/* תיבת התראות */
 .alert-box {
-    background: #FEF2F2; border-left: 4px solid #EF4444;
-    color: #991B1B; padding: 16px; border-radius: 8px;
-    box-shadow: var(--shadow-sm);
+    background: var(--danger-bg); border-left: 4px solid var(--danger);
+    color: #991B1B; padding: 16px; border-radius: 8px; margin-bottom: 15px;
     animation: fadeIn 0.5s;
 }
-.alert-title { font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; text-transform: uppercase; }
+.alert-title { font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
 .alert-box ul { margin: 0; padding-right: 20px; font-size: 0.9rem; }
 .alert-box li { margin-bottom: 5px; }
 
-/* Animated Bars */
-@keyframes stripe-flow { from { background-position: 0 0; } to { background-position: 30px 0; } }
 
-.macro-bars { display: flex; flex-direction: column; gap: 16px; margin-top: 5px; }
+/* === גרפים למאקרו (ברים גדולים) === */
+.macro-bars { display: flex; flex-direction: column; gap: 14px; margin-top: 5px; }
 .mb-item { width: 100%; }
 .mb-label { 
     display: flex; justify-content: space-between; 
-    font-size: 0.9rem; margin-bottom: 6px; color: var(--text-medium); font-weight: 600;
+    font-size: 0.9rem; margin-bottom: 6px; color: var(--text-secondary); font-weight: 500;
 }
 .progress {
-    background: #E5E7EB; height: 12px; border-radius: 6px; overflow: hidden;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    background: #E5E7EB; height: 10px; border-radius: 5px; overflow: hidden;
 }
-.fill { 
-    height: 100%; width: 0; 
-    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-    background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent);
-    background-size: 20px 20px;
-    animation: stripe-flow 1s linear infinite;
+.fill { height: 100%; width: 0; transition: width 0.8s ease; }
+.fill.p { background: var(--success); }
+.fill.c { background: var(--warning); }
+.fill.f { background: var(--danger); }
+
+
+/* === רשימת הויטמינים עם סקאלות (Visual Scales) === */
+.micros-grid { display: flex; flex-direction: column; gap: 12px; }
+
+/* קונטיינר לכל ויטמין */
+.micro-item {
+    display: flex; flex-direction: column;
+    padding-bottom: 12px; border-bottom: 1px solid #F3F4F6;
 }
-.fill.p { background-color: var(--success); }
-.fill.c { background-color: var(--warning); }
-.fill.f { background-color: var(--danger); }
+.micro-item:last-child { border: none; }
 
-/* Micros Table */
-.micros-grid { display: flex; flex-direction: column; }
-.micro-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 0; border-bottom: 1px solid #F3F4F6;
-    font-size: 0.95rem; transition: background 0.2s;
+/* כותרת הסקאלה */
+.micro-header {
+    display: flex; justify-content: space-between;
+    font-size: 0.9rem; margin-bottom: 6px;
 }
-.micro-row:hover { background: #F9FAFB; padding-left: 5px; padding-right: 5px; border-radius: 4px; }
-.micro-row:last-child { border: none; }
+.m-name { font-weight: 500; color: var(--text-secondary); }
+.m-val-text { font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.m-target-text { font-size: 0.8rem; color: #9CA3AF; font-weight: normal; }
 
-.m-name { color: var(--text-medium); font-weight: 500; }
-.m-val { font-weight: 700; width: 80px; text-align: left; font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
-.m-status { width: 24px; text-align: center; }
+/* גוף הסקאלה (הפס האפור) */
+.micro-track {
+    width: 100%; height: 6px;
+    background: #E5E7EB; border-radius: 3px;
+    overflow: hidden;
+}
+/* המילוי הצבעוני */
+.micro-fill {
+    height: 100%; width: 0%;
+    border-radius: 3px;
+    transition: width 0.6s ease;
+}
 
-.highlight-good { color: var(--success); }
-.highlight-warn { color: var(--warning); }
-.highlight-bad { color: var(--danger); }
+/* צבעי הסקאלה (מופעלים ע"י JS) */
+.bg-low { background: var(--warning); }  /* כתום: חוסר */
+.bg-good { background: var(--success); } /* ירוק: תקין */
+.bg-high { background: var(--danger); }  /* אדום: חריגה */
 
-/* Sidebar Footer */
+
+/* === תחתית הסרגל === */
 .sidebar-footer {
     display: flex; justify-content: space-between; margin-top: auto; padding-top: 20px; border-top: 1px solid #F3F4F6;
 }
 .sidebar-footer button {
-    background: none; border: none; color: var(--text-medium);
-    font-size: 0.85rem; cursor: pointer; padding: 5px; font-weight: 500;
+    background: none; border: none; color: var(--text-secondary);
+    font-size: 0.85rem; cursor: pointer; text-decoration: underline;
 }
 .sidebar-footer button:hover { color: var(--primary); }
 .danger-text:hover { color: var(--danger) !important; }
 
-/* === Modal === */
+
+/* === מודל הגדרות === */
 .modal {
     position: fixed; inset: 0;
-    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
     display: flex; justify-content: center; align-items: center;
     z-index: 200;
 }
 .modal-content {
-    background: white; padding: 32px; border-radius: 16px;
-    width: 440px; max-width: 90%;
+    background: white; padding: 30px; border-radius: 16px;
+    width: 420px; max-width: 90%;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    animation: zoomIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: zoomIn 0.2s;
 }
 .settings-group {
     display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #F3F4F6;
 }
-.settings-group label { font-size: 0.95rem; color: var(--text-dark); font-weight: 500; }
+.settings-group label { font-size: 0.95rem; color: var(--text-primary); }
 .settings-group input {
-    width: 100px; padding: 8px; border: 1px solid var(--border-subtle);
-    border-radius: 8px; text-align: center; font-weight: bold; background: #F9FAFB;
+    width: 90px; padding: 8px; border: 1px solid var(--border-color);
+    border-radius: 6px; text-align: center; font-weight: bold; background: #F9FAFB;
 }
-.settings-group input:focus { border-color: var(--primary); background: white; }
-
 .modal-actions { margin-top: 25px; display: flex; gap: 12px; }
 .close-btn {
-    flex: 1; background: white; border: 1px solid var(--border-subtle);
-    padding: 14px; border-radius: 10px; cursor: pointer; font-weight: 600; color: var(--text-medium);
+    flex: 1; background: white; border: 1px solid var(--border-color);
+    padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600;
 }
-.close-btn:hover { background: #F3F4F6; color: var(--text-dark); }
 
-/* Utilities */
+/* === Utilities === */
 .hidden { display: none !important; }
 @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
