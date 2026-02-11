@@ -1,15 +1,15 @@
 /**
- * NutriPulse Pro - v12.0 Ultra Logic
- * הליבה המבצעית: ניהול נתונים, ניתוח תזונתי מתקדם ופידבק ויזואלי.
+ * NutriPulse Pro - v13.0 Core Logic
+ * תיקון מנגנון היחידות, הגרפים והתממשקות לעיצוב החדש
  */
 
 const CONFIG = {
-    KEYS: { entries: "np_pro_entries_v12", settings: "np_pro_settings_v12" },
+    KEYS: { entries: "np_pro_v13", settings: "st_pro_v13" },
     NUTRIENTS: [
-        { key: "kcal", label: "קלוריות", unit: "kcal", target: 2200, group: "macro", color: "#2563EB" },
-        { key: "protein", label: "חלבון", unit: "g", target: 140, group: "macro", color: "#10B981" },
-        { key: "carbs", label: "פחמימה", unit: "g", target: 250, group: "macro", color: "#F59E0B" },
-        { key: "fat", label: "שומן", unit: "g", target: 70, group: "macro", color: "#EF4444" },
+        { key: "kcal", label: "קלוריות", unit: "kcal", target: 2200, group: "macro" },
+        { key: "protein", label: "חלבון", unit: "g", target: 140, group: "macro" },
+        { key: "carbs", label: "פחמימה", unit: "g", target: 250, group: "macro" },
+        { key: "fat", label: "שומן", unit: "g", target: 70, group: "macro" },
         { key: "calcium_mg", label: "סידן", unit: "mg", target: 1000, group: "micro" },
         { key: "iron_mg", label: "ברזל", unit: "mg", target: 15, group: "micro" },
         { key: "magnesium_mg", label: "מגנזיום", unit: "mg", target: 400, group: "micro" },
@@ -22,16 +22,16 @@ const CONFIG = {
 
 const Utils = {
     $: (id) => document.getElementById(id),
-    uuid: () => Math.random().toString(36).substring(2, 11),
-    todayISO: () => new Date().toLocaleDateString('en-CA'),
-    fmt: (n) => (n % 1 === 0 ? n.toLocaleString() : n.toFixed(1)),
+    uuid: () => Math.random().toString(36).substring(2, 10),
+    todayISO: () => new Date().toISOString().split('T')[0],
+    fmt: (n) => Math.round(n || 0).toLocaleString(),
     debounce: (fn, ms) => {
         let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); };
     }
 };
 
 const State = {
-    foods: [], entries: [], settings: { targets: {} }, 
+    foods: [], entries: [], settings: { targets: {} },
     date: Utils.todayISO(), selectedFood: null, mode: 'grams',
 
     init() {
@@ -48,14 +48,14 @@ const State = {
 const UI = {
     render() {
         const todays = State.entries.filter(e => e.date === State.date);
-        const totals = this.getTotals(todays);
+        const totals = this.calculateTotals(todays);
         
+        this.updateStats(totals);
         this.renderJournal(todays);
-        this.renderStats(totals);
         this.renderMicros(totals);
     },
 
-    getTotals(entries) {
+    calculateTotals(entries) {
         const totals = {};
         CONFIG.NUTRIENTS.forEach(n => totals[n.key] = 0);
         entries.forEach(e => {
@@ -69,90 +69,81 @@ const UI = {
         return totals;
     },
 
-    renderStats(totals) {
+    updateStats(totals) {
         const t = State.settings.targets;
-        // אלגוריתם ציון משופר
-        const kcalPct = totals.kcal / t.kcal;
-        const proteinPct = totals.protein / t.protein;
-        const score = Math.round((Math.min(kcalPct, 1) * 40) + (Math.min(proteinPct, 1) * 60));
-        
-        Utils.$('dailyScore').textContent = score || 0;
+        // עדכון ציון
+        const score = Math.round((Math.min(totals.protein / t.protein, 1) + Math.min(totals.kcal / t.kcal, 1)) / 2 * 100) || 0;
+        Utils.$('dailyScore').textContent = score;
+
         const status = Utils.$('statusMessage');
-        
-        if (score > 90) { status.textContent = "פשוט מושלם!"; status.style.color = "var(--success)"; }
-        else if (score > 70) { status.textContent = "בדרך הנכונה"; status.style.color = "var(--primary)"; }
-        else { status.textContent = "צריך עוד קצת חלבון"; status.style.color = "var(--text-secondary)"; }
+        if (score > 85) status.textContent = "תזונה מעולה!";
+        else if (score > 60) status.textContent = "במצב טוב";
+        else status.textContent = "יש חוסרים תזונתיים";
 
-        // התראות חכמות
-        const alist = Utils.$('alertsList');
-        const abox = Utils.$('alertsBox');
-        alist.innerHTML = "";
-        const alerts = [];
-        if (totals.fat > t.fat * 1.1) alerts.push(`שימו לב: חריגה בשומן (${Math.round(totals.fat)}g)`);
-        if (totals.sodium_mg > t.sodium_mg) alerts.push("נתרן גבוה מדי - נסו להפחית מלח");
-
-        if (alerts.length) {
-            abox.classList.remove('hidden');
-            alerts.forEach(a => alist.innerHTML += `<li>${a}</li>`);
-        } else abox.classList.add('hidden');
-
-        // מאקרו ברים
+        // עדכון גרפים (מאקרו)
         ['protein', 'carbs', 'fat'].forEach(k => {
             const pct = Math.min((totals[k] / t[k]) * 100, 100);
-            Utils.$(`val${k.charAt(0).toUpperCase() + k.slice(1)}`).textContent = `${Utils.fmt(totals[k])}g`;
-            Utils.$(`bar${k.charAt(0).toUpperCase() + k.slice(1)}`).style.width = `${pct}%`;
+            Utils.$(`val${k.charAt(0).toUpperCase() + k.slice(1)}`).textContent = Math.round(totals[k]) + "g";
+            Utils.$(`bar${k.charAt(0).toUpperCase() + k.slice(1)}`).style.width = pct + "%";
         });
     },
 
     renderMicros(totals) {
         const container = Utils.$('microsList');
         const t = State.settings.targets;
-        let html = "";
-
-        CONFIG.NUTRIENTS.filter(n => n.group === 'micro' || n.group === 'limit').forEach(n => {
+        container.innerHTML = CONFIG.NUTRIENTS.filter(n => n.group === 'micro' || n.group === 'limit').map(n => {
             const val = totals[n.key] || 0;
             const pct = Math.min((val / t[n.key]) * 100, 100);
-            const colorClass = (n.group === 'limit' && val > t[n.key]) ? "bg-high" : (pct > 85 ? "bg-good" : "bg-low");
-
-            html += `
+            const color = (n.group === 'limit' && val > t[n.key]) ? "bg-high" : (pct > 80 ? "bg-good" : "bg-low");
+            return `
                 <div class="micro-item">
                     <div class="micro-header">
                         <span class="m-name">${n.label}</span>
-                        <span class="m-val-text">${Utils.fmt(val)} / ${t[n.key]} <small>${n.unit}</small></span>
+                        <span class="m-val-text">${Math.round(val)} / ${t[n.key]} ${n.unit}</span>
                     </div>
-                    <div class="micro-track"><div class="micro-fill ${colorClass}" style="width:${pct}%"></div></div>
+                    <div class="micro-track"><div class="micro-fill ${color}" style="width:${pct}%"></div></div>
                 </div>`;
-        });
-        container.innerHTML = html;
+        }).join('');
     },
 
-    renderJournal(entries) {
+    renderJournal(list) {
         const container = Utils.$('journalList');
-        let dailyKcal = 0;
-        container.innerHTML = entries.map(e => {
+        let totalKcal = 0;
+        container.innerHTML = list.map(e => {
             const f = State.foods.find(food => food.id === e.foodId);
             if (!f) return "";
             const grams = (e.unit === 'units' && f.servingGrams) ? e.amount * f.servingGrams : e.amount;
             const kcal = (f.per100g.kcal * (grams / 100));
-            dailyKcal += kcal;
+            totalKcal += kcal;
             return `
                 <div class="meal-row">
                     <div class="m-info"><b>${f.name}</b><span>${e.amount} ${e.unit === 'grams' ? "ג'" : "יח'"}</span></div>
-                    <div class="m-actions">
-                        <span>${Utils.fmt(kcal)} <small>kcal</small></span>
-                        <button onclick="App.deleteEntry('${e.id}')" class="del-btn">✕</button>
-                    </div>
+                    <div class="m-actions"><span>${Math.round(kcal)} cal</span><button class="del-btn" onclick="App.deleteEntry('${e.id}')">✕</button></div>
                 </div>`;
-        }).join('') || "<p class='empty-msg'>עדיין לא אכלת כלום היום?</p>";
-        Utils.$('totalKcalJournal').textContent = `${Utils.fmt(dailyKcal)} קלוריות`;
+        }).join('') || "<p style='text-align:center;color:#94a3b8;padding:20px;'>היומן ריק</p>";
+        Utils.$('totalKcalJournal').textContent = Math.round(totalKcal) + " קלוריות";
     },
 
-    updateLivePreview() {
-        if (!State.selectedFood) return;
-        const amt = Number(Utils.$('amountInput').value) || 0;
-        const grams = (State.mode === 'units') ? amt * (State.selectedFood.servingGrams || 0) : amt;
-        const kcal = (State.selectedFood.per100g.kcal * (grams / 100));
-        Utils.$('foodKcalDisplay').textContent = `${Utils.fmt(kcal)} קלוריות סה"כ`;
+    // פונקציית עדכון פאנל העריכה - כאן התיקון לכפתורי ה"גרם"
+    renderSelectedFood() {
+        const f = State.selectedFood;
+        if (!f) return;
+
+        Utils.$('editPanel').classList.remove('hidden');
+        Utils.$('foodNameDisplay').textContent = f.name;
+        Utils.$('foodKcalDisplay').textContent = `${f.per100g.kcal} קלוריות ל-100ג'`;
+
+        // סינכרון כפתורי מצב (גרם/יחידות)
+        const btnG = Utils.$('modeGrams');
+        const btnU = Utils.$('modeUnits');
+        
+        if (State.mode === 'grams') {
+            btnG.classList.add('active');
+            btnU.classList.remove('active');
+        } else {
+            btnG.classList.remove('active');
+            btnU.classList.add('active');
+        }
     }
 };
 
@@ -161,20 +152,27 @@ const App = {
         State.init();
         await this.loadData();
         
-        // Listeners
         Utils.$('datePicker').value = State.date;
         Utils.$('datePicker').onchange = (e) => { State.date = e.target.value; UI.render(); };
         Utils.$('foodSearch').oninput = Utils.debounce((e) => this.search(e.target.value), 250);
-        Utils.$('amountInput').oninput = () => UI.updateLivePreview();
+        
+        Utils.$('modeGrams').onclick = () => { State.mode = 'grams'; UI.renderSelectedFood(); };
+        Utils.$('modeUnits').onclick = () => { State.mode = 'units'; UI.renderSelectedFood(); };
+        
+        Utils.$('btnPlus').onclick = () => { 
+            const step = State.mode === 'grams' ? 50 : 1;
+            Utils.$('amountInput').value = Number(Utils.$('amountInput').value) + step;
+        };
+        Utils.$('btnMinus').onclick = () => { 
+            const step = State.mode === 'grams' ? 50 : 1;
+            Utils.$('amountInput').value = Math.max(0, Number(Utils.$('amountInput').value) - step);
+        };
+
         Utils.$('addBtn').onclick = () => this.add();
-        Utils.$('modeGrams').onclick = () => { State.mode = 'grams'; UI.renderSelected(); };
-        Utils.$('modeUnits').onclick = () => { State.mode = 'units'; UI.renderSelected(); };
-        Utils.$('btnPlus').onclick = () => { Utils.$('amountInput').value = Number(Utils.$('amountInput').value) + (State.mode === 'grams' ? 50 : 1); UI.updateLivePreview(); };
-        Utils.$('btnMinus').onclick = () => { Utils.$('amountInput').value = Math.max(0, Number(Utils.$('amountInput').value) - (State.mode === 'grams' ? 50 : 1)); UI.updateLivePreview(); };
         Utils.$('settingsBtn').onclick = () => this.toggleSettings(true);
-        Utils.$('closeSettings').onclick = () => this.toggleSettings(false);
         Utils.$('saveSettings').onclick = () => this.saveSettings();
-        Utils.$('resetApp').onclick = () => { if(confirm("למחוק הכל?")) { localStorage.clear(); location.reload(); } };
+        Utils.$('closeSettings').onclick = () => Utils.$('settingsModal').classList.add('hidden');
+        Utils.$('resetApp').onclick = () => { if(confirm("לאפס הכל?")) { localStorage.clear(); location.reload(); } };
 
         UI.render();
     },
@@ -183,47 +181,27 @@ const App = {
         try {
             const r = await fetch('data/foods.json');
             State.foods = await r.json();
-        } catch (e) { Utils.$('foodSearch').placeholder = "שגיאה בטעינת המאגר"; }
+        } catch (e) { console.error("Data load failed"); }
     },
 
     search(q) {
         const res = Utils.$('foodResults'); res.innerHTML = "";
         if (q.trim().length < 2) return res.classList.add('hidden');
-        const matches = State.foods.filter(f => f.name.includes(q)).slice(0, 10);
+        const matches = State.foods.filter(f => f.name.includes(q)).slice(0, 8);
         if (!matches.length) return res.classList.add('hidden');
         
         res.classList.remove('hidden');
         matches.forEach(f => {
             const li = document.createElement('li');
-            li.innerHTML = `${f.name} <small>${f.per100g.kcal} kcal</small>`;
-            li.onclick = () => this.select(f);
+            li.innerHTML = `<span>${f.name}</span><small>${f.per100g.kcal} kcal</small>`;
+            li.onclick = () => {
+                State.selectedFood = f;
+                State.mode = f.servingGrams ? 'units' : 'grams';
+                UI.renderSelectedFood();
+                Utils.$('foodSearch').value = "";
+                res.classList.add('hidden');
+            };
             res.appendChild(li);
-        });
-    },
-
-    select(f) {
-        State.selectedFood = f;
-        State.mode = f.servingGrams ? 'units' : 'grams';
-        Utils.$('editPanel').classList.remove('hidden');
-        Utils.$('foodResults').classList.add('hidden');
-        Utils.$('foodSearch').value = "";
-        this.renderSelected();
-    },
-
-    renderSelected() {
-        const f = State.selectedFood;
-        Utils.$('foodNameDisplay').textContent = f.name;
-        Utils.$('modeGrams').classList.toggle('active', State.mode === 'grams');
-        Utils.$('modeUnits').classList.toggle('active', State.mode === 'units');
-        Utils.$('amountInput').value = State.mode === 'units' ? 1 : 100;
-        UI.updateLivePreview();
-        
-        const chips = Utils.$('quickChips'); chips.innerHTML = "";
-        const vals = State.mode === 'grams' ? [50, 100, 200, 300] : [0.5, 1, 2];
-        vals.forEach(v => {
-            const b = document.createElement('button'); b.className = 'chip'; b.textContent = v + (State.mode==='grams'?'g':'');
-            b.onclick = () => { Utils.$('amountInput').value = v; UI.updateLivePreview(); };
-            chips.appendChild(b);
         });
     },
 
@@ -234,9 +212,6 @@ const App = {
         State.save();
         Utils.$('editPanel').classList.add('hidden');
         UI.render();
-        // פידבק ויזואלי מהיר
-        Utils.$('addSection').style.borderColor = 'var(--success)';
-        setTimeout(() => Utils.$('addSection').style.borderColor = 'var(--border-color)', 600);
     },
 
     deleteEntry(id) {
@@ -248,9 +223,9 @@ const App = {
     toggleSettings(open) {
         const m = Utils.$('settingsModal');
         if (open) {
-            const f = Utils.$('settingsForm'); f.innerHTML = CONFIG.NUTRIENTS.map(n => `
+            Utils.$('settingsForm').innerHTML = CONFIG.NUTRIENTS.map(n => `
                 <div class="settings-group">
-                    <label>${n.label} (${n.unit})</label>
+                    <label>${n.label}</label>
                     <input type="number" id="set_${n.key}" value="${State.settings.targets[n.key]}">
                 </div>`).join('');
             m.classList.remove('hidden');
@@ -259,7 +234,7 @@ const App = {
 
     saveSettings() {
         CONFIG.NUTRIENTS.forEach(n => State.settings.targets[n.key] = Number(Utils.$(`set_${n.key}`).value));
-        State.save(); UI.render(); this.toggleSettings(false);
+        State.save(); UI.render(); Utils.$('settingsModal').classList.add('hidden');
     }
 };
 
