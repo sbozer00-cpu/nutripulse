@@ -1,352 +1,120 @@
-/* =========================================
-   NutriPulse Pro – Dashboard UI
-   Clean, Professional, Dark Mode
-   ========================================= */
-
 :root {
-    /* --- צבעים --- */
-    --bg: #111827;       /* רקע ראשי כהה */
-    --card-bg: #1f2937;  /* רקע כרטיסים */
-    --border: #374151;   /* גבולות עדינים */
+    --bg: #F2F2F7;         /* רקע אפור בהיר (iOS style) */
+    --card: #FFFFFF;       /* לבן נקי */
+    --text: #1C1C1E;       /* שחור כמעט מלא */
+    --text-muted: #8E8E93;
     
-    --primary: #3b82f6;  /* כחול ראשי */
-    --primary-hover: #2563eb;
+    --primary: #007AFF;    /* כחול אפל */
+    --green: #34C759;
+    --orange: #FF9500;
+    --red: #FF3B30;
     
-    --accent: #10b981;   /* ירוק להצלחה */
-    --danger: #ef4444;   /* אדום למחיקה/שגיאה */
-    --warning: #f59e0b;  /* כתום לאזהרה */
-
-    --text: #f9fafb;     /* טקסט ראשי */
-    --text-muted: #9ca3af; /* טקסט משני */
-
-    /* --- מידות --- */
-    --radius: 12px;      /* פינות עגולות */
-    --container-width: 1200px;
+    --radius: 24px;        /* פינות עגולות מאוד */
+    --shadow: 0 8px 24px rgba(0,0,0,0.06);
 }
 
-/* =========================
-   Global Reset
-   ========================= */
-* { box-sizing: border-box; }
-
-body {
-    margin: 0;
-    font-family: 'Rubik', sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
-    direction: rtl;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
+/* Dark Mode Support (אוטומטי לפי המכשיר) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #000000;
+        --card: #1C1C1E;
+        --text: #FFFFFF;
+        --text-muted: #98989D;
+    }
 }
 
-button, input, select { font-family: inherit; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { margin: 0; font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--text); direction: rtl; padding-bottom: 40px; }
 
-/* =========================
-   Layout Structure
-   ========================= */
-.app-layout {
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding: 20px;
-}
+.app-container { max-width: 600px; margin: 0 auto; padding: 20px; }
 
 /* Header */
-.top-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    background: var(--card-bg);
-    padding: 16px 24px;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.logo { font-size: 28px; font-weight: 900; letter-spacing: -1px; }
+.date-trigger { background: var(--card); border: none; padding: 8px 16px; border-radius: 20px; font-weight: 500; font-family: inherit; color: var(--primary); font-size: 16px; }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-}
+/* Summary Card */
+.summary-card { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
 
-.date-input {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    transition: 0.2s;
-}
-.date-input:hover { border-color: var(--text-muted); }
+/* Ring */
+.ring-wrapper { position: relative; width: 100px; height: 100px; }
+.progress-ring { width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(var(--primary) calc(var(--p)*1%), rgba(128,128,128,0.1) 0); position: relative; display: flex; align-items: center; justify-content: center; }
+.progress-ring::before { content: ""; position: absolute; width: 88%; height: 88%; background: var(--card); border-radius: 50%; }
+.ring-text { position: relative; z-index: 2; text-align: center; display: flex; flex-direction: column; }
+.ring-val { font-size: 24px; font-weight: 800; line-height: 1; }
+.ring-label { font-size: 12px; color: var(--text-muted); }
 
-/* --- Dashboard Grid System --- */
-.dashboard-grid {
-    display: grid;
-    /* עמודה גמישה ליומן (1fr) ועמודה קבועה לנתונים (360px) */
-    grid-template-columns: 1fr 360px;
-    gap: 24px;
-    align-items: start;
-}
+/* Macros */
+.macros-row { display: flex; flex-direction: column; gap: 12px; flex: 1; margin-right: 30px; }
+.macro-item { display: flex; justify-content: space-between; align-items: center; font-size: 15px; border-bottom: 1px solid rgba(128,128,128,0.1); padding-bottom: 8px; }
+.macro-item:last-child { border: none; padding: 0; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-left: 8px; }
+.dot.p { background: var(--green); } .dot.c { background: var(--orange); } .dot.f { background: var(--red); }
+.val { font-weight: 700; }
 
-/* Mobile Responsive */
-@media (max-width: 900px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr; /* עמודה אחת */
-    }
-    /* במובייל, הנתונים יעברו למעלה או למטה לפי הצורך */
-    .sidebar-column { order: -1; position: static; } 
-}
+/* Action Card (Add Food) */
+.action-card { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 24px; }
+h2 { margin: 0 0 16px 0; font-size: 20px; font-weight: 700; }
 
-/* --- Columns --- */
-.main-column {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
+.search-container { position: relative; }
+input[type="text"] { width: 100%; padding: 16px; border-radius: 16px; background: rgba(128,128,128,0.1); border: none; font-size: 18px; color: var(--text); outline: none; transition: 0.2s; }
+input[type="text"]:focus { background: rgba(128,128,128,0.15); box-shadow: 0 0 0 2px var(--primary); }
 
-.sidebar-column {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    /* סרגל דביק - נשאר איתך בגלילה */
-    position: sticky;
-    top: 20px;
-}
+.results-list { position: absolute; top: 110%; left: 0; right: 0; background: var(--card); border-radius: 16px; list-style: none; padding: 0; margin: 0; box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 100; max-height: 250px; overflow-y: auto; }
+.results-list li { padding: 16px; border-bottom: 1px solid rgba(128,128,128,0.1); cursor: pointer; font-size: 16px; display: flex; justify-content: space-between; }
+.results-list li:active { background: rgba(128,128,128,0.1); }
 
-/* =========================
-   Cards & Generic
-   ========================= */
-.card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 24px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
+/* Edit Panel */
+.edit-panel { margin-top: 20px; animation: slideDown 0.3s ease-out; }
+.food-title { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 15px; text-align: center; }
 
-h2 { font-size: 1.25rem; font-weight: 600; margin: 0 0 16px 0; }
-h3 { font-size: 1.1rem; font-weight: 600; margin: 0 0 12px 0; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.toggle-row { display: flex; background: rgba(128,128,128,0.1); border-radius: 12px; padding: 4px; margin-bottom: 20px; }
+.toggle-btn { flex: 1; background: none; border: none; padding: 10px; border-radius: 10px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
+.toggle-btn.active { background: var(--card); color: var(--text); shadow: 0 2px 8px rgba(0,0,0,0.1); }
 
-/* =========================
-   Add Food Section
-   ========================= */
-.search-wrapper { position: relative; margin-bottom: 16px; }
+/* Big Input */
+.input-big-wrapper { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
+.qty-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: rgba(128,128,128,0.1); font-size: 24px; font-weight: 300; cursor: pointer; color: var(--text); }
+.qty-btn:active { background: rgba(128,128,128,0.2); transform: scale(0.95); }
+input[type="number"] { width: 120px; text-align: center; font-size: 36px; font-weight: 800; border: none; background: transparent; color: var(--text); outline: none; }
 
-input[type="text"], input[type="number"], select {
-    width: 100%;
-    padding: 12px 16px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-size: 1rem;
-    transition: 0.2s;
-}
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
+.chips-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+.chip { background: rgba(128,128,128,0.1); padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; border: none; color: var(--text); cursor: pointer; }
+.chip:active { background: var(--text); color: var(--bg); }
 
-/* Dropdown Results */
-.results-dropdown {
-    position: absolute;
-    top: 105%; left: 0; right: 0;
-    background: #2d3748; /* קצת יותר בהיר מהרקע */
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    max-height: 250px;
-    overflow-y: auto;
-    z-index: 50;
-    list-style: none; padding: 0; margin: 0;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-}
+.btn-main { width: 100%; background: var(--primary); color: white; padding: 18px; border-radius: 20px; font-size: 18px; font-weight: 700; border: none; cursor: pointer; box-shadow: 0 10px 20px rgba(0,122,255,0.3); transition: 0.2s; }
+.btn-main:active { transform: scale(0.98); }
 
-.results-dropdown li {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    display: flex; justify-content: space-between;
-    transition: 0.15s;
-}
-.results-dropdown li:hover { background: var(--primary); color: white; }
+/* Journal */
+.journal-section h3 { margin: 0 0 15px 0; font-size: 18px; color: var(--text-muted); }
+.journal-list { display: flex; flex-direction: column; gap: 12px; }
 
-/* Selected Food Panel */
-.selected-food-panel {
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid var(--primary);
-    padding: 16px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    animation: fadeIn 0.3s;
-}
+.meal-item { background: var(--card); padding: 16px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+.meal-info { display: flex; flex-direction: column; }
+.meal-name { font-weight: 700; font-size: 17px; }
+.meal-meta { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+.meal-kcal { font-weight: 700; color: var(--primary); background: rgba(0,122,255,0.1); padding: 4px 10px; border-radius: 10px; font-size: 14px; }
+.btn-del { background: none; border: none; font-size: 18px; color: #ddd; padding: 10px; margin-left: 10px; cursor: pointer; }
+.btn-del:hover { color: var(--red); }
 
-/* Controls */
-.controls-row { display: flex; flex-direction: column; gap: 16px; }
-.input-group { display: flex; gap: 12px; }
-.input-group select { width: 40%; }
+/* Coach */
+.coach-bubble { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 16px; border-radius: 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 15px; font-size: 15px; line-height: 1.4; box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3); }
 
-.chips-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.chip {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.chip:hover {
-    background: var(--text);
-    color: var(--bg);
-    border-color: var(--text);
-}
+/* Fab & Modal */
+.fab-settings { position: fixed; bottom: 30px; left: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--card); box-shadow: 0 5px 20px rgba(0,0,0,0.2); border: 1px solid rgba(128,128,128,0.1); font-size: 24px; cursor: pointer; z-index: 100; }
 
-.actions { display: flex; gap: 12px; align-items: center; }
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 200; display: flex; align-items: center; justify-content: center; }
+.modal-content { background: var(--card); padding: 30px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; }
+.modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.btn-primary { background: var(--primary); color: white; padding: 12px; border-radius: 12px; border: none; font-weight: 600; font-size: 16px; }
+.btn-text { background: transparent; padding: 12px; color: var(--text-muted); border: none; font-size: 16px; }
+.btn-danger { background: rgba(255,59,48,0.1); color: var(--red); padding: 12px; border-radius: 12px; border: none; font-weight: 600; }
 
-.btn-primary {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    flex: 1;
-    transition: 0.2s;
-}
-.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+/* Settings Form */
+.settings-input-group { margin-bottom: 15px; text-align: right; }
+.settings-input-group label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 5px; }
+.settings-input-group input { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid rgba(128,128,128,0.2); background: var(--bg); color: var(--text); font-size: 16px; }
 
-.btn-text {
-    background: transparent; border: none; color: var(--text-muted);
-    cursor: pointer; padding: 8px; font-size: 0.9rem;
-}
-.btn-text:hover { color: var(--danger); }
-
-/* =========================
-   Journal List
-   ========================= */
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.badge { background: var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
-
-.journal-list { min-height: 200px; }
-
-.mealHeader {
-    display: flex; justify-content: space-between;
-    background: rgba(255,255,255,0.05);
-    padding: 10px 14px;
-    border-radius: 6px;
-    margin-top: 20px;
-    margin-bottom: 8px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    border-left: 3px solid var(--primary);
-}
-
-.item {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 14px 10px;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.2s;
-}
-.item:hover { background: rgba(255,255,255,0.02); }
-
-.item .name { font-weight: 600; display: block; margin-bottom: 4px; }
-.item .meta { font-size: 0.85rem; color: var(--text-muted); }
-.item .right { display: flex; align-items: center; gap: 12px; }
-
-.del {
-    background: none; border: none; color: var(--border);
-    font-size: 1.1rem; cursor: pointer; padding: 4px; transition: 0.2s;
-}
-.del:hover { color: var(--danger); transform: scale(1.1); }
-
-/* =========================
-   Sidebar Stats
-   ========================= */
-/* Score Card */
-.score-card {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    border: none;
-    text-align: center;
-    padding: 30px;
-}
-.score-label { font-size: 0.9rem; opacity: 0.8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-.score-number { font-size: 3.5rem; font-weight: 800; line-height: 1; }
-
-/* Smart Coach */
-.smart-coach {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    padding: 12px;
-    margin-top: 20px;
-    font-size: 0.9rem;
-    display: flex; align-items: flex-start; gap: 10px; text-align: right;
-    line-height: 1.4;
-}
-.smart-coach .icon { font-size: 1.2rem; }
-
-/* KPIs */
-.kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-
-.kpi-box {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px;
-    text-align: center;
-    display: flex; flex-direction: column; justify-content: center;
-}
-.kpi-box .lbl { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
-.kpi-box .val { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
-
-/* Nutrient Table */
-.compact-table { font-size: 0.85rem; }
-.trow {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 20px; /* עמודות קבועות */
-    gap: 8px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    align-items: center;
-}
-.trow.head {
-    font-weight: 600; color: var(--text-muted);
-    border-bottom: 2px solid var(--border);
-}
-.status { text-align: center; font-size: 0.9rem; }
-
-.gaps-alert {
-    margin-top: 15px;
-    font-size: 0.85rem;
-    color: var(--warning);
-    background: rgba(245, 158, 11, 0.1);
-    padding: 10px;
-    border-radius: 6px;
-}
-
-/* Settings */
-.settings-form { padding: 10px 0; }
-.settings-card summary { cursor: pointer; font-weight: 600; color: var(--primary); padding: 5px 0; }
-.data-tools {
-    margin-top: 15px; padding-top: 15px;
-    border-top: 1px solid var(--border);
-    display: flex; gap: 10px; font-size: 0.85rem; flex-wrap: wrap;
-}
-.data-tools button, .data-tools label {
-    background: none; border: 1px solid var(--border);
-    color: var(--text-muted); padding: 5px 10px; border-radius: 4px; cursor: pointer;
-}
-.text-danger { color: var(--danger) !important; border-color: rgba(239, 68, 68, 0.3) !important; }
-
-/* --- Utilities --- */
+/* Utilities */
 .hidden { display: none !important; }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
