@@ -1,6 +1,6 @@
 /**
- * NutriPulse Pro - v17.0 SMARTER SCORING
- * אלגוריתם "ניהול סיכונים": קנסות על חריגות ואיזון מאקרו-נוטריאנטים.
+ * NutriPulse Pro - v17.0 SMARTER SCORING (Risk Management Edition)
+ * אלגוריתם ציון מתקדם שקונס על חריגות ומעודד איזון תזונתי.
  */
 
 const CONFIG = {
@@ -23,7 +23,7 @@ const CONFIG = {
 const Utils = {
     $: (id) => document.getElementById(id),
     uuid: () => Math.random().toString(36).substring(2, 11),
-    todayISO: () => new Date().toLocaleDateString('en-CA'),
+    todayISO: () => new Date().toLocaleDateString('en-CA'), // פורמט YYYY-MM-DD מדויק
     fmt: (n) => Math.round(n || 0).toLocaleString(),
     debounce: (fn, ms) => {
         let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); };
@@ -70,39 +70,35 @@ const UI = {
     updateStats(totals) {
         const t = State.settings.targets;
         
-        // --- אלגוריתם הציון החדש: "מבחן הבנקאי" ---
+        // --- אלגוריתם הציון החדש: ניהול סיכונים תזונתי ---
         
-        // 1. ציון חלבון (בסיס חיובי - 40 נקודות)
+        // 1. ציון בסיס על חלבון וקלוריות (עד 80 נקודות)
         let proteinScore = Math.min(totals.protein / t.protein, 1) * 40;
-
-        // 2. ציון קלוריות (בסיס חיובי - 40 נקודות)
         let kcalScore = 0;
         const kcalRatio = totals.kcal / t.kcal;
+        
         if (kcalRatio <= 1.05) {
             kcalScore = Math.min(kcalRatio, 1) * 40;
         } else {
-            // קנס חריפה על עודף קלוריות (כמו ריבית פיגורים)
+            // קנס חריף על עודף קלוריות - הציון צונח ככל שהחריגה גדולה
             kcalScore = Math.max(0, 40 - (kcalRatio - 1.05) * 80);
         }
 
-        // 3. בונוס ויטמינים (20 נקודות)
+        // 2. בונוס על גיוון ויטמינים (עד 20 נקודות)
         const micros = CONFIG.NUTRIENTS.filter(n => n.group === 'micro');
         const microAvg = micros.reduce((acc, n) => acc + Math.min(totals[n.key] / t[n.key], 1), 0) / micros.length;
         const vitaminScore = microAvg * 20;
 
-        // 4. קנסות "סיכון" (נתרן, שומן, פחמימות עודפות)
+        // 3. מערכת קנסות על חריגות (פחמימות, שומן, נתרן)
         let penalties = 0;
-        // נתרן
         if (totals.sodium_mg > t.sodium_mg) {
-            penalties += (totals.sodium_mg / t.sodium_mg - 1) * 50; 
+            penalties += (totals.sodium_mg / t.sodium_mg - 1) * 60; // קנס כבד על מלח
         }
-        // פחמימות (סוכרים)
         if (totals.carbs > t.carbs * 1.2) {
-            penalties += (totals.carbs / t.carbs - 1) * 30;
+            penalties += (totals.carbs / (t.carbs * 1.2) - 1) * 40; // קנס על עודף סוכר/פחמימה
         }
-        // שומן
         if (totals.fat > t.fat * 1.2) {
-            penalties += (totals.fat / t.fat - 1) * 20;
+            penalties += (totals.fat / (t.fat * 1.2) - 1) * 30; // קנס על עודף שומן
         }
 
         let finalScore = Math.round(proteinScore + kcalScore + vitaminScore - penalties);
@@ -111,13 +107,11 @@ const UI = {
         Utils.$('dailyScore').textContent = finalScore;
         const status = Utils.$('statusMessage');
         
-        // עדכון הודעת מצב לפי הציון האמיתי
         if (finalScore >= 90) { status.textContent = "מצוין! תזונה מאוזנת"; status.style.color = "var(--success)"; }
         else if (finalScore >= 70) { status.textContent = "טוב, אך דורש שיפור"; status.style.color = "var(--warning)"; }
-        else if (finalScore > 0) { status.textContent = "חריגה מהיעדים!"; status.style.color = "var(--danger)"; }
         else { status.textContent = "סיכון תזונתי גבוה"; status.style.color = "var(--danger)"; }
 
-        // עדכון ברים
+        // עדכון ברים (מאקרו)
         ['protein', 'carbs', 'fat'].forEach(k => {
             const pct = Math.min((totals[k] / t[k]) * 100, 100);
             Utils.$(`val${k.charAt(0).toUpperCase() + k.slice(1)}`).textContent = `${Utils.fmt(totals[k])}g`;
@@ -171,7 +165,7 @@ const App = {
         await this.loadFoods();
         Utils.$('datePicker').value = State.date;
         Utils.$('datePicker').onchange = (e) => { State.date = e.target.value; UI.render(); };
-        Utils.$('foodSearch').oninput = Utils.debounce((e) => this.handleSearch(e.target.value), 250);
+        Utils.$('foodSearch').oninput = Utils.debounce((e) => this.search(e.target.value), 250);
         Utils.$('modeGrams').onclick = () => UI.setMode('grams');
         Utils.$('modeUnits').onclick = () => UI.setMode('units');
         Utils.$('btnPlus').onclick = () => { const s = State.mode === 'grams' ? 50 : 1; Utils.$('amountInput').value = Number(Utils.$('amountInput').value) + s; };
