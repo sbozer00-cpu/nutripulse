@@ -1,5 +1,5 @@
 /* =========================
-   NutriPulse – Modern UI v3 (UX-first)
+   NutriPulse – Modern UI v3.1 (UX-first + Journal Smart Meals)
    Replace the entire styles.css with this file
    ========================= */
 
@@ -49,6 +49,15 @@ body{
     radial-gradient(900px 450px at 15% 0%, rgba(124,92,255,.25), transparent 62%),
     radial-gradient(900px 450px at 85% 10%, rgba(90,167,255,.20), transparent 62%),
     linear-gradient(180deg, var(--bg0), var(--bg1));
+}
+
+a{color:inherit}
+button, input, select { font: inherit; }
+
+:focus-visible{
+  outline:none;
+  box-shadow: var(--ring);
+  border-color: rgba(90,167,255,.55) !important;
 }
 
 /* =========================
@@ -123,7 +132,7 @@ h2{
 }
 
 /* =========================
-   Forms
+   Forms (inputs + selects)
    ========================= */
 
 .row{margin:12px 0}
@@ -135,7 +144,7 @@ h2{
   font-size:13px;
 }
 
-input{
+input, select{
   width:100%;
   height: var(--tap);
   padding:0 14px;
@@ -144,10 +153,28 @@ input{
   background: rgba(8,12,22,.58);
   color:var(--text);
   outline:none;
-  transition: border-color .15s ease, box-shadow .15s ease;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
 }
 
-input:focus{
+select{
+  appearance:none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(233,240,255,.7) 50%),
+    linear-gradient(135deg, rgba(233,240,255,.7) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%;
+  background-size:6px 6px, 6px 6px;
+  background-repeat:no-repeat;
+  padding-inline-end: 40px;
+}
+
+/* remove spinners on number inputs (optional) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+input[type="number"]{ -moz-appearance: textfield; }
+
+input:focus, select:focus{
   border-color: rgba(90,167,255,.50);
   box-shadow: var(--ring);
 }
@@ -158,6 +185,17 @@ input:focus{
   align-items:center;
 }
 .inline input{flex:1}
+
+/* Nice “amount” row if you use amountMode + amountInput */
+.amountRow{
+  display:grid;
+  grid-template-columns: 140px 1fr;
+  gap:10px;
+  align-items:center;
+}
+@media (max-width: 540px){
+  .amountRow{ grid-template-columns: 1fr; }
+}
 
 /* =========================
    Buttons
@@ -195,6 +233,12 @@ input:focus{
 }
 
 .fileBtn{display:inline-block}
+
+/* Cancel edit (if you have #cancelEdit) */
+#cancelEdit{
+  border-color: rgba(255,255,255,.16);
+  background: rgba(255,255,255,.06);
+}
 
 /* =========================
    Chips
@@ -302,7 +346,7 @@ input:focus{
 
 .score{
   text-align:center;
-  min-width:160px;
+  min-width:170px;
   border:1px solid rgba(255,255,255,.12);
   border-radius: 20px;
   padding:14px 12px;
@@ -350,21 +394,49 @@ input:focus{
 }
 
 /* =========================
-   JOURNAL (Today List) – MAX UX
+   JOURNAL – Smart Meals UX
    ========================= */
 
-/* makes the journal area feel big even with few items */
 #todayList{
   margin-top:10px;
-  padding:12px;
+  padding:14px;
   border-radius: 20px;
   border:1px solid rgba(255,255,255,.10);
   background: rgba(8,12,22,.38);
-  min-height: 340px; /* <-- BIGGER journal */
+  min-height: 380px;
 }
 
-/* list item = big card */
-.list .item{
+/* Meal section header (used by your JS renderTodayList) */
+.mealHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+
+  margin:14px 0 6px;
+  padding:10px 12px;
+
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.10);
+  background: linear-gradient(135deg, rgba(90,167,255,.12), rgba(124,92,255,.08));
+  box-shadow: 0 10px 26px rgba(0,0,0,.22);
+
+  font-weight:950;
+  letter-spacing:.2px;
+}
+
+.mealHeader .kcal{
+  font-weight:800;
+  font-size:13px;
+  color: rgba(233,240,255,.85);
+  padding:6px 10px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.06);
+}
+
+/* list item big card */
+.list .item, #todayList .item{
   position:relative;
   display:flex;
   justify-content:space-between;
@@ -382,25 +454,25 @@ input:focus{
   transition: transform .08s ease, border-color .15s ease, background .15s ease;
 }
 
-.list .item:hover{
+.list .item:hover, #todayList .item:hover{
   transform: translateY(-2px);
   border-color: rgba(90,167,255,.24);
   background: rgba(8,12,22,.72);
 }
 
-/* left accent line */
-.list .item::before{
+/* accent line (RTL friendly) */
+.list .item::before, #todayList .item::before{
   content:"";
   position:absolute;
   top:12px;
   bottom:12px;
-  right:12px;            /* RTL friendly */
+  right:12px;
   width:7px;
   border-radius:999px;
   background: rgba(255,255,255,.10);
 }
 
-/* name bigger + stronger */
+/* name bigger */
 .item .name{
   font-weight:950;
   font-size:18px;
@@ -408,10 +480,13 @@ input:focus{
   line-height:1.2;
 }
 
-/* meta becomes a visible “pill” */
+/* meta as pill */
 .item .meta{
   margin-top:10px;
-  display:inline-block;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+
   padding:7px 10px;
   border-radius: 999px;
   border:1px solid rgba(255,255,255,.10);
@@ -420,23 +495,21 @@ input:focus{
   font-size:13px;
 }
 
-/* optional icon for meta (looks modern) */
 .item .meta::before{
-  content:"🕒 ";
-  opacity:.85;
+  content:"🕒";
+  opacity:.9;
 }
 
-/* color labels */
 .item .name.green{color: var(--green)}
 .item .name.red{color: var(--red)}
 
-/* if browser supports :has(), color the accent + border by health */
+/* if browser supports :has(), color the accent by health */
 @supports selector(:has(*)){
-  .list .item:has(.name.green)::before{ background: rgba(34,197,94,.85); }
-  .list .item:has(.name.red)::before{ background: rgba(239,68,68,.85); }
+  .item:has(.name.green)::before{ background: rgba(34,197,94,.85); }
+  .item:has(.name.red)::before{ background: rgba(239,68,68,.85); }
 
-  .list .item:has(.name.green){ border-color: rgba(34,197,94,.22); }
-  .list .item:has(.name.red){ border-color: rgba(239,68,68,.22); }
+  .item:has(.name.green){ border-color: rgba(34,197,94,.22); }
+  .item:has(.name.red){ border-color: rgba(239,68,68,.22); }
 }
 
 /* right controls */
@@ -446,11 +519,24 @@ input:focus{
   align-items:center;
 }
 
-/* delete button becomes clearer */
-.item .del{
+/* compact buttons inside items */
+.item .right .btn{
   height: 40px;
   padding:0 12px;
   border-radius: 14px;
+}
+
+/* clearer delete */
+.item .right .btn.danger{
+  box-shadow: 0 10px 20px rgba(239,68,68,.08);
+}
+
+/* when journal is empty (note) */
+#todayList .note{
+  padding:14px;
+  border-radius: 16px;
+  border:1px dashed rgba(255,255,255,.18);
+  background: rgba(8,12,22,.35);
 }
 
 /* =========================
@@ -545,6 +631,20 @@ input:focus{
   color:var(--muted);
   text-align:center;
   padding:18px 0 30px;
+}
+
+/* =========================
+   Small screens polish
+   ========================= */
+
+@media (max-width: 560px){
+  .header h1{font-size:26px}
+  .score{min-width:150px}
+  .scoreValue{font-size:34px}
+
+  /* journal controls stack nicer */
+  .item .right{flex-direction:column; align-items:stretch}
+  .item .right .btn{width:100%}
 }
 
 /* reduce motion */
