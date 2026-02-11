@@ -2,100 +2,135 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NutriPulse Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriPulse Professional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div class="app-container">
-    
-    <header class="header">
-        <div class="logo">NutriPulse</div>
-        <input type="date" id="datePicker" class="date-trigger">
-    </header>
+<div class="app-wrapper">
 
-    <div class="summary-card">
-        <div class="ring-wrapper">
-            <div class="progress-ring" style="--p:0" id="kcalRing">
-                <div class="ring-text">
-                    <span class="ring-val" id="kcalVal">0</span>
-                    <span class="ring-label">קלוריות</span>
+    <main class="main-column">
+        
+        <header class="top-header">
+            <div class="brand">NutriPulse <span class="pro-badge">PRO</span></div>
+            <input type="date" id="datePicker">
+        </header>
+
+        <div class="card add-card">
+            <h2>הוספת מזון</h2>
+            <div class="search-box">
+                <input type="text" id="foodSearch" placeholder="מה אכלת? (למשל: חזה עוף, טחינה...)" autocomplete="off">
+                <ul id="foodResults" class="results-list hidden"></ul>
+            </div>
+
+            <div id="editPanel" class="edit-panel hidden">
+                <div class="food-header">
+                    <span id="foodNameDisplay" class="fname"></span>
+                    <span id="foodKcalDisplay" class="fkcal"></span>
+                </div>
+
+                <div class="controls">
+                    <div class="toggle-group">
+                        <button id="modeGrams" class="t-btn active">גרם (g)</button>
+                        <button id="modeUnits" class="t-btn">יחידות</button>
+                    </div>
+                    
+                    <div class="qty-control">
+                        <button id="btnMinus" class="q-btn">−</button>
+                        <input type="number" id="amountInput" value="100">
+                        <button id="btnPlus" class="q-btn">+</button>
+                    </div>
+                </div>
+
+                <div id="quickChips" class="chips"></div>
+
+                <button id="addBtn" class="action-btn">הוסף ליומן</button>
+            </div>
+        </div>
+
+        <div class="card journal-card">
+            <div class="card-head">
+                <h3>יומן אכילה יומי</h3>
+                <span id="totalKcalJournal" class="tag">0 קלוריות</span>
+            </div>
+            <div id="journalList" class="journal-list"></div>
+        </div>
+    </main>
+
+
+    <aside class="sidebar">
+        
+        <div class="stat-card score-section">
+            <div class="score-circle">
+                <span id="dailyScore">0</span>
+                <small>ציון</small>
+            </div>
+            <div class="score-info">
+                <h4>ניתוח יומי</h4>
+                <div id="statusMessage">טרם הוזנו נתונים</div>
+            </div>
+        </div>
+
+        <div id="alertsBox" class="alert-box hidden">
+            <div class="alert-title">⚠️ שים לב:</div>
+            <ul id="alertsList"></ul>
+        </div>
+
+        <div class="stat-card">
+            <h4>מאקרו-נוטריאנטים</h4>
+            <div class="macro-bars">
+                <div class="mb-item">
+                    <div class="mb-label">
+                        <span>חלבון</span>
+                        <span id="valProtein">0g</span>
+                    </div>
+                    <div class="progress"><div id="barProtein" class="fill p"></div></div>
+                </div>
+                <div class="mb-item">
+                    <div class="mb-label">
+                        <span>פחמימה</span>
+                        <span id="valCarbs">0g</span>
+                    </div>
+                    <div class="progress"><div id="barCarbs" class="fill c"></div></div>
+                </div>
+                <div class="mb-item">
+                    <div class="mb-label">
+                        <span>שומן</span>
+                        <span id="valFat">0g</span>
+                    </div>
+                    <div class="progress"><div id="barFat" class="fill f"></div></div>
                 </div>
             </div>
         </div>
-        <div class="macros-row">
-            <div class="macro-item">
-                <span class="dot p"></span>
-                <span class="lbl">חלבון</span>
-                <span class="val" id="proteinVal">0g</span>
-            </div>
-            <div class="macro-item">
-                <span class="dot c"></span>
-                <span class="lbl">פחמימה</span>
-                <span class="val" id="carbsVal">0g</span>
-            </div>
-            <div class="macro-item">
-                <span class="dot f"></span>
-                <span class="lbl">שומן</span>
-                <span class="val" id="fatVal">0g</span>
-            </div>
-        </div>
-    </div>
 
-    <div class="action-card">
-        <h2>הוספת מזון</h2>
+        <div class="stat-card micros-card">
+            <h4>ויטמינים ומינרלים</h4>
+            <div class="micros-grid" id="microsList">
+                </div>
+        </div>
         
-        <div class="search-container">
-            <input type="text" id="foodSearch" placeholder="מה אכלת? (למשל: ביצה, תפוח)" autocomplete="off">
-            <ul id="foodResults" class="results-list hidden"></ul>
+        <div class="sidebar-footer">
+            <button id="settingsBtn">⚙️ הגדרות</button>
+            <button id="resetApp" class="danger-text">איפוס</button>
         </div>
 
-        <div id="editPanel" class="edit-panel hidden">
-            <div class="food-title" id="foodNameDisplay">שם המזון</div>
-            
-            <div class="toggle-row">
-                <button class="toggle-btn active" id="modeGrams">לפי משקל (g)</button>
-                <button class="toggle-btn" id="modeUnits">לפי יחידות</button>
-            </div>
-
-            <div class="input-big-wrapper">
-                <button class="qty-btn" id="btnMinus">−</button>
-                <input type="number" id="amountInput" value="100">
-                <button class="qty-btn" id="btnPlus">+</button>
-            </div>
-            
-            <div class="chips-container" id="quickChips"></div>
-
-            <button id="addBtn" class="btn-main">הוסף ליומן</button>
-        </div>
-    </div>
-
-    <div id="smartCoach" class="coach-bubble hidden">
-        <span class="emoji">💡</span>
-        <span id="coachText"></span>
-    </div>
-
-    <div class="journal-section">
-        <h3>היום שלי</h3>
-        <div id="journalList" class="journal-list"></div>
-    </div>
-
-    <button id="settingsBtn" class="fab-settings">⚙️</button>
-    <div id="settingsModal" class="modal hidden">
-        <div class="modal-content">
-            <h3>הגדרות יעדים</h3>
-            <div id="settingsForm"></div>
-            <div class="modal-actions">
-                <button id="saveSettings" class="btn-primary">שמור</button>
-                <button id="closeSettings" class="btn-text">סגור</button>
-                <button id="resetApp" class="btn-danger">איפוס נתונים</button>
-            </div>
-        </div>
-    </div>
+    </aside>
 
 </div>
+
+<div id="settingsModal" class="modal hidden">
+    <div class="modal-content">
+        <h3>הגדרת יעדים אישיים</h3>
+        <div id="settingsForm"></div>
+        <div class="modal-actions">
+            <button id="saveSettings" class="action-btn">שמור שינויים</button>
+            <button id="closeSettings" class="close-btn">סגור</button>
+        </div>
+    </div>
+</div>
+
 <script src="app.js"></script>
 </body>
 </html>
