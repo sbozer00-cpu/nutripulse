@@ -6,6 +6,7 @@
   <title>NutriPulse — Daily Nutrition Score</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <header class="container">
     <div class="header">
@@ -20,8 +21,12 @@
       <h2>הוספת מזון</h2>
 
       <div class="row">
-        <label class="label">תאריך</label>
-        <input id="datePicker" type="date" />
+        <label class="label">תאריך ושעה</label>
+        <div class="inline">
+          <input id="datePicker" type="date" />
+          <input id="timePicker" type="time" />
+        </div>
+        <p class="note">השעה משפיעה על חלוקת היומן לבוקר/צהריים/ערב.</p>
       </div>
 
       <div class="row">
@@ -32,25 +37,54 @@
 
       <div id="selectedFood" class="selected hidden"></div>
 
+      <!-- EDIT MODE BAR (shown when editing an entry) -->
+      <div id="editBar" class="selected hidden">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:center">
+          <div style="font-weight:900">
+            מצב עריכה: <span id="editLabel" style="font-weight:700; color: var(--muted);">—</span>
+          </div>
+          <button id="cancelEdit" class="btn" type="button">בטל עריכה</button>
+        </div>
+        <p class="note" style="margin-top:10px">כשתלחץ "עדכן רשומה" השינוי יחליף את הרשומה הקיימת.</p>
+      </div>
+
       <div class="row">
-        <label class="label">כמות (גרם)</label>
+        <label class="label">כמות (גרמים / יחידות)</label>
+
         <div class="inline">
+          <!-- NEW: grams/units mode -->
+          <select id="amountMode" style="width:140px">
+            <option value="grams" selected>גרמים (g)</option>
+            <option value="units">יחידות</option>
+          </select>
+
+          <!-- Keep the SAME id (#gramsInput) for backward compatibility with your JS -->
           <input id="gramsInput" type="number" min="1" step="1" placeholder="100" />
+
           <button id="addBtn" class="btn primary" disabled>הוסף ליומן</button>
         </div>
-        <div class="quick">
+
+        <div class="quick" id="quickChips">
+          <!-- grams chips (compatible with existing JS that uses data-g) -->
           <button class="chip" data-g="50">50g</button>
           <button class="chip" data-g="100">100g</button>
           <button class="chip" data-g="150">150g</button>
           <button class="chip" data-g="200">200g</button>
+
+          <!-- optional unit chips (your upgraded JS can support data-u) -->
+          <button class="chip" data-u="1">1 יח'</button>
+          <button class="chip" data-u="2">2 יח'</button>
+          <button class="chip" data-u="3">3 יח'</button>
         </div>
+
+        <p class="note">במצב "יחידות" הכמות מייצגת מספר יחידות (למשל 3 ביצים). מומלץ להגדיר לכל מזון servingGrams ב־data.</p>
       </div>
 
       <hr class="sep" />
 
       <div class="row">
         <h3 class="h3">היומן של היום</h3>
-        <div id="todayList" class="list"></div>
+        <div id="todayList" class="list" aria-live="polite"></div>
       </div>
     </section>
 
@@ -59,7 +93,7 @@
       <div class="topline">
         <h2>סיכום יומי</h2>
         <div class="score">
-          <div class="scoreLabel">ציון יומי</div>
+          <div class="scoreLabel">ציון יומי (1–100)</div>
           <div id="dailyScore" class="scoreValue">—</div>
         </div>
       </div>
