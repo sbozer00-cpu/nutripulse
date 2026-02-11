@@ -1,10 +1,10 @@
 /**
- * NutriPulse Pro - v16.0 MASTER LOGIC
- * תיקון אלגוריתם הציון: קנסות על חריגות ובונוס על ויטמינים.
+ * NutriPulse Pro - v17.0 SMARTER SCORING
+ * אלגוריתם "ניהול סיכונים": קנסות על חריגות ואיזון מאקרו-נוטריאנטים.
  */
 
 const CONFIG = {
-    KEYS: { entries: "np_final_v16", settings: "st_final_v16" },
+    KEYS: { entries: "np_final_v17", settings: "st_final_v17" },
     NUTRIENTS: [
         { key: "kcal", label: "קלוריות", unit: "kcal", target: 2200, group: "macro" },
         { key: "protein", label: "חלבון", unit: "g", target: 140, group: "macro" },
@@ -69,33 +69,55 @@ const UI = {
 
     updateStats(totals) {
         const t = State.settings.targets;
-        const kcalPct = totals.kcal / t.kcal;
-        const proteinPct = totals.protein / t.protein;
-        const sodiumPct = totals.sodium_mg / t.sodium_mg;
-        const fatPct = totals.fat / t.fat;
+        
+        // --- אלגוריתם הציון החדש: "מבחן הבנקאי" ---
+        
+        // 1. ציון חלבון (בסיס חיובי - 40 נקודות)
+        let proteinScore = Math.min(totals.protein / t.protein, 1) * 40;
 
-        // חישוב ממוצע ויטמינים (0.0 עד 1.0)
+        // 2. ציון קלוריות (בסיס חיובי - 40 נקודות)
+        let kcalScore = 0;
+        const kcalRatio = totals.kcal / t.kcal;
+        if (kcalRatio <= 1.05) {
+            kcalScore = Math.min(kcalRatio, 1) * 40;
+        } else {
+            // קנס חריפה על עודף קלוריות (כמו ריבית פיגורים)
+            kcalScore = Math.max(0, 40 - (kcalRatio - 1.05) * 80);
+        }
+
+        // 3. בונוס ויטמינים (20 נקודות)
         const micros = CONFIG.NUTRIENTS.filter(n => n.group === 'micro');
         const microAvg = micros.reduce((acc, n) => acc + Math.min(totals[n.key] / t[n.key], 1), 0) / micros.length;
+        const vitaminScore = microAvg * 20;
 
-        // אלגוריתם ציון מאוזן
-        let score = 100;
-        if (kcalPct > 1.1) score -= (kcalPct - 1.1) * 60; // קנס כבד על חריגת קלוריות
-        if (proteinPct < 0.8) score -= (0.8 - proteinPct) * 40; // קנס על חוסר חלבון
-        if (sodiumPct > 1.0) score -= (sodiumPct - 1.0) * 50; // קנס מאסיבי על עודף נתרן
-        if (fatPct > 1.2) score -= (fatPct - 1.2) * 20; // קנס על עודף שומן
+        // 4. קנסות "סיכון" (נתרן, שומן, פחמימות עודפות)
+        let penalties = 0;
+        // נתרן
+        if (totals.sodium_mg > t.sodium_mg) {
+            penalties += (totals.sodium_mg / t.sodium_mg - 1) * 50; 
+        }
+        // פחמימות (סוכרים)
+        if (totals.carbs > t.carbs * 1.2) {
+            penalties += (totals.carbs / t.carbs - 1) * 30;
+        }
+        // שומן
+        if (totals.fat > t.fat * 1.2) {
+            penalties += (totals.fat / t.fat - 1) * 20;
+        }
 
-        // שקלול סופי: 70% הרכב מאקרו, 30% גיוון ויטמינים
-        score = (score * 0.7) + (microAvg * 30);
-        const finalScore = Math.max(0, Math.min(100, Math.round(score)));
+        let finalScore = Math.round(proteinScore + kcalScore + vitaminScore - penalties);
+        finalScore = Math.max(0, Math.min(100, finalScore));
 
         Utils.$('dailyScore').textContent = finalScore;
         const status = Utils.$('statusMessage');
-        if (finalScore >= 85) status.textContent = "מצוין! תפריט מאוזן";
-        else if (finalScore >= 65) status.textContent = "טוב, אך יש חריגות";
-        else status.textContent = "תזונה לא מאוזנת היום";
+        
+        // עדכון הודעת מצב לפי הציון האמיתי
+        if (finalScore >= 90) { status.textContent = "מצוין! תזונה מאוזנת"; status.style.color = "var(--success)"; }
+        else if (finalScore >= 70) { status.textContent = "טוב, אך דורש שיפור"; status.style.color = "var(--warning)"; }
+        else if (finalScore > 0) { status.textContent = "חריגה מהיעדים!"; status.style.color = "var(--danger)"; }
+        else { status.textContent = "סיכון תזונתי גבוה"; status.style.color = "var(--danger)"; }
 
-        // עדכון ברים (מאקרו)
+        // עדכון ברים
         ['protein', 'carbs', 'fat'].forEach(k => {
             const pct = Math.min((totals[k] / t[k]) * 100, 100);
             Utils.$(`val${k.charAt(0).toUpperCase() + k.slice(1)}`).textContent = `${Utils.fmt(totals[k])}g`;
@@ -132,7 +154,7 @@ const UI = {
                     <div class="m-info"><b>${f.name}</b><span>${e.amount} ${e.unit === 'grams' ? "גרם" : "יח'"}</span></div>
                     <div class="m-actions"><span>${Utils.fmt(kcal)} kcal</span><button onclick="App.deleteEntry('${e.id}')" class="del-btn">✕</button></div>
                 </div>`;
-        }).join('') || "<p style='text-align:center; padding:20px; color:#94a3b8;'>אין רישומים להיום</p>";
+        }).join('') || "<p style='text-align:center; padding:20px;'>אין רישומים להיום</p>";
         Utils.$('totalKcalJournal').textContent = `${Utils.fmt(totalKcal)} קלוריות`;
     },
 
@@ -140,7 +162,6 @@ const UI = {
         State.mode = mode;
         Utils.$('modeGrams').classList.toggle('active', mode === 'grams');
         Utils.$('modeUnits').classList.toggle('active', mode === 'units');
-        Utils.$('amountInput').value = (mode === 'units') ? 1 : 100;
     }
 };
 
@@ -162,7 +183,7 @@ const App = {
         Utils.$('resetApp').onclick = () => { if(confirm("לאפס הכל?")) { localStorage.clear(); location.reload(); } };
         UI.render();
     },
-    async loadFoods() { try { const r = await fetch('data/foods.json'); State.foods = await r.json(); } catch(e) { console.error("Data fail"); } },
+    async loadFoods() { try { const r = await fetch('data/foods.json'); State.foods = await r.json(); } catch(e) { console.error("Data error"); } },
     handleSearch(q) {
         const res = Utils.$('foodResults'); res.innerHTML = "";
         if (q.trim().length < 2) return res.classList.add('hidden');
