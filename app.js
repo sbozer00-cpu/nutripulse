@@ -41,11 +41,8 @@ const DEFAULT_SETTINGS = {
     magnesium_mg: 400,
     potassium_mg: 3400,
   },
-  // weights only affect score calculation
   weights: {
-    // calories should be "close to target", not "more is better"
     kcal: 0.8,
-
     protein: 2.0,
     fiber: 1.5,
 
@@ -64,6 +61,7 @@ const DEFAULT_SETTINGS = {
 
 let FOODS = [];
 let selectedFoodId = null;
+let editingEntryId = null;
 
 const $ = (id) => document.getElementById(id);
 
@@ -97,7 +95,6 @@ function saveJSON(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-// Merge defaults into existing settings so old users won't break
 function deepMergeDefaults(base, defaults) {
   const out = Array.isArray(base) ? [...base] : { ...(base || {}) };
   for (const [k, v] of Object.entries(defaults)) {
@@ -113,17 +110,24 @@ function deepMergeDefaults(base, defaults) {
 function ensureSettings() {
   const current = loadJSON(LS.settings, null);
   const merged = deepMergeDefaults(current, DEFAULT_SETTINGS);
-
-  // sanitize threshold
   merged.scoreThreshold = clamp(Number(merged.scoreThreshold ?? 0.7), 0, 0.99);
-
   saveJSON(LS.settings, merged);
   return merged;
 }
 
 function entriesAll() {
+  // Backward compatible: old entries may have only { grams }
   const arr = loadJSON(LS.entries, []);
-  return Array.isArray(arr) ? arr : [];
+  const safe = Array.isArray(arr) ? arr : [];
+  return safe.map((e) => {
+    if (!e || typeof e !== "object") return e;
+    if (e.unit == null && e.amount == null && e.grams != null) {
+      return { ...e, unit: "grams", amount: Number(e.grams) || 0 };
+    }
+    if (e.unit == null && e.amount != null) return { ...e, unit: "grams" };
+    if (e.amount == null && e.unit === "grams" && e.grams != null) return { ...e, amount: Number(e.grams) || 0 };
+    return e;
+  });
 }
 
 function entriesForDate(dateISO) {
@@ -142,6 +146,32 @@ function foodById(id) {
   return FOODS.find((f) => f.id === id);
 }
 
+/* ========= Meal grouping ========= */
+function mealLabelFromTime(timeStr) {
+  const h = parseInt((timeStr || "0:0").split(":")[0], 10);
+  if (h >= 5 && h < 11) return "בוקר";
+  if (h >= 11 && h < 16) return "צהריים";
+  return "ערב";
+}
+
+/* ========= Amount mode (grams / servings) ========= */
+function getModeEl() { return $("amountMode"); }
+function getAmountEl() { return $("amountInput") || $("gramsInput"); } // fallback
+function getCancelEditEl() { return $("cancelEdit"); }
+
+function entryEffectiveGrams(e) {
+  const unit = e.unit || "grams";
+  const amount = Number(e.amount ?? e.grams ?? 0) || 0;
+
+  if (unit === "servings") {
+    const f = foodById(e.foodId);
+    const sg = Number(f?.servingGrams || 0);
+    return sg > 0 ? amount * sg : 0;
+  }
+
+  return amount; // grams
+}
+
 function calcTotals(entries) {
   const totals = {};
   NUTRIENTS.forEach((n) => (totals[n.key] = 0));
@@ -150,8 +180,8 @@ function calcTotals(entries) {
     const f = foodById(e.foodId);
     if (!f) continue;
 
-    const grams = Number(e.grams) || 0;
-    if (grams <= 0) continue;
+    const grams = entryEffectiveGrams(e);
+    if (!grams || grams <= 0) continue;
 
     const factor = grams / 100;
 
@@ -171,33 +201,26 @@ function calcTotals(entries) {
   return totals;
 }
 
-// ---------- SCORE (1..10) ----------
+/* ========= SCORE (1..100) ========= */
 function nutrientCredit(consumed, goal, threshold) {
   if (!goal || goal <= 0) return 1;
   const p = consumed / goal;
-
   if (p < threshold) return 0;
   if (p >= 1) return 1;
-
   return (p - threshold) / (1 - threshold); // 0..1
 }
 
-// calories: best when close to target (symmetrical)
 function caloriesCredit(consumed, goal) {
   if (!goal || goal <= 0) return 1;
-
   const diff = Math.abs(consumed - goal);
-
-  const full = goal * 0.12; // <= 12% deviation => ~perfect
-  const zero = goal * 0.35; // >= 35% deviation => 0
-
+  const full = goal * 0.12; // perfect-ish
+  const zero = goal * 0.35; // too far
   if (diff <= full) return 1;
   if (diff >= zero) return 0;
-
-  return 1 - (diff - full) / (zero - full); // 1..0
+  return 1 - (diff - full) / (zero - full);
 }
 
-function calcDailyScore(totals, settings) {
+function calcDailyScore100(totals, settings) {
   const t = settings.targets || {};
   const w = settings.weights || {};
   const th = settings.scoreThreshold ?? 0.7;
@@ -212,19 +235,20 @@ function calcDailyScore(totals, settings) {
     const consumed = Number(totals[key] || 0);
     const goal = Number(t[key] || 0);
 
-    let credit = 0;
-    if (key === "kcal") credit = caloriesCredit(consumed, goal);
-    else credit = nutrientCredit(consumed, goal, th);
+    const credit = (key === "kcal")
+      ? caloriesCredit(consumed, goal)
+      : nutrientCredit(consumed, goal, th);
 
     sum += credit * weight;
     wsum += weight;
   }
 
-  const avg = wsum ? sum / wsum : 0;      // 0..1
-  return 1 + 9 * clamp(avg, 0, 1);        // 1..10
+  const avg = wsum ? (sum / wsum) : 0; // 0..1
+  const score = Math.round(1 + 99 * clamp(avg, 0, 1)); // 1..100
+  return clamp(score, 1, 100);
 }
 
-// ---------- FORMAT ----------
+/* ========= FORMAT ========= */
 function fmt(n, digits = 0) {
   const x = Number(n);
   if (!isFinite(x)) return "0";
@@ -238,13 +262,12 @@ function digitsForKey(key) {
   return 0;
 }
 
-// ---------- UI RENDER ----------
+/* ========= UI ========= */
 function renderSettingsForm(settings) {
   const wrap = $("settingsForm");
   if (!wrap) return;
 
   wrap.innerHTML = "";
-
   for (const n of NUTRIENTS) {
     const v = settings.targets?.[n.key];
     const div = document.createElement("div");
@@ -322,20 +345,11 @@ function renderGaps(totals, settings) {
 
   const t = settings.targets || {};
   const keys = [
-    "protein",
-    "fiber",
-    "vitaminC_mg",
-    "calcium_mg",
-    "iron_mg",
-    "magnesium_mg",
-    "potassium_mg",
-    "vitaminB12_ug",
-    "folate_ug",
-    "vitaminA_ug",
+    "protein","fiber","vitaminC_mg","calcium_mg","iron_mg",
+    "magnesium_mg","potassium_mg","vitaminB12_ug","folate_ug","vitaminA_ug",
   ];
 
   const gaps = [];
-
   for (const k of keys) {
     const goal = Number(t[k] || 0);
     const consumed = Number(totals[k] || 0);
@@ -344,9 +358,11 @@ function renderGaps(totals, settings) {
     if (consumed < goal) {
       const n = NUTRIENTS.find((x) => x.key === k);
       const diff = goal - consumed;
-      const unit = n?.unit || "";
-      const pretty = fmt(diff, digitsForKey(k));
-      gaps.push({ label: n?.label || k, diff: pretty, unit });
+      gaps.push({
+        label: n?.label || k,
+        diff: fmt(diff, digitsForKey(k)),
+        unit: n?.unit || "",
+      });
     }
   }
 
@@ -355,7 +371,8 @@ function renderGaps(totals, settings) {
     return;
   }
 
-  el.innerHTML = `<ul>${gaps.map(g => `<li><strong>${g.label}</strong>: חסר בערך ${g.diff} ${g.unit}</li>`).join("")}</ul>`;
+  el.innerHTML =
+    `<ul>${gaps.map(g => `<li><strong>${g.label}</strong>: חסר בערך ${g.diff} ${g.unit}</li>`).join("")}</ul>`;
 }
 
 function renderKPIs(totals) {
@@ -364,16 +381,10 @@ function renderKPIs(totals) {
   if ($("fiberTotal")) $("fiberTotal").textContent = fmt(totals.fiber || 0, 1);
 }
 
-// score is 1..10; show — if no entries that day
-function renderScore(score10, hasEntries) {
+function renderScore(score100, hasEntries) {
   const el = $("dailyScore");
   if (!el) return;
-
-  if (!hasEntries) {
-    el.textContent = "—";
-    return;
-  }
-  el.textContent = clamp(score10, 1, 10).toFixed(1);
+  el.textContent = hasEntries ? String(clamp(score100, 1, 100)) : "—";
 }
 
 function tagText(food) {
@@ -408,17 +419,18 @@ function renderSelectedFood(food) {
   box.innerHTML = `
     <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
       <div>
-        <div class="name ${cls}" style="font-size:16px;font-weight:800">${food.name}</div>
-        <div class="tag ${cls}" style="margin-top:4px">${tagText(food)} • ${food.healthNote || ""}</div>
+        <div class="name ${cls}" style="font-size:16px;font-weight:900">${food.name}</div>
+        <div class="tag ${cls}" style="margin-top:6px">${tagText(food)}${food.healthNote ? ` • ${food.healthNote}` : ""}</div>
+        ${food.servingGrams ? `<div class="note" style="margin-top:6px">מנה/יחידה: ${food.servingGrams}g</div>` : ""}
       </div>
       <div style="color:var(--muted);font-size:12px;text-align:left">
         ל-100g: ${p.kcal ?? 0}kcal, P${p.protein ?? 0}g
       </div>
     </div>
-    ${food.servingGrams ? `<div class="note" style="margin-top:8px">מנה נוחה: ${food.servingGrams}g</div>` : ""}
   `;
 }
 
+/* ========= Journal: grouped by meals + edit ========= */
 function renderTodayList(entries) {
   const wrap = $("todayList");
   if (!wrap) return;
@@ -428,38 +440,73 @@ function renderTodayList(entries) {
     return;
   }
 
-  const html = entries
-    .slice()
-    .sort((a, b) => (a.time || "").localeCompare(b.time || ""))
-    .map((e) => {
-      const f = foodById(e.foodId);
-      const cls = healthClass(f);
-      const icon = f?.healthTag === "green" ? "🍏" : f?.healthTag === "red" ? "🍰" : "•";
+  const sorted = entries.slice().sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+  const groups = { "בוקר": [], "צהריים": [], "ערב": [] };
 
-      const grams = Number(e.grams || 0);
-      const kcal = f ? (Number(f.per100g?.kcal || 0) * (grams / 100)) : 0;
+  for (const e of sorted) {
+    const label = mealLabelFromTime(e.time || "00:00");
+    groups[label].push(e);
+  }
 
-      return `
-        <div class="item">
-          <div>
-            <div class="name ${cls}">${icon} ${f?.name || "מזון לא מוכר"}</div>
-            <div class="meta">${e.time || ""} • ${grams}g • ~${Math.round(kcal)} kcal</div>
+  const sections = [];
+
+  for (const label of ["בוקר", "צהריים", "ערב"]) {
+    const list = groups[label];
+    if (!list.length) continue;
+
+    const mealTotals = calcTotals(list);
+
+    sections.push(`
+      <div class="mealHeader">
+        <div>${label}</div>
+        <div class="kcal">~${Math.round(mealTotals.kcal || 0)} kcal</div>
+      </div>
+    `);
+
+    sections.push(
+      list.map((e) => {
+        const f = foodById(e.foodId);
+        const cls = healthClass(f);
+        const icon = f?.healthTag === "green" ? "🍏" : f?.healthTag === "red" ? "🍰" : "•";
+
+        const gramsEffective = entryEffectiveGrams(e);
+        const kcal = f ? (Number(f.per100g?.kcal || 0) * (gramsEffective / 100)) : 0;
+
+        const unit = e.unit || "grams";
+        const amount = Number(e.amount ?? e.grams ?? 0) || 0;
+        const qtyStr = unit === "servings" ? `${amount} יח׳` : `${Math.round(amount)}g`;
+
+        const title =
+          unit === "servings" ? `${icon} ${f?.name || "מזון לא מוכר"} ×${amount}` : `${icon} ${f?.name || "מזון לא מוכר"}`;
+
+        return `
+          <div class="item">
+            <div>
+              <div class="name ${cls}">${title}</div>
+              <div class="meta">${e.time || ""} • ${qtyStr} • ~${Math.round(kcal)} kcal</div>
+            </div>
+            <div class="right">
+              <button class="btn" data-edit="${e.id}">ערוך</button>
+              <button class="btn danger del" data-del="${e.id}">מחק</button>
+            </div>
           </div>
-          <div class="right">
-            <button class="btn del" data-del="${e.id}">מחק</button>
-          </div>
-        </div>
-      `;
-    })
-    .join("");
+        `;
+      }).join("")
+    );
+  }
 
-  wrap.innerHTML = html;
+  wrap.innerHTML = sections.join("");
 
   wrap.querySelectorAll("[data-del]").forEach((btn) => {
     btn.addEventListener("click", () => deleteEntry(btn.getAttribute("data-del")));
   });
+
+  wrap.querySelectorAll("[data-edit]").forEach((btn) => {
+    btn.addEventListener("click", () => startEditEntry(btn.getAttribute("data-edit")));
+  });
 }
 
+/* ========= Add / Update ========= */
 function upsertRecent(foodId) {
   const recent = loadJSON(LS.recent, []);
   const list = Array.isArray(recent) ? recent : [];
@@ -468,32 +515,116 @@ function upsertRecent(foodId) {
   saveJSON(LS.recent, filtered.slice(0, 10));
 }
 
-function addEntry(dateISO) {
-  const grams = Number($("gramsInput")?.value);
-  if (!selectedFoodId || !grams || grams <= 0) return;
+function clearEditMode() {
+  editingEntryId = null;
+  const cancel = getCancelEditEl();
+  if (cancel) cancel.style.display = "none";
+  const addBtn = $("addBtn");
+  if (addBtn) addBtn.textContent = "הוסף";
+}
+
+function readAmountFromUI() {
+  const mode = getModeEl()?.value || "grams";
+  const amountEl = getAmountEl();
+  const amount = Number(amountEl?.value || 0);
+
+  if (!selectedFoodId || !isFinite(amount) || amount <= 0) return null;
+
+  if (mode === "servings") {
+    const f = foodById(selectedFoodId);
+    const sg = Number(f?.servingGrams || 0);
+    if (sg <= 0) {
+      alert("למזון הזה אין נתון 'מנה/יחידה'. השתמש בגרמים או הוסף servingGrams ב-foods.json.");
+      return null;
+    }
+  }
+
+  return { unit: mode, amount };
+}
+
+function addOrUpdateEntry(dateISO) {
+  const payload = readAmountFromUI();
+  if (!payload) return;
 
   const all = entriesAll();
+
+  if (editingEntryId) {
+    const idx = all.findIndex((e) => e?.id === editingEntryId);
+    if (idx >= 0) {
+      all[idx] = {
+        ...all[idx],
+        foodId: selectedFoodId,
+        unit: payload.unit,
+        amount: payload.amount,
+      };
+      saveJSON(LS.entries, all);
+      clearEditMode();
+      refresh();
+      return;
+    } else {
+      clearEditMode();
+    }
+  }
+
   all.push({
     id: safeUUID(),
     dateISO,
     time: nowTime(),
     foodId: selectedFoodId,
-    grams: Math.round(grams),
+    unit: payload.unit,     // "grams" | "servings"
+    amount: payload.amount, // grams OR number of units
   });
 
   saveJSON(LS.entries, all);
   upsertRecent(selectedFoodId);
 
-  $("gramsInput").value = "";
+  const amountEl = getAmountEl();
+  if (amountEl) amountEl.value = "";
   refresh();
 }
 
 function deleteEntry(id) {
   const all = entriesAll().filter((e) => e?.id !== id);
   saveJSON(LS.entries, all);
+  if (editingEntryId === id) clearEditMode();
   refresh();
 }
 
+function startEditEntry(id) {
+  const all = entriesAll();
+  const entry = all.find((e) => e?.id === id);
+  if (!entry) return;
+
+  selectedFoodId = entry.foodId;
+  const f = foodById(entry.foodId);
+  if (f) {
+    $("foodSearch").value = f.name || "";
+    renderSelectedFood(f);
+  }
+
+  const modeEl = getModeEl();
+  const amountEl = getAmountEl();
+  const unit = entry.unit || "grams";
+  const amount = Number(entry.amount ?? entry.grams ?? 0) || 0;
+
+  if (modeEl) modeEl.value = unit;
+  if (amountEl) amountEl.value = String(amount);
+
+  editingEntryId = entry.id;
+
+  const addBtn = $("addBtn");
+  if (addBtn) {
+    addBtn.disabled = false;
+    addBtn.textContent = "עדכן";
+  }
+
+  const cancel = getCancelEditEl();
+  if (cancel) cancel.style.display = "inline-block";
+
+  amountEl?.focus();
+}
+
+/* ========= Search ========= */
 function renderFoodResults(query) {
   const ul = $("foodResults");
   if (!ul) return;
@@ -509,7 +640,7 @@ function renderFoodResults(query) {
   for (const f of results) {
     const li = document.createElement("li");
 
-    const cls = f.healthTag === "green" ? "green" : (f.healthTag === "red" ? "red" : "");
+    const cls = healthClass(f);
     const label = f.healthTag === "green" ? "ירוק" : (f.healthTag === "red" ? "אדום" : "ניטרלי");
 
     li.innerHTML = `<span>${f.name}</span><span class="tag ${cls}">${label}</span>`;
@@ -522,14 +653,26 @@ function renderFoodResults(query) {
       renderSelectedFood(f);
       $("addBtn").disabled = false;
 
-      $("gramsInput").value = f.servingGrams ? String(f.servingGrams) : "100";
-      $("gramsInput").focus();
+      const modeEl = getModeEl();
+      const amountEl = getAmountEl();
+
+      // nice defaults:
+      if (f.servingGrams && modeEl) {
+        modeEl.value = "servings";
+        if (amountEl) amountEl.value = "1";
+      } else {
+        if (modeEl) modeEl.value = "grams";
+        if (amountEl) amountEl.value = "100";
+      }
+
+      amountEl?.focus();
     });
 
     ul.appendChild(li);
   }
 }
 
+/* ========= Export/Import/Reset ========= */
 function exportJSON() {
   const payload = {
     exportedAt: new Date().toISOString(),
@@ -558,6 +701,7 @@ function importJSON(file) {
       if (Array.isArray(data.favorites)) saveJSON(LS.favorites, data.favorites);
       if (Array.isArray(data.recent)) saveJSON(LS.recent, data.recent);
 
+      clearEditMode();
       refresh();
       alert("ייבוא הצליח ✅");
     } catch {
@@ -576,9 +720,11 @@ function resetAll() {
   localStorage.removeItem(LS.recent);
 
   ensureSettings();
+  clearEditMode();
   refresh();
 }
 
+/* ========= Refresh ========= */
 function refresh() {
   const settings = ensureSettings();
   const dateISO = $("datePicker")?.value || todayISO();
@@ -587,15 +733,16 @@ function refresh() {
   const totals = calcTotals(entries);
 
   const hasEntries = entries.length > 0;
-  const score10 = calcDailyScore(totals, settings);
+  const score100 = hasEntries ? calcDailyScore100(totals, settings) : null;
 
   renderKPIs(totals);
-  renderScore(score10, hasEntries);
+  renderScore(score100, hasEntries);
   renderNutrientTable(totals, settings);
   renderGaps(totals, settings);
   renderTodayList(entries);
 }
 
+/* ========= Foods load ========= */
 async function loadFoods() {
   try {
     const res = await fetch("data/foods.json", { cache: "no-store" });
@@ -607,35 +754,56 @@ async function loadFoods() {
   }
 }
 
+/* ========= Wire UI ========= */
 function wireUI() {
   const dp = $("datePicker");
-  dp.value = todayISO();
-  dp.addEventListener("change", refresh);
+  if (dp) {
+    dp.value = todayISO();
+    dp.addEventListener("change", () => {
+      clearEditMode();
+      refresh();
+    });
+  }
 
-  $("foodSearch").addEventListener("input", (e) => renderFoodResults(e.target.value));
+  $("foodSearch")?.addEventListener("input", (e) => renderFoodResults(e.target.value));
 
-  $("addBtn").disabled = true;
-  $("addBtn").addEventListener("click", () => addEntry(dp.value));
+  const addBtn = $("addBtn");
+  if (addBtn) {
+    addBtn.disabled = true;
+    addBtn.addEventListener("click", () => addOrUpdateEntry(dp?.value || todayISO()));
+  }
 
-  // Enter adds entry
-  $("gramsInput")?.addEventListener("keydown", (e) => {
+  // Enter adds/updates
+  getAmountEl()?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      addEntry(dp.value);
+      addOrUpdateEntry(dp?.value || todayISO());
     }
   });
 
+  // chips always set grams
   document.querySelectorAll(".chip").forEach((btn) => {
     btn.addEventListener("click", () => {
-      $("gramsInput").value = btn.dataset.g;
-      $("gramsInput").focus();
+      const modeEl = getModeEl();
+      if (modeEl) modeEl.value = "grams";
+      const amountEl = getAmountEl();
+      if (amountEl) amountEl.value = btn.dataset.g;
+      amountEl?.focus();
     });
   });
+
+  const cancel = getCancelEditEl();
+  if (cancel) {
+    cancel.addEventListener("click", () => {
+      clearEditMode();
+      refresh();
+    });
+  }
 
   const settings = ensureSettings();
   renderSettingsForm(settings);
 
-  $("saveSettings").addEventListener("click", () => {
+  $("saveSettings")?.addEventListener("click", () => {
     const s = ensureSettings();
     document.querySelectorAll("[data-target]").forEach((inp) => {
       const k = inp.getAttribute("data-target");
@@ -646,14 +814,14 @@ function wireUI() {
     alert("נשמר ✅");
   });
 
-  $("exportBtn").addEventListener("click", exportJSON);
-  $("importFile").addEventListener("change", (e) => {
+  $("exportBtn")?.addEventListener("click", exportJSON);
+  $("importFile")?.addEventListener("change", (e) => {
     const f = e.target.files?.[0];
     if (f) importJSON(f);
     e.target.value = "";
   });
 
-  $("resetBtn").addEventListener("click", resetAll);
+  $("resetBtn")?.addEventListener("click", resetAll);
 }
 
 (async function init() {
