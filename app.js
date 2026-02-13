@@ -1,15 +1,17 @@
 /**
- * NutriPulse Pro - v20.0 FULL DATA
- * כולל מסד נתונים מובנה של 150 פריטים + חיפוש חכם
+ * NutriPulse Pro - v21.0 FINAL FIX
+ * תיקון באג ויטמינים: כעת המערכת קוראת נתונים גם מ-micros
+ * וצובעת את הפסים בירוק.
  */
 
 // --- 1. הגדרות בסיס ---
 const CONFIG = {
-    KEYS: { entries: "np_v20_entries" },
+    KEYS: { entries: "np_v21_entries" },
     NUTRIENTS: [
         { key: "protein", label: "חלבון", target: 160, unit: "g" },
         { key: "carbs", label: "פחמימה", target: 220, unit: "g" },
         { key: "fat", label: "שומן", target: 70, unit: "g" },
+        // הערכים האלו נמצאים ב-micros ב-DB
         { key: "sodium_mg", label: "נתרן", target: 2300, unit: "mg" },
         { key: "sugar_g", label: "סוכר", target: 50, unit: "g" },
         { key: "calcium_mg", label: "סידן", target: 1000, unit: "mg" }
@@ -263,6 +265,7 @@ const UI = {
         this.renderJournal(daysEntries);
     },
 
+    // --- הפונקציה המתוקנת! ---
     calculateTotals(entries) {
         const t = { kcal: 0 };
         CONFIG.NUTRIENTS.forEach(n => t[n.key] = 0);
@@ -273,9 +276,22 @@ const UI = {
 
             const ratio = entry.grams / 100;
             
+            // חישוב קלוריות
             t.kcal += food.per100g.kcal * ratio;
+
+            // חישוב שאר הערכים (כולל בדיקה ב-micros)
             CONFIG.NUTRIENTS.forEach(n => {
-                t[n.key] += (food.per100g[n.key] || 0) * ratio;
+                let val = 0;
+                // בדיקה ב-per100g (למשל חלבון/פחמימה)
+                if (food.per100g[n.key] !== undefined) {
+                    val = food.per100g[n.key];
+                } 
+                // בדיקה ב-micros (למשל סידן/נתרן) - התיקון כאן!
+                else if (food.micros && food.micros[n.key] !== undefined) {
+                    val = food.micros[n.key];
+                }
+                
+                t[n.key] += val * ratio;
             });
         });
         return t;
@@ -285,29 +301,32 @@ const UI = {
         Utils.$('dailyCaloriesDisplay').textContent = Utils.fmt(totals.kcal);
         Utils.$('dailyGoalDisplay').textContent = `/ ${Utils.fmt(CONFIG.DAILY_CALORIE_TARGET)} יעד`;
         
+        // עדכון מאקרו (חלבון, פחמימה, שומן)
         ['protein', 'carbs', 'fat'].forEach(key => {
             const val = totals[key] || 0;
             const target = CONFIG.NUTRIENTS.find(n => n.key === key).target;
             const percent = Math.min((val / target) * 100, 100);
+            
             Utils.$(`val${key.charAt(0).toUpperCase() + key.slice(1)}`).textContent = `${Utils.fmt(val)}g`;
             Utils.$(`bar${key.charAt(0).toUpperCase() + key.slice(1)}`).style.width = `${percent}%`;
         });
 
+        // עדכון מיקרו (ויטמינים) - עם פס ירוק
         const microContainer = Utils.$('microsList');
         const micros = CONFIG.NUTRIENTS.filter(n => !['protein', 'carbs', 'fat'].includes(n.key));
         
         microContainer.innerHTML = micros.map(m => {
             const val = totals[m.key] || 0;
             const pct = Math.min((val / m.target) * 100, 100);
-            let statusColor = "bg-low";
-            if (pct > 100) statusColor = "bg-high";
-            else if (pct > 80) statusColor = "bg-good";
+            
+            // שימוש קבוע במחלקה הירוקה bg-good
+            const statusColor = "bg-good";
 
             return `
             <div class="micro-item">
                 <div class="micro-header">
                     <span>${m.label}</span>
-                    <span>${Utils.fmt(val)} / ${m.target}</span>
+                    <span>${Utils.fmt(val)} / ${m.target} <small>${m.unit}</small></span>
                 </div>
                 <div class="micro-track">
                     <div class="micro-fill ${statusColor}" style="width: ${pct}%"></div>
