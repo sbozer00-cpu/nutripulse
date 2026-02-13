@@ -1,6 +1,6 @@
 /* =========================================
-   NutriPulse Pro - Ultimate UI v15.0
-   סגירה סופית: ללא ציון, פוקוס על נתונים
+   NutriPulse Pro - Ultimate UI v16.0
+   תיקון סופי: תמיכה בפסים ירוקים זוהרים
    ========================================= */
 
 :root {
@@ -146,7 +146,7 @@ body {
 .meal-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #F1F5F9; }
 .del-btn { background: #FEE2E2; color: #EF4444; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-/* --- סרגל צד מעודכן: לוח מחוונים במקום ציון --- */
+/* --- סרגל צד מעודכן --- */
 .score-widget {
     background: linear-gradient(135deg, #1E3A8A, #2563EB); /* כחול יוקרתי */
     color: white;
@@ -154,7 +154,6 @@ body {
     padding: 24px;
     box-shadow: 0 10px 20px -5px rgba(30, 58, 138, 0.4);
     
-    /* תצוגה אנכית נקייה */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -164,7 +163,6 @@ body {
     overflow: hidden;
 }
 
-/* אלמנט קישוטי ברקע (אופציונלי) */
 .score-widget::after {
     content: '';
     position: absolute;
@@ -174,30 +172,15 @@ body {
     border-radius: 50%;
 }
 
-.summary-label {
-    font-size: 1.1rem;
-    font-weight: 500;
-    opacity: 0.9;
-}
-
-.summary-value {
-    font-size: 3.5rem;
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: -2px;
-}
-
+.summary-label { font-size: 1.1rem; font-weight: 500; opacity: 0.9; }
+.summary-value { font-size: 3.5rem; font-weight: 900; line-height: 1; letter-spacing: -2px; }
 .summary-subtext {
-    font-size: 0.9rem;
-    opacity: 0.8;
-    margin-top: 8px;
-    background: rgba(0,0,0,0.2);
-    align-self: flex-start; /* הצמדה לימין */
-    padding: 4px 12px;
-    border-radius: 20px;
+    font-size: 0.9rem; opacity: 0.8; margin-top: 8px;
+    background: rgba(0,0,0,0.2); align-self: flex-start;
+    padding: 4px 12px; border-radius: 20px;
 }
 
-/* --- סקאלות מאקרו ומיקרו --- */
+/* --- סקאלות מאקרו --- */
 .macro-row-wrapper { margin-bottom: 20px; margin-top: 24px; }
 .macro-info { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 8px; }
 .progress-track { background: #E2E8F0; height: 12px; border-radius: 10px; overflow: hidden; }
@@ -206,15 +189,31 @@ body {
 .bar.c { background: var(--warning); }
 .bar.f { background: var(--danger); }
 
-/* סקאלות הוויטמינים */
+/* --- סקאלות ויטמינים (החלק שתוקן) --- */
 .micro-item { margin-bottom: 16px; background: #F8FAFC; padding: 12px; border-radius: 10px; border: 1px solid var(--border); }
 .micro-header { display: flex; justify-content: space-between; font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; }
-.micro-track { background: #E2E8F0; height: 8px; border-radius: 10px; overflow: hidden; }
-.micro-fill { height: 100%; transition: width 0.6s ease; border-radius: 10px; }
 
-/* צבעי סטטוס */
+/* הבר האפור הריק */
+.micro-track { 
+    background: #E2E8F0; 
+    height: 8px; 
+    border-radius: 10px; 
+    overflow: hidden; 
+}
+
+/* הבר הצבעוני שמתמלא */
+.micro-fill { 
+    height: 100%; 
+    transition: width 0.6s ease; 
+    border-radius: 10px; 
+}
+
+/* צבעי סטטוס - הוספתי !important והצללה לירוק */
 .bg-low { background: var(--warning) !important; }
-.bg-good { background: var(--success) !important; }
+.bg-good { 
+    background: #10B981 !important; /* ירוק חי */
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.5); /* זוהר */
+}
 .bg-high { background: var(--danger) !important; }
 
 /* --- Utilities --- */
