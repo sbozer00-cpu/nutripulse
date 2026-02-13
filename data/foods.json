@@ -1,5 +1,4 @@
-const localFoodDB = [
-  // --- ירקות (1-20) ---
+[
   { "id": "1", "name": "מלפפון", "unit_name": "יחידה בינונית", "unit_weight": 100, "per100g": { "kcal": 15, "protein": 0.7, "carbs": 3.6, "fat": 0.1 }, "micros": { "sodium_mg": 2, "calcium_mg": 16, "sugar_g": 1.7 } },
   { "id": "2", "name": "עגבניה", "unit_name": "יחידה בינונית", "unit_weight": 120, "per100g": { "kcal": 18, "protein": 0.9, "carbs": 3.9, "fat": 0.2 }, "micros": { "sodium_mg": 5, "calcium_mg": 10, "sugar_g": 2.6 } },
   { "id": "3", "name": "פלפל אדום (גמבה)", "unit_name": "יחידה בינונית", "unit_weight": 150, "per100g": { "kcal": 31, "protein": 1, "carbs": 6, "fat": 0.3 }, "micros": { "sodium_mg": 4, "calcium_mg": 7, "sugar_g": 4.2 } },
@@ -20,8 +19,6 @@ const localFoodDB = [
   { "id": "18", "name": "דלעת (מבושלת)", "unit_name": "כוס קוביות", "unit_weight": 200, "per100g": { "kcal": 20, "protein": 0.7, "carbs": 4.9, "fat": 0.1 }, "micros": { "sodium_mg": 1, "calcium_mg": 15, "sugar_g": 2 } },
   { "id": "19", "name": "כרוב לבן (טרי)", "unit_name": "כוס חתוך", "unit_weight": 70, "per100g": { "kcal": 25, "protein": 1.3, "carbs": 5.8, "fat": 0.1 }, "micros": { "sodium_mg": 18, "calcium_mg": 40, "sugar_g": 3.2 } },
   { "id": "20", "name": "סלק (מבושל)", "unit_name": "יחידה", "unit_weight": 100, "per100g": { "kcal": 44, "protein": 1.7, "carbs": 10, "fat": 0.2 }, "micros": { "sodium_mg": 77, "calcium_mg": 16, "sugar_g": 8 } },
-
-  // --- פירות (21-40) ---
   { "id": "21", "name": "תפוח עץ", "unit_name": "יחידה בינונית", "unit_weight": 180, "per100g": { "kcal": 52, "protein": 0.3, "carbs": 14, "fat": 0.2 }, "micros": { "sodium_mg": 1, "calcium_mg": 6, "sugar_g": 10 } },
   { "id": "22", "name": "בננה", "unit_name": "יחידה בינונית", "unit_weight": 120, "per100g": { "kcal": 89, "protein": 1.1, "carbs": 23, "fat": 0.3 }, "micros": { "sodium_mg": 1, "calcium_mg": 5, "sugar_g": 12 } },
   { "id": "23", "name": "תפוז", "unit_name": "יחידה בינונית", "unit_weight": 130, "per100g": { "kcal": 47, "protein": 0.9, "carbs": 12, "fat": 0.1 }, "micros": { "sodium_mg": 0, "calcium_mg": 40, "sugar_g": 9 } },
@@ -42,8 +39,6 @@ const localFoodDB = [
   { "id": "38", "name": "צימוקים", "unit_name": "כף", "unit_weight": 10, "per100g": { "kcal": 299, "protein": 3.1, "carbs": 79, "fat": 0.5 }, "micros": { "sodium_mg": 11, "calcium_mg": 50, "sugar_g": 59 } },
   { "id": "39", "name": "רימון (גרגרים)", "unit_name": "חצי כוס", "unit_weight": 80, "per100g": { "kcal": 83, "protein": 1.7, "carbs": 19, "fat": 1.2 }, "micros": { "sodium_mg": 3, "calcium_mg": 10, "sugar_g": 14 } },
   { "id": "40", "name": "לימון (סחוט)", "unit_name": "יחידה", "unit_weight": 50, "per100g": { "kcal": 29, "protein": 1.1, "carbs": 9, "fat": 0.3 }, "micros": { "sodium_mg": 2, "calcium_mg": 26, "sugar_g": 2.5 } },
-
-  // --- חלבון מן החי (41-60) ---
   { "id": "41", "name": "חזה עוף (צלוי/מבושל)", "unit_name": "חזה שלם", "unit_weight": 150, "per100g": { "kcal": 165, "protein": 31, "carbs": 0, "fat": 3.6 }, "micros": { "sodium_mg": 74, "calcium_mg": 15, "sugar_g": 0 } },
   { "id": "42", "name": "פרגית (צלוי)", "unit_name": "סטייק פרגית", "unit_weight": 150, "per100g": { "kcal": 210, "protein": 24, "carbs": 0, "fat": 12 }, "micros": { "sodium_mg": 90, "calcium_mg": 12, "sugar_g": 0 } },
   { "id": "43", "name": "שוק עוף (מבושל, ללא עור)", "unit_name": "יחידה", "unit_weight": 100, "per100g": { "kcal": 170, "protein": 25, "carbs": 0, "fat": 8 }, "micros": { "sodium_mg": 90, "calcium_mg": 12, "sugar_g": 0 } },
@@ -64,8 +59,6 @@ const localFoodDB = [
   { "id": "58", "name": "חלבון ביצה (לבן)", "unit_name": "יחידה", "unit_weight": 35, "per100g": { "kcal": 52, "protein": 11, "carbs": 0.7, "fat": 0.2 }, "micros": { "sodium_mg": 166, "calcium_mg": 7, "sugar_g": 0.7 } },
   { "id": "59", "name": "פסטרמה (הודו)", "unit_name": "פרוסה", "unit_weight": 20, "per100g": { "kcal": 100, "protein": 18, "carbs": 2, "fat": 2 }, "micros": { "sodium_mg": 850, "calcium_mg": 10, "sugar_g": 1 } },
   { "id": "60", "name": "נקניק סלמי", "unit_name": "פרוסה", "unit_weight": 15, "per100g": { "kcal": 400, "protein": 20, "carbs": 2, "fat": 35 }, "micros": { "sodium_mg": 1200, "calcium_mg": 10, "sugar_g": 0.5 } },
-
-  // --- מוצרי חלב ותחליפים (61-80) ---
   { "id": "61", "name": "קוטג' 5%", "unit_name": "גביע", "unit_weight": 250, "per100g": { "kcal": 94, "protein": 11, "carbs": 2, "fat": 5 }, "micros": { "sodium_mg": 380, "calcium_mg": 100, "sugar_g": 2 } },
   { "id": "62", "name": "גבינה לבנה 5%", "unit_name": "גביע", "unit_weight": 250, "per100g": { "kcal": 95, "protein": 9.5, "carbs": 3.5, "fat": 5 }, "micros": { "sodium_mg": 300, "calcium_mg": 105, "sugar_g": 3.5 } },
   { "id": "63", "name": "גבינה צהובה 28%", "unit_name": "פרוסה", "unit_weight": 28, "per100g": { "kcal": 350, "protein": 24, "carbs": 0.5, "fat": 28 }, "micros": { "sodium_mg": 680, "calcium_mg": 800, "sugar_g": 0 } },
@@ -86,8 +79,6 @@ const localFoodDB = [
   { "id": "78", "name": "טופו (גולמי)", "unit_name": "שליש חבילה", "unit_weight": 100, "per100g": { "kcal": 140, "protein": 15, "carbs": 2, "fat": 8 }, "micros": { "sodium_mg": 10, "calcium_mg": 350, "sugar_g": 0.5 } },
   { "id": "79", "name": "סייטן", "unit_name": "מנה", "unit_weight": 100, "per100g": { "kcal": 120, "protein": 25, "carbs": 4, "fat": 1.5 }, "micros": { "sodium_mg": 150, "calcium_mg": 30, "sugar_g": 0 } },
   { "id": "80", "name": "שייק חלבון (אבקה)", "unit_name": "סקופ", "unit_weight": 30, "per100g": { "kcal": 380, "protein": 75, "carbs": 10, "fat": 5 }, "micros": { "sodium_mg": 200, "calcium_mg": 100, "sugar_g": 2 } },
-
-  // --- דגנים ופחמימות (81-105) ---
   { "id": "81", "name": "אורז לבן (מבושל)", "unit_name": "כוס", "unit_weight": 150, "per100g": { "kcal": 130, "protein": 2.7, "carbs": 28, "fat": 0.3 }, "micros": { "sodium_mg": 2, "calcium_mg": 10, "sugar_g": 0.1 } },
   { "id": "82", "name": "אורז מלא (מבושל)", "unit_name": "כוס", "unit_weight": 150, "per100g": { "kcal": 110, "protein": 2.6, "carbs": 23, "fat": 0.9 }, "micros": { "sodium_mg": 1, "calcium_mg": 10, "sugar_g": 0.2 } },
   { "id": "83", "name": "פסטה (מבושלת)", "unit_name": "כוס", "unit_weight": 140, "per100g": { "kcal": 158, "protein": 5.8, "carbs": 31, "fat": 0.9 }, "micros": { "sodium_mg": 1, "calcium_mg": 7, "sugar_g": 0.5 } },
@@ -113,8 +104,6 @@ const localFoodDB = [
   { "id": "103", "name": "חומוס גרגירים", "unit_name": "כוס", "unit_weight": 160, "per100g": { "kcal": 164, "protein": 9, "carbs": 27, "fat": 2.6 }, "micros": { "sodium_mg": 7, "calcium_mg": 49, "sugar_g": 0 } },
   { "id": "104", "name": "אפונה ירוקה (יבשה מבושלת)", "unit_name": "כוס", "unit_weight": 200, "per100g": { "kcal": 118, "protein": 8, "carbs": 21, "fat": 0.4 }, "micros": { "sodium_mg": 5, "calcium_mg": 20, "sugar_g": 0 } },
   { "id": "105", "name": "פולי סויה (אדממה)", "unit_name": "כוס (קלופים)", "unit_weight": 150, "per100g": { "kcal": 122, "protein": 11, "carbs": 10, "fat": 5 }, "micros": { "sodium_mg": 6, "calcium_mg": 60, "sugar_g": 2 } },
-
-  // --- אגוזים, שומנים וממרחים (106-120) ---
   { "id": "106", "name": "שמן זית", "unit_name": "כף", "unit_weight": 10, "per100g": { "kcal": 884, "protein": 0, "carbs": 0, "fat": 100 }, "micros": { "sodium_mg": 2, "calcium_mg": 1, "sugar_g": 0 } },
   { "id": "107", "name": "טחינה גולמית", "unit_name": "כף", "unit_weight": 15, "per100g": { "kcal": 595, "protein": 17, "carbs": 21, "fat": 53 }, "micros": { "sodium_mg": 12, "calcium_mg": 426, "sugar_g": 1 } },
   { "id": "108", "name": "טחינה מוכנה", "unit_name": "כף", "unit_weight": 15, "per100g": { "kcal": 250, "protein": 8, "carbs": 10, "fat": 20 }, "micros": { "sodium_mg": 300, "calcium_mg": 150, "sugar_g": 0.5 } },
@@ -130,8 +119,6 @@ const localFoodDB = [
   { "id": "118", "name": "מיונז", "unit_name": "כפית", "unit_weight": 5, "per100g": { "kcal": 680, "protein": 1, "carbs": 1, "fat": 75 }, "micros": { "sodium_mg": 600, "calcium_mg": 10, "sugar_g": 1 } },
   { "id": "119", "name": "מיונז לייט", "unit_name": "כפית", "unit_weight": 5, "per100g": { "kcal": 290, "protein": 0.5, "carbs": 8, "fat": 28 }, "micros": { "sodium_mg": 700, "calcium_mg": 10, "sugar_g": 3 } },
   { "id": "120", "name": "קטשופ", "unit_name": "כף", "unit_weight": 15, "per100g": { "kcal": 100, "protein": 1, "carbs": 25, "fat": 0.1 }, "micros": { "sodium_mg": 900, "calcium_mg": 15, "sugar_g": 22 } },
-
-  // --- חטיפים ומתוקים (121-135) ---
   { "id": "121", "name": "שוקולד פרה", "unit_name": "שורה/4 קוביות", "unit_weight": 20, "per100g": { "kcal": 530, "protein": 7, "carbs": 58, "fat": 31 }, "micros": { "sodium_mg": 80, "calcium_mg": 190, "sugar_g": 55 } },
   { "id": "122", "name": "במבה", "unit_name": "שקית קטנה", "unit_weight": 25, "per100g": { "kcal": 534, "protein": 17, "carbs": 40, "fat": 34 }, "micros": { "sodium_mg": 400, "calcium_mg": 20, "sugar_g": 2 } },
   { "id": "123", "name": "ביסלי", "unit_name": "שקית קטנה", "unit_weight": 35, "per100g": { "kcal": 490, "protein": 8, "carbs": 65, "fat": 23 }, "micros": { "sodium_mg": 800, "calcium_mg": 20, "sugar_g": 3 } },
@@ -147,8 +134,6 @@ const localFoodDB = [
   { "id": "133", "name": "חטיף חלבון", "unit_name": "חטיף (60 גרם)", "unit_weight": 60, "per100g": { "kcal": 360, "protein": 33, "carbs": 30, "fat": 10 }, "micros": { "sodium_mg": 250, "calcium_mg": 150, "sugar_g": 2 } },
   { "id": "134", "name": "חלבה", "unit_name": "חתיכה קטנה", "unit_weight": 20, "per100g": { "kcal": 550, "protein": 12, "carbs": 50, "fat": 35 }, "micros": { "sodium_mg": 50, "calcium_mg": 100, "sugar_g": 45 } },
   { "id": "135", "name": "דבש", "unit_name": "כפית", "unit_weight": 10, "per100g": { "kcal": 304, "protein": 0.3, "carbs": 82, "fat": 0 }, "micros": { "sodium_mg": 4, "calcium_mg": 6, "sugar_g": 82 } },
-
-  // --- משקאות ואוכל מוכן (136-150) ---
   { "id": "136", "name": "קוקה קולה", "unit_name": "פחית", "unit_weight": 330, "per100g": { "kcal": 42, "protein": 0, "carbs": 10.6, "fat": 0 }, "micros": { "sodium_mg": 10, "calcium_mg": 2, "sugar_g": 10.6 } },
   { "id": "137", "name": "קולה זירו", "unit_name": "פחית", "unit_weight": 330, "per100g": { "kcal": 0.3, "protein": 0, "carbs": 0, "fat": 0 }, "micros": { "sodium_mg": 10, "calcium_mg": 2, "sugar_g": 0 } },
   { "id": "138", "name": "מיץ תפוזים (טבעי)", "unit_name": "כוס", "unit_weight": 200, "per100g": { "kcal": 45, "protein": 0.7, "carbs": 10, "fat": 0.2 }, "micros": { "sodium_mg": 1, "calcium_mg": 11, "sugar_g": 8.5 } },
@@ -164,4 +149,4 @@ const localFoodDB = [
   { "id": "148", "name": "נודלס מוקפץ (עוף)", "unit_name": "צלחת", "unit_weight": 350, "per100g": { "kcal": 160, "protein": 8, "carbs": 20, "fat": 6 }, "micros": { "sodium_mg": 450, "calcium_mg": 20, "sugar_g": 4 } },
   { "id": "149", "name": "בורקס גבינה", "unit_name": "יחידה קטנה", "unit_weight": 50, "per100g": { "kcal": 380, "protein": 9, "carbs": 36, "fat": 22 }, "micros": { "sodium_mg": 720, "calcium_mg": 120, "sugar_g": 2 } },
   { "id": "150", "name": "מלוואח", "unit_name": "יחידה", "unit_weight": 150, "per100g": { "kcal": 360, "protein": 6, "carbs": 44, "fat": 18 }, "micros": { "sodium_mg": 620, "calcium_mg": 15, "sugar_g": 2 } }
-];
+]
