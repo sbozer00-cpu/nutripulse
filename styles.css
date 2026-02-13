@@ -1,6 +1,6 @@
 /* =========================================
    NutriPulse Pro - Ultimate UI v15.0
-   סגירה סופית: עיצוב פרימיום, פקדים מוגדלים וסקאלות צבעוניות
+   סגירה סופית: ללא ציון, פוקוס על נתונים
    ========================================= */
 
 :root {
@@ -91,7 +91,7 @@ body {
 .results-list li { padding: 14px 20px; border-bottom: 1px solid #F1F5F9; cursor: pointer; display: flex; justify-content: space-between; }
 .results-list li:hover { background: var(--primary-light); }
 
-/* --- פאנל עריכה - תיקון הגודל והפריסה --- */
+/* --- פאנל עריכה --- */
 .edit-panel {
     margin-top: 24px; padding: 24px;
     background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius-md);
@@ -115,7 +115,7 @@ body {
 
 /* פקדי כמות (Stepper) */
 .stepper {
-    display: flex; height: 60px; /* הגדלה משמעותית */
+    display: flex; height: 60px;
     background: white; border: 2px solid var(--border); border-radius: 12px; overflow: hidden;
 }
 .step-btn { width: 60px; border: none; background: #F1F5F9; font-size: 1.6rem; color: var(--primary); font-weight: bold; cursor: pointer; }
@@ -124,7 +124,7 @@ body {
 
 /* כפתורי יחידות (Toggle) */
 .unit-toggle {
-    display: flex; height: 60px; /* הגדלה משמעותית */
+    display: flex; height: 60px;
     background: #F1F5F9; border-radius: 12px; padding: 5px;
 }
 .toggle-btn {
@@ -146,15 +146,59 @@ body {
 .meal-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #F1F5F9; }
 .del-btn { background: #FEE2E2; color: #EF4444; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-/* --- סרגל צד: סקאלות ויטמינים ומאקרו --- */
-.score-widget { background: linear-gradient(135deg, #1E3A8A, #3B82F6); color: white; display: flex; align-items: center; gap: 24px; border: none; }
-.score-content {
-    width: 85px; height: 85px; border: 5px solid rgba(255,255,255,0.2);
-    border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+/* --- סרגל צד מעודכן: לוח מחוונים במקום ציון --- */
+.score-widget {
+    background: linear-gradient(135deg, #1E3A8A, #2563EB); /* כחול יוקרתי */
+    color: white;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: 0 10px 20px -5px rgba(30, 58, 138, 0.4);
+    
+    /* תצוגה אנכית נקייה */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    min-height: 150px;
+    position: relative;
+    overflow: hidden;
 }
-#dailyScore { font-size: 2.2rem; font-weight: 900; }
 
-.macro-row-wrapper { margin-bottom: 20px; }
+/* אלמנט קישוטי ברקע (אופציונלי) */
+.score-widget::after {
+    content: '';
+    position: absolute;
+    top: -30px; left: -30px;
+    width: 100px; height: 100px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+}
+
+.summary-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.summary-value {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -2px;
+}
+
+.summary-subtext {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-top: 8px;
+    background: rgba(0,0,0,0.2);
+    align-self: flex-start; /* הצמדה לימין */
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+/* --- סקאלות מאקרו ומיקרו --- */
+.macro-row-wrapper { margin-bottom: 20px; margin-top: 24px; }
 .macro-info { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 8px; }
 .progress-track { background: #E2E8F0; height: 12px; border-radius: 10px; overflow: hidden; }
 .bar { height: 100%; transition: width 0.8s ease; }
@@ -168,10 +212,10 @@ body {
 .micro-track { background: #E2E8F0; height: 8px; border-radius: 10px; overflow: hidden; }
 .micro-fill { height: 100%; transition: width 0.6s ease; border-radius: 10px; }
 
-/* צבעי סטטוס קריטיים */
-.bg-low { background: var(--warning) !important; }  /* כתום - עוד לא הגעת ליעד */
-.bg-good { background: var(--success) !important; } /* ירוק - הגעת ליעד! */
-.bg-high { background: var(--danger) !important; }  /* אדום - חריגה (לנתרן) */
+/* צבעי סטטוס */
+.bg-low { background: var(--warning) !important; }
+.bg-good { background: var(--success) !important; }
+.bg-high { background: var(--danger) !important; }
 
 /* --- Utilities --- */
 .hidden { display: none !important; }
