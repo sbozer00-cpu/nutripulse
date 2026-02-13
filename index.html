@@ -37,20 +37,21 @@
                 </div>
 
                 <div class="quick-actions-grid">
+                    
                     <div class="input-group">
                         <label>כמות</label>
                         <div class="stepper">
-                            <button type="button" id="btnMinus" class="step-btn">−</button>
-                            <input type="number" id="amountInput" value="100">
-                            <button type="button" id="btnPlus" class="step-btn">+</button>
+                            <button type="button" id="btnMinus" class="step-btn" onclick="stepAmount(-1)">−</button>
+                            <input type="number" id="amountInput" value="0" placeholder="0">
+                            <button type="button" id="btnPlus" class="step-btn" onclick="stepAmount(1)">+</button>
                         </div>
                     </div>
 
                     <div class="input-group">
                         <label>יחידת מידה</label>
                         <div class="unit-toggle">
-                            <button type="button" id="modeGrams" class="toggle-btn active">גרם</button>
-                            <button type="button" id="modeUnits" class="toggle-btn">יחידות</button>
+                            <button type="button" class="toggle-btn active" data-mode="grams">גרם</button>
+                            <button type="button" class="toggle-btn" data-mode="units">יחידות</button>
                         </div>
                     </div>
                 </div>
@@ -74,14 +75,9 @@
     <aside class="sidebar">
         
         <section class="stat-card score-widget">
-            <div class="score-content">
-                <span id="dailyScore">0</span>
-                <small>ציון</small>
-            </div>
-            <div class="score-info">
-                <h4>ניתוח מצב</h4>
-                <div id="statusMessage">המתן לנתונים...</div>
-            </div>
+            <span class="summary-label">סה״כ קלוריות היום</span>
+            <span class="summary-value" id="dailyCaloriesDisplay">0</span>
+            <span class="summary-subtext" id="dailyGoalDisplay">/ 2500 יעד</span>
         </section>
 
         <div id="alertsBox" class="alert-box hidden">
@@ -94,15 +90,15 @@
             <div class="macro-bars">
                 <div class="macro-row-wrapper">
                     <div class="macro-info"><span>חלבון</span><span id="valProtein">0g</span></div>
-                    <div class="progress-track"><div id="barProtein" class="bar p"></div></div>
+                    <div class="progress-track"><div id="barProtein" class="bar p" style="width: 0%"></div></div>
                 </div>
                 <div class="macro-row-wrapper">
                     <div class="macro-info"><span>פחמימות</span><span id="valCarbs">0g</span></div>
-                    <div class="progress-track"><div id="barCarbs" class="bar c"></div></div>
+                    <div class="progress-track"><div id="barCarbs" class="bar c" style="width: 0%"></div></div>
                 </div>
                 <div class="macro-row-wrapper">
                     <div class="macro-info"><span>שומנים</span><span id="valFat">0g</span></div>
-                    <div class="progress-track"><div id="barFat" class="bar f"></div></div>
+                    <div class="progress-track"><div id="barFat" class="bar f" style="width: 0%"></div></div>
                 </div>
             </div>
         </section>
@@ -114,7 +110,7 @@
         </section>
         
         <div class="sidebar-footer">
-            <button id="settingsBtn">⚙️ הגדרות יעד</button>
+            <button id="settingsBtn" style="margin-bottom: 10px;">⚙️ הגדרות יעד</button>
             <button id="resetApp" class="danger-text">איפוס יום</button>
         </div>
     </aside>
